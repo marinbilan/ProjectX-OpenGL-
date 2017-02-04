@@ -1,9 +1,11 @@
 //
 // GAMEDEV Framework @Marin Bilan 2017
+// cd "D:\Marin\__Programming\Projects\Programing\ProjectX [OpenGL]\ProjectX [OpenGL]"
 //
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <ctime>
 // GLEW
 #include "__libs\glew-1.13.0\include\GL\glew.h"
 // GLFW
@@ -51,9 +53,9 @@ GLfloat light1[] = { 0.0f, 5.0f, 5.0f, 1.0f };
 Shaders::Shader_2*      shader_2;        // PROJECTION
 Shaders::Shader_GUI*    shader_GUI;      // NO PROJECTION
 Shaders::Shader_skyBox* shader_skyBox;   // PROJECTION
-										 //
-										 // Camera [ View ]
-										 //
+//
+// Camera [ View ]
+//
 Camera::Camera* camera;
 //
 // Models
@@ -85,6 +87,13 @@ void RenderScene()
 	model_skyBox->renderModel();
 	model_1->renderModel();
 	model_GUI->renderModel();
+
+	//std::clock_t start = std::clock();
+	//double duration;
+
+	//std::clock_t end = std::clock();
+	//duration = (end - start) / (double)CLOCKS_PER_SEC;
+	//std::cout << "Trajanje algoritma: " << duration << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -118,17 +127,17 @@ int main(int argc, char** argv)
 	{
 		std::cout << "Failed to initialize GLEW" << std::endl;
 	}
-	////
-	////
-	//// Shaders [ Projection ] Initialization (only once)
-	////
-	////
+	//
+	//
+	// Shaders [ Projection ] Initialization (only once)
+	//
+	//
 	shader_2 = new Shaders::Shader_2(VS2, FS2);
 	shader_GUI = new Shaders::Shader_GUI(VSGUI, FSGUI);
 	shader_skyBox = new Shaders::Shader_skyBox(VSSkyBox, FSSkyBox);
-	////
-	//// Shaders Info
-	////
+	//
+	// Shaders Info
+	//
 	std::cout << *shader_2;
 	std::cout << *shader_GUI;
 	std::cout << *shader_skyBox;

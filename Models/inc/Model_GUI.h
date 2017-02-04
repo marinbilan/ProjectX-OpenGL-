@@ -31,6 +31,7 @@ public:
 	// 
 	//
 	virtual void VertexAttribPointers();
+
 	virtual void renderModel();
 	//
 	// OPERATORs
