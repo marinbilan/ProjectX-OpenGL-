@@ -56,22 +56,28 @@ public:
 	//
 	// ATTRIBs
 	//
-	virtual GLuint const getPositionID() const { return 0; }
-	virtual GLuint const getNormalID()   const { return 0; }
+	virtual GLuint const getPositionID()      const { return 0; }
+	virtual GLuint const getNormalID()        const { return 0; }	
+	virtual GLuint const gettextureCoordsID() const { return 0; } // Shader_VNT
 	// 
 	// UNIFORMs
 	//
-	// Shader_1
-	virtual GLuint const getgWorldID() const { return 0; }
-	
-	// Shader_2
+	virtual GLuint const getgWorldID()    const { return 0; }    // Shader_2
+	virtual GLuint const getRotationsID() const { return 0; } // Normals rotation	
+	virtual GLuint const gettexCoordID()  const { return 0; }
+	// Shader_VNT
+	virtual GLuint const getmPID() const    { return 0; }
+	virtual GLuint const getmVID() const    { return 0; }
+	virtual GLuint const getmVInvID() const { return 0; }
+	virtual GLuint const getmMID() const    { return 0; }
 	virtual GLuint const getLightID() const { return 0; }
+	virtual GLuint const getuseFakeLightingID() const { return 0; }
 
-	virtual GLuint const getmPID() const { return 0; }
-	virtual GLuint const getmVID() const { return 0; }
-	virtual GLuint const getmMID() const { return 0; }
-
-	virtual GLuint const getRotationsID() const { return 0; } // Normals rotation
+	virtual GLuint const gettextureSamplerID() const { return 0; }
+	virtual GLuint const getlightColorID() const { return 0; }
+	virtual GLuint const getshineDamperID() const { return 0; }
+	virtual GLuint const getreflectivityID() const { return 0; }
+	virtual GLuint const getskyColorID() const { return 0; }
 	//
 	//
 	// OPERATORs

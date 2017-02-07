@@ -21,6 +21,8 @@
 // Shader Database [ Db ]
 //
 #include "Db\shadersDb.h"
+#include "Db\ShadersDb\shaderVNT.h"
+#include "Db\ShadersDb\shaderCube.h"
 //
 // Shaders [ Projection ]
 //
@@ -29,6 +31,8 @@
 #include "Shaders\inc\Shader_2.h"
 #include "Shaders\inc\Shader_GUI.h"
 #include "Shaders\inc\Shader_skyBox.h"
+#include "Shaders\inc\Shader_VNT.h"
+#include "Shaders\inc\Shader_cube.h"
 //
 // Camera [ View ]
 //
@@ -41,6 +45,7 @@
 #include "Models\inc\Model_1.h"
 #include "Models\inc\Model_GUI.h"
 #include "Models\inc\Model_skyBox.h"
+#include "Models\inc\Model_NormalMap.h"
 //
 // LIGHT
 //
@@ -53,6 +58,8 @@ GLfloat light1[] = { 0.0f, 5.0f, 5.0f, 1.0f };
 Shaders::Shader_2*      shader_2;        // PROJECTION
 Shaders::Shader_GUI*    shader_GUI;      // NO PROJECTION
 Shaders::Shader_skyBox* shader_skyBox;   // PROJECTION
+Shaders::Shader_VNT*    shader_VNT;      // PROJECTION
+Shaders::Shader_cube*   shader_cube;      // PROJECTION
 //
 // Camera [ View ]
 //
@@ -63,6 +70,7 @@ Camera::Camera* camera;
 Models::Model_1*      model_1;
 Models::Model_GUI*    model_GUI;
 Models::Model_skyBox* model_skyBox;
+Models::Model_NormalMap* model_NormalMap;
 //
 // Variables and Constants
 //
@@ -86,6 +94,7 @@ void RenderScene()
 	//
 	model_skyBox->renderModel();
 	model_1->renderModel();
+	model_NormalMap->renderModel();
 	model_GUI->renderModel();
 
 	//std::clock_t start = std::clock();
@@ -135,12 +144,16 @@ int main(int argc, char** argv)
 	shader_2 = new Shaders::Shader_2(VS2, FS2);
 	shader_GUI = new Shaders::Shader_GUI(VSGUI, FSGUI);
 	shader_skyBox = new Shaders::Shader_skyBox(VSSkyBox, FSSkyBox);
+	shader_VNT = new Shaders::Shader_VNT(VSVNT, FSVNT);
+	shader_cube = new Shaders::Shader_cube(VScube, FScube);
 	//
 	// Shaders Info
 	//
 	std::cout << *shader_2;
 	std::cout << *shader_GUI;
 	std::cout << *shader_skyBox;
+	std::cout << *shader_VNT;
+	std::cout << *shader_cube;
 	//
 	//
 	// Camera [ View ] Initialization
@@ -156,6 +169,7 @@ int main(int argc, char** argv)
 	model_1 = new Models::Model_1(shader_2, camera, light1);
 	model_GUI = new Models::Model_GUI(shader_GUI);
 	model_skyBox = new Models::Model_skyBox(shader_skyBox, camera);
+	model_NormalMap = new Models::Model_NormalMap(shader_cube, camera, light1);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
