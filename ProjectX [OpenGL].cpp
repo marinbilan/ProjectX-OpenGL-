@@ -28,11 +28,11 @@
 //
 #include "Shaders\if\ShaderIf.h"
 
-#include "Shaders\inc\Shader_1.h"
-#include "Shaders\inc\Shader_2.h"
-#include "Shaders\inc\Shader_3.h"
-#include "Shaders\inc\Shader_4.h"
-#include "Shaders\inc\Shader_5.h"
+#include "Shaders\inc\Shader_1.h" // MODEL       PN  [ PROJECTION ]    <pos, norms | proj, view, model | normsRot, light>
+#include "Shaders\inc\Shader_2.h" // GUI         P   [ NO PROJECTION ] <pos | model >
+#include "Shaders\inc\Shader_3.h" // SKYBOX      PNT [ PROJECTION ]    <pos | proj, view >
+#include "Shaders\inc\Shader_4.h" // THIN MATRIX PNT [ PROJECTION ]   
+#include "Shaders\inc\Shader_5.h" // CUBE        PNT [ PROJECTION ]
 //
 // Camera [ View ]
 //
@@ -44,7 +44,6 @@
 #include "Models\if\ModelIf.h"
 
 #include "Models\inc\Model_1.h"
-
 #include "Models\inc\Model_GUI.h"
 #include "Models\inc\Model_skyBox.h"
 #include "Models\inc\Model_NormalMap.h"
@@ -61,7 +60,7 @@ Shaders::Shader_1* shader_1; // DRAGON      [ PROJECTION ]    <pos, norms | proj
 Shaders::Shader_2* shader_2; // GUI         [ NO PROJECTION ]
 Shaders::Shader_3* shader_3; // SKYBOX      [ PROJECTION ]
 Shaders::Shader_4* shader_4; // THIN MATRIX [ PROJECTION ]
-Shaders::Shader_5* shader_5; // PROJECTION
+Shaders::Shader_5* shader_5; //             [ PROJECTION ]
 //
 // Camera [ View ]
 //
@@ -69,8 +68,8 @@ Camera::Camera* camera;
 //
 // Models
 //
-Models::Model_1*      model_1;
-Models::Model_GUI*    model_GUI;
+Models::Model_1* model_1; // DRAGON
+Models::Model_GUI* model_GUI;
 Models::Model_skyBox* model_skyBox;
 Models::Model_NormalMap* model_NormalMap;
 //

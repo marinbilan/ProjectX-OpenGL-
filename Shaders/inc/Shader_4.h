@@ -42,11 +42,11 @@ public:
 	virtual GLuint const getModelMatrixID() const;
 
 	virtual GLuint const getLightID() const;
-
 	virtual GLuint const getViewMatrixInvertedID() const;
-		
+
 	virtual GLuint const getuseFakeLightingID() const;
-	virtual GLuint const gettextureSamplerID() const;
+
+	virtual GLuint const gettextureSamplerID() const;			
 	virtual GLuint const getlightColorID() const;
 	virtual GLuint const getshineDamperID() const;
 	virtual GLuint const getreflectivityID() const;
@@ -58,20 +58,6 @@ public:
 	//	
 	friend std::ostream& operator<<(std::ostream& output, Shader_4& info)
 	{
-		//output << "" << std::endl;
-		//output << "shaderProgramID:..............." << info.shaderProgramID << std::endl;
-		//output << "" << std::endl;
-		//output << "positionsID:..................." << info.positionsID << std::endl;
-		//output << "normalsID:....................." << info.normalsID << std::endl;
-		//output << "" << std::endl;
-		//output << "projectionMatrixID:............" << info.projectionMatrixID << std::endl;
-		//output << "viewMatrixID:.................." << info.viewMatrixID << std::endl;
-		//output << "modelMatrixID:................." << info.modelMatrixID << std::endl;
-
-		//output << "normalsRotationsMatrixID:......" << info.normalsRotationsMatrixID << std::endl;
-		//output << "lightID:......................." << info.lightID << std::endl;
-		//output << "" << std::endl;
-
 		return output;
 	}
 
@@ -100,9 +86,9 @@ private:
 	GLuint viewMatrixInvertedID;
 		
 	GLuint useFakeLightingID;
-	// =============
+	// ===============
 	// FRAGMENT SHADER
-	// =============
+	// ===============
 	//
 	// UNIFORMs
 	//

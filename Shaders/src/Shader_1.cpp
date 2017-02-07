@@ -21,13 +21,13 @@ Shaders::Shader_1::Shader_1(const char* vertexShader, const char* fragmentShader
 		projectionMatrixID = glGetUniformLocation(shaderProgramID, "mP");       	
 		viewMatrixID = glGetUniformLocation(shaderProgramID, "mV");
 		modelMatrixID = glGetUniformLocation(shaderProgramID, "mM");
-		
-		normalsRotationsMatrixID = glGetUniformLocation(shaderProgramID, "mRotations");
+
 		lightID = glGetUniformLocation(shaderProgramID, "vLight");
+		normalsRotationsMatrixID = glGetUniformLocation(shaderProgramID, "mRotations");
 		//
         // Set Projection Matrix
         //
-        glm::mat4 projectionMatrix = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.1f, 1000.f);
+        projectionMatrix = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.1f, 1000.f);
 
         glUseProgram(shaderProgramID);
         glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &projectionMatrix[0][0]);
@@ -77,12 +77,13 @@ GLuint const Shaders::Shader_1::getModelMatrixID() const
         return modelMatrixID;
 }
 
+GLuint const Shaders::Shader_1::getLightID() const
+{
+        return lightID;
+}
+
 GLuint const Shaders::Shader_1::getNormalsRotationsID() const
 {
         return normalsRotationsMatrixID;
 }
 
-GLuint const Shaders::Shader_1::getLightID() const
-{
-        return lightID;
-}

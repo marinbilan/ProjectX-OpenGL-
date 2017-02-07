@@ -42,21 +42,17 @@ public:
 	//	
 	friend std::ostream& operator<<(std::ostream& output, Shader_3& info)
 	{
-		output << "" << std::endl;
-		output << "shaderProgramID:..............." << info.shaderProgramID << std::endl;
-		output << "" << std::endl;
-		output << "positionsID:..................." << info.s_vPositionID << std::endl;
-		output << "" << std::endl;
-		output << "projectionMatrixID:............" << info.mPID << std::endl;
-		output << "modelMatrixID:................." << info.mMID << std::endl;
-		output << "" << std::endl;
 
 		return output;
 	}
 
 private:
+	glm::mat4 projectionMatrix;
 
 	GLuint shaderProgramID;
+	// =============
+	// VERTEX SHADER
+	// =============
 	//
 	// ATTRIBs
 	//

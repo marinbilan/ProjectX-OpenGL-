@@ -69,7 +69,7 @@ void Camera::Camera::updateCameraPosition()
 
 void Camera::Camera::updateCameraUniform(Shaders::ShadersIf::ShadersIf* shader)
 {
-	glUniformMatrix4fv(shader->getmVID(), 1, GL_FALSE, &viewMatrix[0][0]);
+	glUniformMatrix4fv(shader->getViewMatrixID(), 1, GL_FALSE, &viewMatrix[0][0]);
 }
 
 

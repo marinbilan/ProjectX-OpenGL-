@@ -40,8 +40,8 @@ public:
 	virtual GLuint const getViewMatrixID() const;
 	virtual GLuint const getModelMatrixID() const;
 
-	virtual GLuint const getNormalsRotationsID() const;
 	virtual GLuint const getLightID() const;
+	virtual GLuint const getNormalsRotationsID() const;
 	//
 	//
 	// OPERATORs
@@ -71,6 +71,9 @@ private:
 	glm::mat4 projectionMatrix;
 
 	GLuint shaderProgramID;
+	// =============
+	// VERTEX SHADER
+	// =============
 	//
 	// ATTRIBs
 	//
@@ -83,8 +86,8 @@ private:
 	GLuint viewMatrixID;
 	GLuint modelMatrixID;
 
-	GLuint normalsRotationsMatrixID;
 	GLuint lightID;
+	GLuint normalsRotationsMatrixID;
 };
 }
 

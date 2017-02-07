@@ -82,7 +82,7 @@ Models::Model_GUI::~Model_GUI()
 void Models::Model_GUI::VertexAttribPointers()
 {
 	glUseProgram(shader->getShaderProgramID());
-	glVertexAttribPointer(shader->getPositionID(), 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(shader->getPositionsID(), 2, GL_FLOAT, GL_FALSE, 0, 0);
 	glUseProgram(0);
 }
 
@@ -96,14 +96,14 @@ void Models::Model_GUI::renderModel()
 	//
 	// Enable attributes in shaderProgramID
 	//
-	glEnableVertexAttribArray(shader->getPositionID());
+	glEnableVertexAttribArray(shader->getPositionsID());
 	//
 	// ... UPDATE UNIFORM(s)
 	//	
 	modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-0.7f, 0.5f, 0.f));
 	modelMatrix = glm::scale(modelMatrix, glm::vec3(0.3f));
 
-	glUniformMatrix4fv(shader->getmMID(), 1, GL_FALSE, &modelMatrix[0][0]);
+	glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -122,7 +122,7 @@ void Models::Model_GUI::renderModel()
 	
 	// DISABLE
 	glDisable(GL_BLEND);
-	glDisableVertexAttribArray(shader->getPositionID());
+	glDisableVertexAttribArray(shader->getPositionsID());
 
 	glUseProgram(0);
 	glBindVertexArray(0);

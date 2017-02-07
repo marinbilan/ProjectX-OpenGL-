@@ -71,19 +71,18 @@ public:
 	
 	virtual GLuint const getViewMatrixInvertedID() const { return 0; }
 	virtual GLuint const getgWorldID()             const { return 0; }    	
-	virtual GLuint const gettexCoordID()           const { return 0; }	
+	// virtual GLuint const gettexCoordID()           const { return 0; }	// REMOVE
 
 	virtual GLuint const getuseFakeLightingID()    const { return 0; }
-	// Fragment Shader
+	//
+	// [ THINMATRIX ] Fragment Shader
+	//
 	virtual GLuint const gettextureSamplerID()     const { return 0; }
+
 	virtual GLuint const getlightColorID()         const { return 0; }
 	virtual GLuint const getshineDamperID()        const { return 0; }
 	virtual GLuint const getreflectivityID()       const { return 0; }
 	virtual GLuint const getskyColorID()           const { return 0; }
-	//
-	// FRAGMENT SHADER [ ATTRIBs ]
-	//
-
 	//
 	//
 	// OPERATORs

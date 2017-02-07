@@ -55,6 +55,9 @@ public:
 private:
 
 	GLuint shaderProgramID;
+	// =============
+	// VERTEX SHADER
+	// =============
 	//
 	// ATTRIBs
 	//

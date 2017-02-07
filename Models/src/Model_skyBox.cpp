@@ -133,7 +133,7 @@ Models::Model_skyBox::~Model_skyBox()
 void Models::Model_skyBox::VertexAttribPointers()
 {
 	glUseProgram(shader->getShaderProgramID());
-	glVertexAttribPointer(shader->getPositionID(), 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(shader->getPositionsID(), 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glUseProgram(0);
 }
 
@@ -154,7 +154,7 @@ void Models::Model_skyBox::renderModel()
 	//
 	// Enable attributes in shaderProgramID
 	//
-	glEnableVertexAttribArray(shader->getPositionID());
+	glEnableVertexAttribArray(shader->getPositionsID());
 	//
 	// ACTIVE TEXTURE
 	//
@@ -167,7 +167,7 @@ void Models::Model_skyBox::renderModel()
 	//
 	// DISABLE TEXTURE
 	//
-	glDisableVertexAttribArray(shader->getPositionID());
+	glDisableVertexAttribArray(shader->getPositionsID());
 
 	glUseProgram(0);
 	glBindVertexArray(0);

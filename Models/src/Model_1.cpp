@@ -59,8 +59,8 @@ void Models::Model_1::VertexAttribPointers()
 	// VERTEX ATTRIBUTE POINTER(s)
 	//
 	glUseProgram(shader->getShaderProgramID());
-	glVertexAttribPointer(shader->getPositionID(), 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glVertexAttribPointer(shader->getNormalID(), 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(vert)));
+	glVertexAttribPointer(shader->getPositionsID(), 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(shader->getNormalsID(), 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(vert)));
 	glUseProgram(0);
 }
 
@@ -79,8 +79,8 @@ void Models::Model_1::renderModel()
 	//
 	// Enable attributes in shaderProgramID
 	//
-	glEnableVertexAttribArray(shader->getPositionID());
-	glEnableVertexAttribArray(shader->getNormalID());
+	glEnableVertexAttribArray(shader->getPositionsID());
+	glEnableVertexAttribArray(shader->getNormalsID());
 	//
 	// ... Update Uniforms ... 
 	//     mP		  - shader [ Only once in shader ]
@@ -90,8 +90,8 @@ void Models::Model_1::renderModel()
 	//     vLight     - light
 	//
 	camera->updateCameraUniform(shader);
-	glUniformMatrix4fv(shader->getmMID(), 1, GL_FALSE, &modelMatrix[0][0]);            
-	glUniformMatrix4fv(shader->getRotationsID(), 1, GL_FALSE, &allRotsMatrix[0][0]);   
+	glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);            
+	glUniformMatrix4fv(shader->getNormalsRotationsID(), 1, GL_FALSE, &allRotsMatrix[0][0]);   
 	glUniform4fv(shader->getLightID(), 1, light);
 	//
 	// ... DRAW MODEL (MESH) ...
@@ -102,8 +102,8 @@ void Models::Model_1::renderModel()
 	//
 	// DISABLE EVERYTHING
 	//
-	glDisableVertexAttribArray(shader->getPositionID());
-	glDisableVertexAttribArray(shader->getNormalID());
+	glDisableVertexAttribArray(shader->getPositionsID());
+	glDisableVertexAttribArray(shader->getNormalsID());
 
 	glUseProgram(0);
 	glBindVertexArray(0);
