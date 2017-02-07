@@ -1,13 +1,13 @@
 #include <iostream>
 #include <string>
 
-#include "../../Shaders/inc/Shader_2.h"
+#include "../../Shaders/inc/Shader_1.h"
 //
 //
 // CONSTRUCTORs / DESTRUCTORs
 //
 //
-Shaders::Shader_2::Shader_2(const char* vertexShader, const char* fragmentShader)
+Shaders::Shader_1::Shader_1(const char* vertexShader, const char* fragmentShader)
 {
         std::cout << "Shader_2 constructor called! " << std::endl;
 
@@ -33,7 +33,7 @@ Shaders::Shader_2::Shader_2(const char* vertexShader, const char* fragmentShader
         glUseProgram(0);
 }
 
-Shaders::Shader_2::~Shader_2()
+Shaders::Shader_1::~Shader_1()
 {
         std::cout << "Shader_2 destructor called!" << std::endl;
 }
@@ -42,46 +42,46 @@ Shaders::Shader_2::~Shader_2()
 // FUNCTIONs
 //
 //
-GLuint const Shaders::Shader_2::getShaderProgramID() const
+GLuint const Shaders::Shader_1::getShaderProgramID() const
 {
         return shaderProgramID;
 }
 //
 // ATTRIBs
 //
-GLuint const Shaders::Shader_2::getPositionID() const
+GLuint const Shaders::Shader_1::getPositionID() const
 {
         return s_vPositionID;
 }
 
-GLuint const Shaders::Shader_2::getNormalID() const
+GLuint const Shaders::Shader_1::getNormalID() const
 {
         return s_vNormalID;
 }
 //
 // UNIFORMs
 //
-GLuint const Shaders::Shader_2::getLightID() const
+GLuint const Shaders::Shader_1::getLightID() const
 {
         return vLightID;
 }
 
-GLuint const Shaders::Shader_2::getmPID() const
+GLuint const Shaders::Shader_1::getmPID() const
 {
         return mPID;
 }
 
-GLuint const Shaders::Shader_2::getmVID() const
+GLuint const Shaders::Shader_1::getmVID() const
 {
         return mVID;
 }
 
-GLuint const Shaders::Shader_2::getmMID() const
+GLuint const Shaders::Shader_1::getmMID() const
 {
         return mMID;
 }
 
-GLuint const Shaders::Shader_2::getRotationsID() const
+GLuint const Shaders::Shader_1::getRotationsID() const
 {
         return mRotationsID;
 }
