@@ -32,7 +32,7 @@
 #include "Shaders\inc\Shader_2.h"
 #include "Shaders\inc\Shader_3.h"
 #include "Shaders\inc\Shader_4.h"
-#include "Shaders\inc\Shader_cube.h"
+#include "Shaders\inc\Shader_5.h"
 //
 // Camera [ View ]
 //
@@ -57,12 +57,11 @@ GLfloat light1[] = { 0.0f, 5.0f, 5.0f, 1.0f };
 // Shaders [ Projection ]
 //
 //
-Shaders::Shader_1*      shader_1; // DRAGON      [ PROJECTION ]    <pos, norms | proj, view, model | normsRot, light>
-Shaders::Shader_2*      shader_2; // GUI         [ NO PROJECTION ]
-Shaders::Shader_3*      shader_3; // SKYBOX      [ PROJECTION ]
-Shaders::Shader_4*      shader_4; // THIN MATRIX [ PROJECTION ]
-
-Shaders::Shader_cube* shader_cube;// PROJECTION
+Shaders::Shader_1* shader_1; // DRAGON      [ PROJECTION ]    <pos, norms | proj, view, model | normsRot, light>
+Shaders::Shader_2* shader_2; // GUI         [ NO PROJECTION ]
+Shaders::Shader_3* shader_3; // SKYBOX      [ PROJECTION ]
+Shaders::Shader_4* shader_4; // THIN MATRIX [ PROJECTION ]
+Shaders::Shader_5* shader_5; // PROJECTION
 //
 // Camera [ View ]
 //
@@ -148,8 +147,7 @@ int main(int argc, char** argv)
 	shader_2 = new Shaders::Shader_2(VSGUI, FSGUI);
 	shader_3 = new Shaders::Shader_3(VSSkyBox, FSSkyBox);
 	shader_4 = new Shaders::Shader_4(VSVNT, FSVNT);
-
-	shader_cube = new Shaders::Shader_cube(VScube, FScube);
+	shader_5 = new Shaders::Shader_5(VScube, FScube);
 	//
 	// Shaders Info
 	//
@@ -157,8 +155,7 @@ int main(int argc, char** argv)
 	std::cout << *shader_2;
 	std::cout << *shader_3;
 	std::cout << *shader_4;
-
-	std::cout << *shader_cube;
+	std::cout << *shader_5;
 	//
 	//
 	// Camera [ View ] Initialization
@@ -174,8 +171,7 @@ int main(int argc, char** argv)
 	model_1 = new Models::Model_1(shader_1, camera, light1);
 	model_GUI = new Models::Model_GUI(shader_2);
 	model_skyBox = new Models::Model_skyBox(shader_3, camera);
-
-	model_NormalMap = new Models::Model_NormalMap(shader_cube, camera, light1);
+	model_NormalMap = new Models::Model_NormalMap(shader_5, camera, light1);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
