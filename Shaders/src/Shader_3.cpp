@@ -15,17 +15,17 @@ Shaders::Shader_3::Shader_3(const char* vertexShader, const char* fragmentShader
 	//
 	// Get Shader Variables [Attribs and Uniforms] IDs
 	//
-	s_vPositionID = glGetAttribLocation(shaderProgramID, "position");
+	positionsID = glGetAttribLocation(shaderProgramID, "position");
 
-	mPID = glGetUniformLocation(shaderProgramID, "projectionMatrix");
-	mVID = glGetUniformLocation(shaderProgramID, "viewMatrix");
+	projectionMatrixID = glGetUniformLocation(shaderProgramID, "projectionMatrix");
+	viewMatrixID = glGetUniformLocation(shaderProgramID, "viewMatrix");
 	//
 	// Set Projection Matrix
 	//
 	glm::mat4 ProjectionMatrix = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.1f, 1000.f);
 
 	glUseProgram(shaderProgramID);
-	glUniformMatrix4fv(mPID, 1, GL_FALSE, &ProjectionMatrix[0][0]);
+	glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &ProjectionMatrix[0][0]);
 	glUseProgram(0);
 }
 
@@ -45,14 +45,14 @@ GLuint const Shaders::Shader_3::getShaderProgramID() const
 //
 // ATTRIBs
 //
-GLuint const Shaders::Shader_3::getPositionID() const
+GLuint const Shaders::Shader_3::getPositionsID() const
 {
-	return s_vPositionID;
+	return positionsID;
 }
 //
 // UNIFORMs
 //
-GLuint const Shaders::Shader_3::getmVID() const
+GLuint const Shaders::Shader_3::getViewMatrixID() const
 {
-	return mVID;
+	return viewMatrixID;
 }

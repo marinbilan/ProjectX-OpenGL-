@@ -30,11 +30,11 @@ public:
 	//
 	// ATTRIBs
 	//
-	virtual GLuint const getPositionID() const;
+	virtual GLuint const getPositionsID() const;
 	// 
 	// UNIFORMs
 	//
-	virtual GLuint const getmVID() const;
+	virtual GLuint const getViewMatrixID() const;
 	//
 	//
 	// OPERATORs
@@ -65,7 +65,7 @@ private:
 	// UNIFORMs
 	//
 	GLuint projectionMatrixID;
-	GLuint modelMatrixID;
+	GLuint viewMatrixID;
 };
 }
 
