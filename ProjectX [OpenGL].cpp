@@ -29,7 +29,8 @@
 #include "Shaders\if\ShaderIf.h"
 
 #include "Shaders\inc\Shader_1.h"
-#include "Shaders\inc\Shader_GUI.h"
+#include "Shaders\inc\Shader_2.h"
+
 #include "Shaders\inc\Shader_skyBox.h"
 #include "Shaders\inc\Shader_VNT.h"
 #include "Shaders\inc\Shader_cube.h"
@@ -56,8 +57,8 @@ GLfloat light1[] = { 0.0f, 5.0f, 5.0f, 1.0f };
 // Shaders [ Projection ]
 //
 //
-Shaders::Shader_1*      shader_1;        // PROJECTION
-Shaders::Shader_GUI*    shader_GUI;      // NO PROJECTION
+Shaders::Shader_1*      shader_1;        // DRAGON [ PROJECTION ] <pos, norms | proj, view, model | normsRot, light>
+Shaders::Shader_2*      shader_2;      // GUI    [ NO PROJECTION ]
 Shaders::Shader_skyBox* shader_skyBox;   // PROJECTION
 Shaders::Shader_VNT*    shader_VNT;      // PROJECTION
 Shaders::Shader_cube*   shader_cube;      // PROJECTION
@@ -143,7 +144,8 @@ int main(int argc, char** argv)
 	//
 	//
 	shader_1 = new Shaders::Shader_1(VS2, FS2);
-	shader_GUI = new Shaders::Shader_GUI(VSGUI, FSGUI);
+	shader_2 = new Shaders::Shader_2(VSGUI, FSGUI);
+
 	shader_skyBox = new Shaders::Shader_skyBox(VSSkyBox, FSSkyBox);
 	shader_VNT = new Shaders::Shader_VNT(VSVNT, FSVNT);
 	shader_cube = new Shaders::Shader_cube(VScube, FScube);
@@ -151,7 +153,8 @@ int main(int argc, char** argv)
 	// Shaders Info
 	//
 	std::cout << *shader_1;
-	std::cout << *shader_GUI;
+	std::cout << *shader_2;
+
 	std::cout << *shader_skyBox;
 	std::cout << *shader_VNT;
 	std::cout << *shader_cube;
@@ -168,7 +171,8 @@ int main(int argc, char** argv)
 	//
 	//
 	model_1 = new Models::Model_1(shader_1, camera, light1);
-	model_GUI = new Models::Model_GUI(shader_GUI);
+	model_GUI = new Models::Model_GUI(shader_2);
+
 	model_skyBox = new Models::Model_skyBox(shader_skyBox, camera);
 	model_NormalMap = new Models::Model_NormalMap(shader_cube, camera, light1);
 

@@ -56,9 +56,9 @@ public:
 	//
 	// VERTEX SHADER [ ATTRIBs ]
 	//
-	virtual GLuint const getPositionID()       const { return 0; }
-	virtual GLuint const getNormalID()         const { return 0; }	
-	virtual GLuint const getTextureCoordsID()  const { return 0; }
+	virtual GLuint const getPositionsID()     const { return 0; }
+	virtual GLuint const getNormalsID()       const { return 0; }	
+	virtual GLuint const getTextureCoordsID() const { return 0; }
 	// 
 	// VERTEX SHADER [ UNIFORMs ]
 	//
@@ -66,18 +66,18 @@ public:
 	virtual GLuint const getViewMatrixID()         const { return 0; }	
 	virtual GLuint const getModelMatrixID()        const { return 0; }
 
-	virtual GLuint const getRotationsID()      const { return 0; } 
-	virtual GLuint const getLightID()           const { return 0; }
+	virtual GLuint const getNormalsRotationsID()   const { return 0; } 
+	virtual GLuint const getLightID()              const { return 0; }
 
 	virtual GLuint const getViewMatrixInvertedID() const { return 0; }
-	virtual GLuint const getgWorldID()         const { return 0; }    	
-	virtual GLuint const gettexCoordID()        const { return 0; }	
-	virtual GLuint const getuseFakeLightingID() const { return 0; }
-	virtual GLuint const gettextureSamplerID() const { return 0; }
-	virtual GLuint const getlightColorID() const { return 0; }
-	virtual GLuint const getshineDamperID() const { return 0; }
-	virtual GLuint const getreflectivityID() const { return 0; }
-	virtual GLuint const getskyColorID() const { return 0; }
+	virtual GLuint const getgWorldID()             const { return 0; }    	
+	virtual GLuint const gettexCoordID()           const { return 0; }	
+	virtual GLuint const getuseFakeLightingID()    const { return 0; }
+	virtual GLuint const gettextureSamplerID()     const { return 0; }
+	virtual GLuint const getlightColorID()         const { return 0; }
+	virtual GLuint const getshineDamperID()        const { return 0; }
+	virtual GLuint const getreflectivityID()       const { return 0; }
+	virtual GLuint const getskyColorID()           const { return 0; }
 	//
 	// FRAGMENT SHADER [ ATTRIBs ]
 	//

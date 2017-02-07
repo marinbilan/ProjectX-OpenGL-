@@ -31,8 +31,8 @@ public:
 	//
 	// ATTRIBs
 	//
-	virtual GLuint const getPositionID() const;
-	virtual GLuint const getNormalID() const;
+	virtual GLuint const getPositionsID() const;
+	virtual GLuint const getNormalsID() const;
 	// 
 	// UNIFORMs
 	//
@@ -40,7 +40,7 @@ public:
 	virtual GLuint const getViewMatrixID() const;
 	virtual GLuint const getModelMatrixID() const;
 
-	virtual GLuint const getRotationsID() const;
+	virtual GLuint const getNormalsRotationsID() const;
 	virtual GLuint const getLightID() const;
 	//
 	//
@@ -49,40 +49,41 @@ public:
 	//	
 	friend std::ostream& operator<<(std::ostream& output, Shader_1& info)
 	{
-		output << "================ " << std::endl;
-		output << "shaderProgramId: " << info.shaderProgramID << std::endl;
 		output << "" << std::endl;
-		output << "s_vPositionID:   " << info.s_vPositionID << std::endl;
-		output << "s_vNormalID:     " << info.s_vNormalID << std::endl;
+		output << "shaderProgramID:..............." << info.shaderProgramID << std::endl;
 		output << "" << std::endl;
-		output << "vLightID:        " << info.vLightID << std::endl;
-		output << "mPID:            " << info.mPID << std::endl;
-		output << "mVID:            " << info.mVID << std::endl;
-		output << "mMID:            " << info.mMID << std::endl;
-		output << "mRotationsID:    " << info.mRotationsID << std::endl;
-		output << "================ " << std::endl;
+		output << "positionsID:..................." << info.s_vPositionID << std::endl;
+		output << "normalsID:....................." << info.s_vNormalID << std::endl;
+		output << "" << std::endl;
+		output << "projectionMatrixID:............" << info.mPID << std::endl;
+		output << "viewMatrixID:.................." << info.mVID << std::endl;
+		output << "modelMatrixID:................." << info.mMID << std::endl;
+		output << "normalsRotationsMatrixID:......" << info.mRotationsID << std::endl;
+		output << "lightID:......................." << info.vLightID << std::endl;
+		output << "" << std::endl;
 
 		return output;
 	}
 
 private:
 
-	glm::mat4 ProjectionMatrix;
+	glm::mat4 projectionMatrix;
 
 	GLuint shaderProgramID;
 	//
 	// ATTRIBs
 	//
-	GLuint s_vPositionID;
-	GLuint s_vNormalID;
+	GLuint positionsID;
+	GLuint normalsID;
 	//
 	// UNIFORMs
 	//
-	GLuint vLightID;
-	GLuint mPID;
-	GLuint mVID;
-	GLuint mMID;
-	GLuint mRotationsID;
+	GLuint projectionMatrixID;
+	GLuint viewMatrixID;
+	GLuint modelMatrixID;
+
+	GLuint normalsRotationsMatrixID;
+	GLuint lightID;
 };
 }
 
