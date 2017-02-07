@@ -36,11 +36,12 @@ public:
 	// 
 	// UNIFORMs
 	//
-	virtual GLuint const getLightID() const;
-	virtual GLuint const getmPID() const;
-	virtual GLuint const getmVID() const;
-	virtual GLuint const getmMID() const;
+	virtual GLuint const getProjectionMatrixID() const;
+	virtual GLuint const getViewMatrixID() const;
+	virtual GLuint const getModelMatrixID() const;
+
 	virtual GLuint const getRotationsID() const;
+	virtual GLuint const getLightID() const;
 	//
 	//
 	// OPERATORs
