@@ -1,5 +1,5 @@
-#ifndef SHADER_GUI__
-#define SHADER_GUI__
+#ifndef SHADER_2__
+#define SHADER_2__
 
 #include <iostream>
 #include <string>
@@ -10,7 +10,7 @@
 
 namespace Shaders
 {
-class Shader_GUI : public ShadersIf::ShadersIf
+class Shader_2 : public ShadersIf::ShadersIf
 {
 public:
 	//
@@ -18,9 +18,9 @@ public:
 	// CONSTRUCTORs / DESTRUCTORs
 	//
 	//	
-	Shader_GUI(const char* vertexShader, const char* fragmentShader);
+	Shader_2(const char* vertexShader, const char* fragmentShader);
 
-	~Shader_GUI();
+	~Shader_2();
 	//
 	//
 	// FUNCTIONs
@@ -30,25 +30,24 @@ public:
 	//
 	// ATTRIBs
 	//
-	virtual GLuint const getPositionID() const;
+	virtual GLuint const getPositionsID() const;
 	// 
 	// UNIFORMs
 	//
-	virtual GLuint const getmMID() const;
+	virtual GLuint const getModelMatrixID() const;
 	//
 	//
 	// OPERATORs
 	//
 	//	
-	friend std::ostream& operator<<(std::ostream& output, Shader_GUI& info)
+	friend std::ostream& operator<<(std::ostream& output, Shader_2& info)
 	{
-		output << "================ " << std::endl;
-		output << "shaderProgramId: " << info.shaderProgramID << std::endl;
 		output << "" << std::endl;
-		output << "s_vPositionID:   " << info.s_vPositionID << std::endl;
+		output << "shaderProgramID:..............." << info.shaderProgramID << std::endl;
 		output << "" << std::endl;
-		output << "mMID:            " << info.mMID << std::endl;
-		output << "================ " << std::endl;
+		output << "positionsID:..................." << info.positionsID << std::endl;
+		output << "modelMatrixID:................." << info.modelMatrixID << std::endl;
+		output << "" << std::endl;
 
 		return output;
 	}
@@ -59,11 +58,11 @@ private:
 	//
 	// ATTRIBs
 	//
-	GLuint s_vPositionID;
+	GLuint positionsID;
 	//
 	// UNIFORMs
 	//
-	GLuint mMID;
+	GLuint modelMatrixID;
 };
 }
 

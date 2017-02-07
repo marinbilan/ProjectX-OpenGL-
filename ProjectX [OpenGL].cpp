@@ -45,6 +45,7 @@
 #include "Models\if\ModelIf.h"
 
 #include "Models\inc\Model_1.h"
+
 #include "Models\inc\Model_GUI.h"
 #include "Models\inc\Model_skyBox.h"
 #include "Models\inc\Model_NormalMap.h"
@@ -58,7 +59,7 @@ GLfloat light1[] = { 0.0f, 5.0f, 5.0f, 1.0f };
 //
 //
 Shaders::Shader_1*      shader_1;        // DRAGON [ PROJECTION ] <pos, norms | proj, view, model | normsRot, light>
-Shaders::Shader_2*      shader_2;      // GUI    [ NO PROJECTION ]
+Shaders::Shader_2*      shader_2;        // GUI    [ NO PROJECTION ]
 Shaders::Shader_skyBox* shader_skyBox;   // PROJECTION
 Shaders::Shader_VNT*    shader_VNT;      // PROJECTION
 Shaders::Shader_cube*   shader_cube;      // PROJECTION
