@@ -30,8 +30,8 @@
 
 #include "Shaders\inc\Shader_1.h"
 #include "Shaders\inc\Shader_2.h"
+#include "Shaders\inc\Shader_3.h"
 
-#include "Shaders\inc\Shader_skyBox.h"
 #include "Shaders\inc\Shader_VNT.h"
 #include "Shaders\inc\Shader_cube.h"
 //
@@ -62,7 +62,7 @@ Shaders::Shader_1*      shader_1;        // DRAGON [ PROJECTION ] <pos, norms | 
 Shaders::Shader_2*      shader_2;        // GUI    [ NO PROJECTION ]
 Shaders::Shader_skyBox* shader_skyBox;   // PROJECTION
 Shaders::Shader_VNT*    shader_VNT;      // PROJECTION
-Shaders::Shader_cube*   shader_cube;      // PROJECTION
+Shaders::Shader_cube*   shader_cube;     // PROJECTION
 //
 // Camera [ View ]
 //

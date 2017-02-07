@@ -52,14 +52,15 @@ public:
 		output << "" << std::endl;
 		output << "shaderProgramID:..............." << info.shaderProgramID << std::endl;
 		output << "" << std::endl;
-		output << "positionsID:..................." << info.s_vPositionID << std::endl;
-		output << "normalsID:....................." << info.s_vNormalID << std::endl;
+		output << "positionsID:..................." << info.positionsID << std::endl;
+		output << "normalsID:....................." << info.normalsID << std::endl;
 		output << "" << std::endl;
-		output << "projectionMatrixID:............" << info.mPID << std::endl;
-		output << "viewMatrixID:.................." << info.mVID << std::endl;
-		output << "modelMatrixID:................." << info.mMID << std::endl;
-		output << "normalsRotationsMatrixID:......" << info.mRotationsID << std::endl;
-		output << "lightID:......................." << info.vLightID << std::endl;
+		output << "projectionMatrixID:............" << info.projectionMatrixID << std::endl;
+		output << "viewMatrixID:.................." << info.viewMatrixID << std::endl;
+		output << "modelMatrixID:................." << info.modelMatrixID << std::endl;
+		
+		output << "normalsRotationsMatrixID:......" << info.normalsRotationsMatrixID << std::endl;
+		output << "lightID:......................." << info.lightID << std::endl;
 		output << "" << std::endl;
 
 		return output;
