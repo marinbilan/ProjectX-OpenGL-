@@ -204,6 +204,8 @@ int main(int argc, char** argv)
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
+		std::cout << deltaTime << std::endl;
+
 		glfwPollEvents();
 		do_movement();
 		//
