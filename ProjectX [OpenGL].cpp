@@ -1,5 +1,5 @@
 //
-// GAMEDEV Framework @Marin Bilan 2017
+// GAMEDEV Framework Marin Bilan @2017
 // cd "D:\Marin\__Programming\Projects\Programing\ProjectX [OpenGL]\ProjectX [OpenGL]"
 //
 #include <stdio.h>
@@ -20,23 +20,26 @@
 //
 // Shader Database [ Db ]
 //
-#include "Db\shadersDb.h"
-#include "Db\ShadersDb\shaderVNT.h"
-#include "Db\ShadersDb\shaderCube.h"
+#include "Db\ShadersDb\shaderDb_1.h"
+#include "Db\ShadersDb\shaderDb_2.h" // GUI
+#include "Db\ShadersDb\shaderDb_3.h" // SKYBOX
+#include "Db\ShadersDb\shaderDb_4.h"
+#include "Db\ShadersDb\shaderDb_5.h"
 //
 // Shaders [ Projection ]
 //
 #include "Shaders\if\ShaderIf.h"
 
-#include "Shaders\inc\Shader_1.h" // MODEL       PN  [ PROJECTION ]    <pos, norms | proj, view, model | normsRot, light>
-#include "Shaders\inc\Shader_2.h" // GUI         P   [ NO PROJECTION ] <pos | model >
-#include "Shaders\inc\Shader_3.h" // SKYBOX      PNT [ PROJECTION ]    <pos | proj, view >
-#include "Shaders\inc\Shader_4.h" // THIN MATRIX PNT [ PROJECTION ]   
-#include "Shaders\inc\Shader_5.h" // CUBE        PNT [ PROJECTION ]
+#include "Shaders\inc\Shader_1.h" // MODEL         PN  [ PROJECTION ]    <pos, norms | proj, view, model | light, normsRot>
+#include "Shaders\inc\Shader_2.h" // GUI           P   [ NO PROJECTION ] <pos | model >
+#include "Shaders\inc\Shader_3.h" // SKYBOX        P   [ PROJECTION ]    <pos | proj, view >
+#include "Shaders\inc\Shader_4.h" // THIN MATRIX   PNT [ PROJECTION ]   
+#include "Shaders\inc\Shader_5.h" // TEXTURED CUBE PNT [ PROJECTION ]
 //
 // Camera [ View ]
 //
 #include "Camera\if\CameraIf.h"
+
 #include "Camera\inc\Camera.h"
 //
 // Models [ Model ]
@@ -56,11 +59,11 @@ GLfloat light1[] = { 0.0f, 5.0f, 5.0f, 1.0f };
 // Shaders [ Projection ]
 //
 //
-Shaders::Shader_1* shader_1; // DRAGON      [ PROJECTION ]    <pos, norms | proj, view, model | normsRot, light>
-Shaders::Shader_2* shader_2; // GUI         [ NO PROJECTION ]
-Shaders::Shader_3* shader_3; // SKYBOX      [ PROJECTION ]
-Shaders::Shader_4* shader_4; // THIN MATRIX [ PROJECTION ]
-Shaders::Shader_5* shader_5; //             [ PROJECTION ]
+Shaders::Shader_1* shader_1; 
+Shaders::Shader_2* shader_2; 
+Shaders::Shader_3* shader_3; 
+Shaders::Shader_4* shader_4; 
+Shaders::Shader_5* shader_5;
 //
 // Camera [ View ]
 //
@@ -106,6 +109,13 @@ void RenderScene()
 	//std::cout << "Trajanje algoritma: " << duration << std::endl;
 }
 
+void get_resolution() {
+	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+	WIDTH = mode->width;
+	HEIGHT = mode->height;
+}
+
 int main(int argc, char** argv)
 {
 	std::cout << "Starting GLFW context, OpenGL 3.3" << std::endl;
@@ -116,8 +126,13 @@ int main(int argc, char** argv)
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	//
+	// Give me screen resolution
+	//
+	get_resolution();
+	std::cout << WIDTH << " " << HEIGHT << std::endl;
 
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "3Ddev", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "3Ddev", nullptr, nullptr); // 4th parameter = glfwGetPrimaryMonitor() for fullscreen
 
 	if (window == nullptr)
 	{
@@ -142,11 +157,11 @@ int main(int argc, char** argv)
 	// Shaders [ Projection ] Initialization (only once)
 	//
 	//
-	shader_1 = new Shaders::Shader_1(VS2, FS2);
-	shader_2 = new Shaders::Shader_2(VSGUI, FSGUI);
-	shader_3 = new Shaders::Shader_3(VSSkyBox, FSSkyBox);
-	shader_4 = new Shaders::Shader_4(VSVNT, FSVNT);
-	shader_5 = new Shaders::Shader_5(VScube, FScube);
+	shader_1 = new Shaders::Shader_1(VS1, FS1);
+	shader_2 = new Shaders::Shader_2(VS2, FS2);
+	shader_3 = new Shaders::Shader_3(VS3, FS3);
+	shader_4 = new Shaders::Shader_4(VS4, FS4);
+	shader_5 = new Shaders::Shader_5(VS5, FS5);
 	//
 	// Shaders Info
 	//

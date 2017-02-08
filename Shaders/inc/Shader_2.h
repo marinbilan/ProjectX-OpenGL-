@@ -4,9 +4,7 @@
 #include <iostream>
 #include <string>
 
-#include "../if/ShaderIf.h" // Nuzno je zbog [ public ShadersIf::ShadersIf ]
-#include "glm\glm.hpp"
-#include "glm/gtc\matrix_transform.hpp"
+#include "../if/ShaderIf.h"
 
 namespace Shaders
 {
@@ -27,12 +25,15 @@ public:
 	// 
 	//
 	virtual GLuint const getShaderProgramID() const;
+	// =============
+	// VERTEX SHADER
+	// =============
 	//
-	// ATTRIBs
+	// [ ATTRIBs ]
 	//
 	virtual GLuint const getPositionsID() const;
 	// 
-	// UNIFORMs
+	// [ UNIFORMs ]
 	//
 	virtual GLuint const getModelMatrixID() const;
 	//
@@ -43,10 +44,10 @@ public:
 	friend std::ostream& operator<<(std::ostream& output, Shader_2& info)
 	{
 		output << "" << std::endl;
-		output << "shaderProgramID:..............." << info.shaderProgramID << std::endl;
+		output << "shaderProgramID: " << info.shaderProgramID << std::endl;
 		output << "" << std::endl;
-		output << "positionsID:..................." << info.positionsID << std::endl;
-		output << "modelMatrixID:................." << info.modelMatrixID << std::endl;
+		output << "positionsID:     " << info.positionsID << std::endl;
+		output << "modelMatrixID:   " << info.modelMatrixID << std::endl;
 		output << "" << std::endl;
 
 		return output;
@@ -59,11 +60,11 @@ private:
 	// VERTEX SHADER
 	// =============
 	//
-	// ATTRIBs
+	// [ ATTRIBs ]
 	//
 	GLuint positionsID;
-	//
-	// UNIFORMs
+	// 
+	// [ UNIFORMs ]
 	//
 	GLuint modelMatrixID;
 };

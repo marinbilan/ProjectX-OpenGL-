@@ -3,8 +3,15 @@
 
 #include <iostream>
 #include <string>
-
+//
+// GLEW
+//
 #include "../../__libs/glew-1.13.0/include/GL/glew.h"
+//
+// GLM
+//
+#include "glm\glm.hpp"
+#include "glm/gtc\matrix_transform.hpp"
 
 namespace Shaders
 {
@@ -53,14 +60,17 @@ public:
 	}
 
 	virtual GLuint const getShaderProgramID() const { return 0; }
+	// =============
+	// VERTEX SHADER
+	// =============
 	//
-	// VERTEX SHADER [ ATTRIBs ]
+	// [ ATTRIBs ]
 	//
-	virtual GLuint const getPositionsID()     const { return 0; }
-	virtual GLuint const getNormalsID()       const { return 0; }	
-	virtual GLuint const getTextureCoordsID() const { return 0; }
+	virtual GLuint const getPositionsID()          const { return 0; }
+	virtual GLuint const getNormalsID()            const { return 0; }	
+	virtual GLuint const getTextureCoordsID()      const { return 0; }
 	// 
-	// VERTEX SHADER [ UNIFORMs ]
+	// [ UNIFORMs ]
 	//
 	virtual GLuint const getProjectionMatrixID()   const { return 0; }
 	virtual GLuint const getViewMatrixID()         const { return 0; }	
@@ -68,14 +78,16 @@ public:
 
 	virtual GLuint const getLightID()              const { return 0; }	
 	virtual GLuint const getNormalsRotationsID()   const { return 0; } 
-	
+	//
 	virtual GLuint const getViewMatrixInvertedID() const { return 0; }
 	virtual GLuint const getgWorldID()             const { return 0; }    	
-	// virtual GLuint const gettexCoordID()           const { return 0; }	// REMOVE
 
 	virtual GLuint const getuseFakeLightingID()    const { return 0; }
-	//
-	// [ THINMATRIX ] Fragment Shader
+	// ===============
+	// FRAGMENT SHADER
+	// ===============
+	// 
+	// [ UNIFORMs ]
 	//
 	virtual GLuint const gettextureSamplerID()     const { return 0; }
 

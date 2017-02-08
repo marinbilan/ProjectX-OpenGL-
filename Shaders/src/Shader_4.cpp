@@ -9,48 +9,53 @@
 //
 Shaders::Shader_4::Shader_4(const char* vertexShader, const char* fragmentShader)
 {
-        std::cout << "ShaderVNT constructor called! " << std::endl;
+	std::cout << "ShaderVNT constructor called! " << std::endl;
 
-        shaderProgramID = createShader(vertexShader, fragmentShader);
-        //
-        // Get Shader Variables [Attribs and Uniforms] IDs
-        //
-		// =============
-		// VERTEX SHADER
-		// =============
-		positionsID = glGetAttribLocation(shaderProgramID, "position");
-		normalsID = glGetAttribLocation(shaderProgramID, "normal");
-		textureCoordsID = glGetAttribLocation(shaderProgramID, "textureCoords");
-       
-		projectionMatrixID = glGetUniformLocation(shaderProgramID, "projectionMatrix");
-		viewMatrixID = glGetUniformLocation(shaderProgramID, "viewMatrix");
-		modelMatrixID = glGetUniformLocation(shaderProgramID, "transformationMatrix");
+	shaderProgramID = createShader(vertexShader, fragmentShader);
+	// =============
+	// VERTEX SHADER
+	// =============
+	//
+	// [ ATTRIBs ]
+	//
+	positionsID = glGetAttribLocation(shaderProgramID, "position");
+	normalsID = glGetAttribLocation(shaderProgramID, "normal");
+	textureCoordsID = glGetAttribLocation(shaderProgramID, "textureCoords");
+	// 
+	// [ UNIFORMs ]
+	//     
+	projectionMatrixID = glGetUniformLocation(shaderProgramID, "projectionMatrix");
+	viewMatrixID = glGetUniformLocation(shaderProgramID, "viewMatrix");
+	modelMatrixID = glGetUniformLocation(shaderProgramID, "transformationMatrix");
 
-		lightID = glGetUniformLocation(shaderProgramID, "lightPosition");
-		viewMatrixInvertedID = glGetUniformLocation(shaderProgramID, "viewMatrixInv");
+	lightID = glGetUniformLocation(shaderProgramID, "lightPosition");
+	viewMatrixInvertedID = glGetUniformLocation(shaderProgramID, "viewMatrixInv");
 		
-		useFakeLightingID = glGetUniformLocation(shaderProgramID, "useFakeLighting");
-		// =============
-		// FRAGMENT SHADER
-		// =============
-		textureSamplerID = glGetUniformLocation(shaderProgramID, "textureSampler");
-		lightColorID = glGetUniformLocation(shaderProgramID, "lightColor");
-		shineDamperID = glGetUniformLocation(shaderProgramID, "shineDamper");
-		reflectivityID = glGetUniformLocation(shaderProgramID, "reflectivity");
-		skyColorID = glGetUniformLocation(shaderProgramID, "skyColor");
-        //
-        // Set Projection Matrix
-        //
-        projectionMatrix = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.1f, 1000.f);
+	useFakeLightingID = glGetUniformLocation(shaderProgramID, "useFakeLighting");
+	// ===============
+	// FRAGMENT SHADER
+	// ===============
+	// 
+	// [ UNIFORMs ]
+	//
+	textureSamplerID = glGetUniformLocation(shaderProgramID, "textureSampler");
+	lightColorID = glGetUniformLocation(shaderProgramID, "lightColor");
+	shineDamperID = glGetUniformLocation(shaderProgramID, "shineDamper");
+	reflectivityID = glGetUniformLocation(shaderProgramID, "reflectivity");
+	skyColorID = glGetUniformLocation(shaderProgramID, "skyColor");
+	//
+	// Set Projection Matrix
+	//
+	projectionMatrix = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.1f, 1000.f);
 
-        glUseProgram(shaderProgramID);
-        glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &projectionMatrix[0][0]);
-        glUseProgram(0);
+	glUseProgram(shaderProgramID);
+	glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &projectionMatrix[0][0]);
+	glUseProgram(0);
 }
 
 Shaders::Shader_4::~Shader_4()
 {
-        std::cout << "Shader_4 destructor called!" << std::endl;
+	std::cout << "Shader_4 destructor called!" << std::endl;
 }
 //
 //
@@ -59,19 +64,19 @@ Shaders::Shader_4::~Shader_4()
 //
 GLuint const Shaders::Shader_4::getShaderProgramID() const
 {
-        return shaderProgramID;
+	return shaderProgramID;
 }
 //
-// ATTRIBs
+// [ ATTRIBs VERTEX SHADER ]
 //
 GLuint const Shaders::Shader_4::getPositionsID() const
 {
-        return positionsID;
+	return positionsID;
 }
 
 GLuint const Shaders::Shader_4::getNormalsID() const
 {
-        return normalsID;
+	return normalsID;
 }
 
 GLuint const Shaders::Shader_4::getTextureCoordsID() const
@@ -79,26 +84,26 @@ GLuint const Shaders::Shader_4::getTextureCoordsID() const
 	return textureCoordsID;
 }
 //
-// UNIFORMs VERTEX SHADER
+// [ UNIFORMs VERTEX SHADER ]
 //
 GLuint const Shaders::Shader_4::getProjectionMatrixID() const
 {
-        return projectionMatrixID;
+	return projectionMatrixID;
 }
 
 GLuint const Shaders::Shader_4::getViewMatrixID() const
 {
-        return viewMatrixID;
+	return viewMatrixID;
 }
 
 GLuint const Shaders::Shader_4::getModelMatrixID() const
 {
-        return modelMatrixID;
+	return modelMatrixID;
 }
 
 GLuint const Shaders::Shader_4::getLightID() const
 {
-        return lightID;
+	return lightID;
 }
 
 GLuint const Shaders::Shader_4::getViewMatrixInvertedID() const
@@ -112,7 +117,7 @@ GLuint const Shaders::Shader_4::getuseFakeLightingID() const
 }
 
 //
-// UNIFORMs FRAGMENT SHADER
+// [ UNIFORMs FRAGMENT SHADER ]
 //
 GLuint const Shaders::Shader_4::gettextureSamplerID() const
 {

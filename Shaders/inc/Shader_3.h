@@ -4,9 +4,7 @@
 #include <iostream>
 #include <string>
 
-#include "../if/ShaderIf.h" // Nuzno je zbog [ public ShadersIf::ShadersIf ]
-#include "glm\glm.hpp"
-#include "glm/gtc\matrix_transform.hpp"
+#include "../if/ShaderIf.h"
 
 namespace Shaders
 {
@@ -27,12 +25,15 @@ public:
 	// 
 	//
 	virtual GLuint const getShaderProgramID() const;
+	// =============
+	// VERTEX SHADER
+	// =============
 	//
-	// ATTRIBs
+	// [ ATTRIBs ]
 	//
 	virtual GLuint const getPositionsID() const;
 	// 
-	// UNIFORMs
+	// [ UNIFORMs ]
 	//
 	virtual GLuint const getViewMatrixID() const;
 	//
@@ -42,7 +43,6 @@ public:
 	//	
 	friend std::ostream& operator<<(std::ostream& output, Shader_3& info)
 	{
-
 		return output;
 	}
 
@@ -54,11 +54,11 @@ private:
 	// VERTEX SHADER
 	// =============
 	//
-	// ATTRIBs
+	// [ ATTRIBs ]
 	//
 	GLuint positionsID;
-	//
-	// UNIFORMs
+	// 
+	// [ UNIFORMs ]
 	//
 	GLuint projectionMatrixID;
 	GLuint viewMatrixID;

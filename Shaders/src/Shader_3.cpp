@@ -12,11 +12,16 @@ Shaders::Shader_3::Shader_3(const char* vertexShader, const char* fragmentShader
 	std::cout << "Shader_3 constructor called! " << std::endl;
 
 	shaderProgramID = createShader(vertexShader, fragmentShader);
+	// =============
+	// VERTEX SHADER
+	// =============
 	//
-	// Get Shader Variables [Attribs and Uniforms] IDs
+	// [ ATTRIBs ]
 	//
 	positionsID = glGetAttribLocation(shaderProgramID, "position");
-
+	// 
+	// [ UNIFORMs ]
+	//
 	projectionMatrixID = glGetUniformLocation(shaderProgramID, "projectionMatrix");
 	viewMatrixID = glGetUniformLocation(shaderProgramID, "viewMatrix");
 	//
@@ -43,14 +48,14 @@ GLuint const Shaders::Shader_3::getShaderProgramID() const
 	return shaderProgramID;
 }
 //
-// ATTRIBs
+// [ ATTRIBs ] 
 //
 GLuint const Shaders::Shader_3::getPositionsID() const
 {
 	return positionsID;
 }
 //
-// UNIFORMs
+// [ UNIFORMs ]
 //
 GLuint const Shaders::Shader_3::getViewMatrixID() const
 {

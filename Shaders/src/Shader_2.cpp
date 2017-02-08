@@ -12,11 +12,16 @@ Shaders::Shader_2::Shader_2(const char* vertexShader, const char* fragmentShader
 	std::cout << "Shader_2 constructor called! " << std::endl;
 
 	shaderProgramID = createShader(vertexShader, fragmentShader);
+	// =============
+	// VERTEX SHADER
+	// =============
 	//
-	// Get Shader Variables [Attribs and Uniforms] IDs
+	// [ ATTRIBs ]
 	//
 	positionsID = glGetAttribLocation(shaderProgramID, "position");
-
+	// 
+	// [ UNIFORMs ]
+	//
 	modelMatrixID = glGetUniformLocation(shaderProgramID, "transformationMatrix");
 }
 
@@ -34,14 +39,14 @@ GLuint const Shaders::Shader_2::getShaderProgramID() const
 	return shaderProgramID;
 }
 //
-// ATTRIBs
+// [ ATTRIBs ]
 //
 GLuint const Shaders::Shader_2::getPositionsID() const
 {
 	return positionsID;
 }
 //
-// UNIFORMs
+// [ UNIFORMs ]
 //
 GLuint const Shaders::Shader_2::getModelMatrixID() const
 {

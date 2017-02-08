@@ -6,9 +6,6 @@
 
 #include "../if/ShaderIf.h"
 
-#include "glm\glm.hpp"
-#include "glm/gtc\matrix_transform.hpp"
-
 namespace Shaders
 {
 class Shader_4 : public ShadersIf::ShadersIf
@@ -28,15 +25,18 @@ public:
 	// 
 	//
 	virtual GLuint const getShaderProgramID() const;
+	// =============
+	// VERTEX SHADER
+	// =============
 	//
-	// ATTRIBs
+	// [ ATTRIBs ]
 	//
 	virtual GLuint const getPositionsID() const;
 	virtual GLuint const getNormalsID() const;
 	virtual GLuint const getTextureCoordsID() const;
 	// 
-	// UNIFORMs
-	//	
+	// [ UNIFORMs ]
+	//
 	virtual GLuint const getProjectionMatrixID() const;
 	virtual GLuint const getViewMatrixID() const;
 	virtual GLuint const getModelMatrixID() const;
@@ -45,7 +45,12 @@ public:
 	virtual GLuint const getViewMatrixInvertedID() const;
 
 	virtual GLuint const getuseFakeLightingID() const;
-
+	// ===============
+	// FRAGMENT SHADER
+	// ===============
+	// 
+	// [ UNIFORMs ]
+	//
 	virtual GLuint const gettextureSamplerID() const;			
 	virtual GLuint const getlightColorID() const;
 	virtual GLuint const getshineDamperID() const;
@@ -70,13 +75,13 @@ private:
 	// VERTEX SHADER
 	// =============
 	//
-	// ATTRIBs
+	// [ ATTRIBs ]
 	//
 	GLuint positionsID; 
 	GLuint normalsID; 
 	GLuint textureCoordsID;
-	//
-	// UNIFORMs
+	// 
+	// [ UNIFORMs ]
 	//
 	GLuint projectionMatrixID;
 	GLuint viewMatrixID;
@@ -89,8 +94,8 @@ private:
 	// ===============
 	// FRAGMENT SHADER
 	// ===============
-	//
-	// UNIFORMs
+	// 
+	// [ UNIFORMs ]
 	//
 	GLuint textureSamplerID;
 	GLuint lightColorID;

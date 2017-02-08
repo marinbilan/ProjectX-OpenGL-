@@ -6,9 +6,6 @@
 
 #include "../if/ShaderIf.h"
 
-#include "glm\glm.hpp"
-#include "glm/gtc\matrix_transform.hpp"
-
 namespace Shaders
 {
 class Shader_1 : public ShadersIf::ShadersIf
@@ -28,13 +25,16 @@ public:
 	// 
 	//
 	virtual GLuint const getShaderProgramID() const;
+	// =============
+	// VERTEX SHADER
+	// =============
 	//
-	// ATTRIBs
+	// [ ATTRIBs ]
 	//
 	virtual GLuint const getPositionsID() const;
 	virtual GLuint const getNormalsID() const;
 	// 
-	// UNIFORMs
+	// [ UNIFORMs ]
 	//
 	virtual GLuint const getProjectionMatrixID() const;
 	virtual GLuint const getViewMatrixID() const;
@@ -50,17 +50,17 @@ public:
 	friend std::ostream& operator<<(std::ostream& output, Shader_1& info)
 	{
 		output << "" << std::endl;
-		output << "shaderProgramID:..............." << info.shaderProgramID << std::endl;
+		output << "shaderProgramID:          " << info.shaderProgramID << std::endl;
 		output << "" << std::endl;
-		output << "positionsID:..................." << info.positionsID << std::endl;
-		output << "normalsID:....................." << info.normalsID << std::endl;
+		output << "positionsID:              " << info.positionsID << std::endl;
+		output << "normalsID:                " << info.normalsID << std::endl;
 		output << "" << std::endl;
-		output << "projectionMatrixID:............" << info.projectionMatrixID << std::endl;
-		output << "viewMatrixID:.................." << info.viewMatrixID << std::endl;
-		output << "modelMatrixID:................." << info.modelMatrixID << std::endl;
+		output << "projectionMatrixID:       " << info.projectionMatrixID << std::endl;
+		output << "viewMatrixID:             " << info.viewMatrixID << std::endl;
+		output << "modelMatrixID:            " << info.modelMatrixID << std::endl;
 		
-		output << "normalsRotationsMatrixID:......" << info.normalsRotationsMatrixID << std::endl;
-		output << "lightID:......................." << info.lightID << std::endl;
+		output << "normalsRotationsMatrixID: " << info.normalsRotationsMatrixID << std::endl;
+		output << "lightID:                  " << info.lightID << std::endl;
 		output << "" << std::endl;
 
 		return output;
@@ -75,12 +75,12 @@ private:
 	// VERTEX SHADER
 	// =============
 	//
-	// ATTRIBs
+	// [ ATTRIBs ]
 	//
 	GLuint positionsID;
 	GLuint normalsID;
-	//
-	// UNIFORMs
+	// 
+	// [ UNIFORMs ]
 	//
 	GLuint projectionMatrixID;
 	GLuint viewMatrixID;
