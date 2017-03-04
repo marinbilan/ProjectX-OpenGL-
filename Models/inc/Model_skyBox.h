@@ -7,10 +7,6 @@
 // ModelIf
 //
 #include "../if/ModelIf.h"
-//
-// ShaderIf
-//
-#include "../../Shaders/if/ShaderIf.h"
 
 namespace Models
 {

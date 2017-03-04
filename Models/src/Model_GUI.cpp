@@ -40,10 +40,10 @@ Models::Model_GUI::Model_GUI(Shaders::ShadersIf::ShadersIf* _shader)
 	unsigned int width = 0;
 	unsigned int height = 0;
 
-	fif = FreeImage_GetFileType("socuwan.png", 0);
+	fif = FreeImage_GetFileType("sword.png", 0);
 
-	if (fif == FIF_UNKNOWN) fif = FreeImage_GetFIFFromFilename("socuwan.png");
-	if (FreeImage_FIFSupportsReading(fif)) dib = FreeImage_Load(fif, "socuwan.png");
+	if (fif == FIF_UNKNOWN) fif = FreeImage_GetFIFFromFilename("sword.png");
+	if (FreeImage_FIFSupportsReading(fif)) dib = FreeImage_Load(fif, "sword.png");
 
 	bits = FreeImage_GetBits(dib);
 

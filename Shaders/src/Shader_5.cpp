@@ -30,7 +30,12 @@ Shaders::Shader_5::Shader_5(const char* vertexShader, const char* fragmentShader
 
 	lightID = glGetUniformLocation(shaderProgramID, "vLight");
 	normalsRotationsMatrixID = glGetUniformLocation(shaderProgramID, "mRotations");
-		
+	// ===============
+	// FRAGMENT SHADER
+	// ===============
+	//
+	// [ UNIFORMs ]
+	//		
 	textureSamplerID = glGetUniformLocation(shaderProgramID, "texture");
 	//
 	// Set Projection Matrix
@@ -98,4 +103,9 @@ GLuint const Shaders::Shader_5::getLightID() const
 GLuint const Shaders::Shader_5::getNormalsRotationsID() const
 {
 	return normalsRotationsMatrixID;
+}
+
+GLuint const Shaders::Shader_5::gettextureSamplerID() const
+{
+	return textureSamplerID;
 }

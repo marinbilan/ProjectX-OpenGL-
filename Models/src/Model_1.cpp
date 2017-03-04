@@ -69,8 +69,8 @@ void Models::Model_1::renderModel()
 	//
 	// ... UPDATE MODEL STATE
 	//	
-	modelMatrix = glm::rotate(glm::mat4(1.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-	allRotsMatrix = glm::rotate(glm::mat4(1.0f), 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMatrix = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	allRotsMatrix = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	//
 	// Bind VAO and Activate SHADER(s)
 	//

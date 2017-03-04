@@ -10,8 +10,8 @@
 //
 // GLM
 //
-#include "glm\glm.hpp"
-#include "glm/gtc\matrix_transform.hpp"
+#include "../../__libs/glm/glm/glm.hpp"
+#include "../../__libs/glm/glm/gtc/matrix_transform.hpp"
 
 namespace Shaders
 {
@@ -69,19 +69,20 @@ public:
 	virtual GLuint const getPositionsID()          const { return 0; }
 	virtual GLuint const getNormalsID()            const { return 0; }	
 	virtual GLuint const getTextureCoordsID()      const { return 0; }
+	virtual GLuint const getTangentsID()           const { return 0; }
 	// 
 	// [ UNIFORMs ]
 	//
 	virtual GLuint const getProjectionMatrixID()   const { return 0; }
 	virtual GLuint const getViewMatrixID()         const { return 0; }	
+	virtual GLuint const getViewMatrixInvID()      const { return 0; }
 	virtual GLuint const getModelMatrixID()        const { return 0; }
 
 	virtual GLuint const getLightID()              const { return 0; }	
 	virtual GLuint const getNormalsRotationsID()   const { return 0; } 
 	//
-	virtual GLuint const getViewMatrixInvertedID() const { return 0; }
+	
 	virtual GLuint const getgWorldID()             const { return 0; }    	
-
 	virtual GLuint const getuseFakeLightingID()    const { return 0; }
 	// ===============
 	// FRAGMENT SHADER
@@ -90,6 +91,9 @@ public:
 	// [ UNIFORMs ]
 	//
 	virtual GLuint const gettextureSamplerID()     const { return 0; }
+
+	virtual GLuint const getmodelTextureID()      const { return 0; }
+	virtual GLuint const getnormalMapID()          const { return 0; }
 
 	virtual GLuint const getlightColorID()         const { return 0; }
 	virtual GLuint const getshineDamperID()        const { return 0; }

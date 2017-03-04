@@ -12,7 +12,7 @@ Camera::Camera::Camera()
 	//
 	// INITIALIZE CAMERA POSITION
 	//
-	cameraPos =   glm::vec3(0.0f, 15.0f, 15.0f);
+	cameraPos =   glm::vec3(0.0f, 0.0f, 15.0f);
 	cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	cameraUp =    glm::vec3(0.0f, 1.0f, 0.0f);
 }
@@ -70,6 +70,9 @@ void Camera::Camera::updateCameraPosition()
 void Camera::Camera::updateCameraUniform(Shaders::ShadersIf::ShadersIf* shader)
 {
 	glUniformMatrix4fv(shader->getViewMatrixID(), 1, GL_FALSE, &viewMatrix[0][0]);
+
+	glm::mat4 viewMatrixInv = glm::inverse(viewMatrix);
+	glUniformMatrix4fv(shader->getViewMatrixInvID(), 1, GL_FALSE, &viewMatrixInv[0][0]);
 }
 
 

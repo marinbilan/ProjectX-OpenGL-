@@ -3,13 +3,23 @@
 
 #include <iostream>
 #include <string>
-
-#include "../../__libs/glew-1.13.0/include/GL/glew.h"
-
-#include "../glm/glm/glm.hpp"
-#include "../glm/glm/gtc/matrix_transform.hpp"
-
-#include "../FreeImage/include/FreeImage.h"
+#include <vector>
+//
+// ASSIMP
+//
+#include "../../__libs/assimp--3.0.1270-sdk/include/assimp/Importer.hpp"
+#include "../../__libs/assimp--3.0.1270-sdk/include/assimp/postprocess.h"
+#include "../../__libs/assimp--3.0.1270-sdk/include/assimp/mesh.h"
+#include "../../__libs/assimp--3.0.1270-sdk/include/assimp/scene.h"
+//
+// GLM
+//
+#include "../../__libs/glm/glm/glm.hpp"
+#include "../../__libs/glm/glm/gtc/matrix_transform.hpp"
+//
+// FreeImage
+//
+#include "../../__libs/FreeImage/include/FreeImage.h"
 //
 // ShaderIf
 //
@@ -43,6 +53,20 @@ public:
 	virtual void VertexAttribPointers() {};
 
 	virtual void renderModel() {};
+	//
+	// ASSIMP
+	//
+	virtual void Clear() {};
+
+	virtual bool InitFromScene(const aiScene* pScene, const std::string& Filename) { return false; };
+	virtual void InitMesh(unsigned int Index, const aiMesh* paiMesh)               {};
+	virtual bool InitMaterials(const aiScene* pScene, const std::string& Filename) { return false; };
+
+	virtual void Render() {};
+	//
+	//
+	//
+	// virtual void translateModel() {};
 	//
 	// OPERATORs
 	//			

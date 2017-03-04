@@ -43,6 +43,13 @@ public:
 
 	virtual GLuint const getLightID() const;
 	virtual GLuint const getNormalsRotationsID() const;
+	// ===============
+	// FRAGMENT SHADER
+	// ===============
+	// 
+	// [ UNIFORMs ]
+	//
+	virtual GLuint const gettextureSamplerID() const;
 	//
 	//
 	// OPERATORs

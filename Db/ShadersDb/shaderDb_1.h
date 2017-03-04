@@ -47,8 +47,8 @@ const char* FS1 =
 "		float diffuse_intensity = max(dot(N, L), 0.0);"
 "		vec4 diffuse_final = diffuse_intensity*vec4(0.4, 0.4, 0.4, 1.0);"
 ""
-"		float spec_intensity = pow(max(dot(N, H), 0.0), 1600);"
-"		vec4 spec_final = spec_intensity*vec4(0.5, 0.4, 0.6, 1.0);"
+"		float spec_intensity = pow(max(dot(N, H), 0.0), 30);"
+"		vec4 spec_final = spec_intensity*vec4(0.2, 0.2, 0.9, 1.0);"
 ""
 "		fColor = diffuse_final + spec_final;"
 "	}";

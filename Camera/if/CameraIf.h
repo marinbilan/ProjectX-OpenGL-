@@ -3,11 +3,15 @@
 
 #include <iostream>
 #include <string>
-
+//
+// GLEW
+//
 #include "../../__libs/glew-1.13.0/include/GL/glew.h"
-
-#include "../glm/glm/glm.hpp"
-#include "../glm/glm/gtc/matrix_transform.hpp"
+//
+// GLM
+//
+#include "../../__libs/glm/glm/glm.hpp"
+#include "../../__libs/glm/glm/gtc/matrix_transform.hpp"
 //
 // ShaderIf
 //

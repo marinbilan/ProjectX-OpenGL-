@@ -11,8 +11,9 @@ const char* VS5 =
 "uniform mat4 mP;"
 "uniform mat4 mV;"
 "uniform mat4 mM;"
-"uniform mat4 mRotations;"
+""
 "uniform vec4 vLight;"
+"uniform mat4 mRotations;"
 ""
 "out vec2 texCoord;"
 "out vec3 fN;"
@@ -53,13 +54,8 @@ const char* FS5 =
 "	float diffuse_intensity = max(dot(N, L), 0.0);"
 "	vec4 diffuse_final = diffuse_intensity*texture2D(texture, texCoord);"
 ""
-""
 "	float spec_intensity = pow(max(dot(N, H), 0.0), 3000);"
 "	vec4 spec_final = spec_intensity * vec4(1.0, 0.0, 0.0, 1.0);"
 ""
 "	fColor = diffuse_final + spec_final;"
 "}";
-
-
-
-

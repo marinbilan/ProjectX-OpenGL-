@@ -18,31 +18,31 @@ Shaders::Shader_4::Shader_4(const char* vertexShader, const char* fragmentShader
 	//
 	// [ ATTRIBs ]
 	//
-	positionsID = glGetAttribLocation(shaderProgramID, "position");
-	normalsID = glGetAttribLocation(shaderProgramID, "normal");
-	textureCoordsID = glGetAttribLocation(shaderProgramID, "textureCoords");
+	positionsID = glGetAttribLocation(shaderProgramID, "position");          // OK
+	normalsID = glGetAttribLocation(shaderProgramID, "normal");              // OK
+	textureCoordsID = glGetAttribLocation(shaderProgramID, "textureCoords"); // OK
 	// 
 	// [ UNIFORMs ]
 	//     
-	projectionMatrixID = glGetUniformLocation(shaderProgramID, "projectionMatrix");
-	viewMatrixID = glGetUniformLocation(shaderProgramID, "viewMatrix");
-	modelMatrixID = glGetUniformLocation(shaderProgramID, "transformationMatrix");
+	projectionMatrixID = glGetUniformLocation(shaderProgramID, "projectionMatrix"); // OK
+	viewMatrixID = glGetUniformLocation(shaderProgramID, "viewMatrix");             // OK
+	modelMatrixID = glGetUniformLocation(shaderProgramID, "transformationMatrix");  // OK
 
-	lightID = glGetUniformLocation(shaderProgramID, "lightPosition");
-	viewMatrixInvertedID = glGetUniformLocation(shaderProgramID, "viewMatrixInv");
+	lightID = glGetUniformLocation(shaderProgramID, "lightPosition");               // OK
+	viewMatrixInvertedID = glGetUniformLocation(shaderProgramID, "viewMatrixInv");  // OK
 		
-	useFakeLightingID = glGetUniformLocation(shaderProgramID, "useFakeLighting");
+	useFakeLightingID = glGetUniformLocation(shaderProgramID, "useFakeLighting");   // FLOAT = false?
 	// ===============
 	// FRAGMENT SHADER
 	// ===============
 	// 
 	// [ UNIFORMs ]
 	//
-	textureSamplerID = glGetUniformLocation(shaderProgramID, "textureSampler");
-	lightColorID = glGetUniformLocation(shaderProgramID, "lightColor");
-	shineDamperID = glGetUniformLocation(shaderProgramID, "shineDamper");
-	reflectivityID = glGetUniformLocation(shaderProgramID, "reflectivity");
-	skyColorID = glGetUniformLocation(shaderProgramID, "skyColor");
+	textureSamplerID = glGetUniformLocation(shaderProgramID, "textureSampler"); // NO
+	lightColorID = glGetUniformLocation(shaderProgramID, "lightColor");         // float, float, float
+	shineDamperID = glGetUniformLocation(shaderProgramID, "shineDamper");    // = 30
+	reflectivityID = glGetUniformLocation(shaderProgramID, "reflectivity");  // = 1
+	skyColorID = glGetUniformLocation(shaderProgramID, "skyColor");              // light
 	//
 	// Set Projection Matrix
 	//
