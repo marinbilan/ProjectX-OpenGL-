@@ -44,6 +44,7 @@ public:
 	virtual GLuint const getModelMatrixID() const;
 
 	virtual GLuint const getLightID() const;
+	virtual GLuint const getViewPosID() const;
 	// ===============
 	// FRAGMENT SHADER
 	// ===============
@@ -72,17 +73,19 @@ public:
 		output << "tangentID:                " << info.tangentID << std::endl;
 		output << "" << std::endl;
 		output << "modelMatrixID:            " << info.modelMatrixID << std::endl;
+		output << "modelMatrixInvID:         " << info.modelMatrixInvID << std::endl;
 		output << "projectionMatrixID:       " << info.projectionMatrixID << std::endl;
 		output << "viewMatrixID:             " << info.viewMatrixID << std::endl;
-		output << "viewMatrixInvID:          " << info.viewMatrixInvID << std::endl;
+		//output << "viewMatrixID:             " << info.viewMatrixID << std::endl;
 		output << "" << std::endl;
-		output << "lightPositionID:          " << info.lightPositionID << std::endl;	
+		output << "lightPositionID:          " << info.lightPositionID << std::endl;
+		output << "viewPosID:                " << info.viewPosID << std::endl;
 		output << "" << std::endl;
 		output << "modelTextureID:           " << info.modelTextureID << std::endl;
 		output << "normalMapID:              " << info.normalMapID << std::endl;
-		output << "lightColourID:            " << info.lightColourID << std::endl;
-		output << "shineDamperID:            " << info.shineDamperID << std::endl;
-		output << "reflectivityID:           " << info.reflectivityID << std::endl;
+		//output << "lightColourID:            " << info.lightColourID << std::endl;
+		//output << "shineDamperID:            " << info.shineDamperID << std::endl;
+		//output << "reflectivityID:           " << info.reflectivityID << std::endl;
 		output << "" << std::endl;
 		return output;
 	}
@@ -110,8 +113,10 @@ private:
 	GLuint viewMatrixID;
 	GLuint viewMatrixInvID;
 	GLuint modelMatrixID;
+	GLuint modelMatrixInvID;
 
 	GLuint lightPositionID;	
+	GLuint viewPosID;
 	// ===============
 	// FRAGMENT SHADER
 	// ===============

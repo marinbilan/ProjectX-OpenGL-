@@ -101,9 +101,9 @@ void Models::Mesh_1::VertexAttribPointers()
 
 void Models::Mesh_1::renderModel()
 {
-	modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5.0f, 5.0f));
-	modelMatrix = glm::rotate(modelMatrix, 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));	
-	modelMatrix = glm::scale(modelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
+	//modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5.0f, 5.0f));
+	//modelMatrix = glm::rotate(modelMatrix, 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));	
+	//modelMatrix = glm::scale(modelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
 	//
 	// Bind VAO and Activate SHADER(s)
 	//
@@ -118,24 +118,24 @@ void Models::Mesh_1::renderModel()
 	//
 	// UPDATE UNIFORMs
 	//
-	camera->updateCameraUniform(shader);
-	glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
+	//camera->updateCameraUniform(shader);
+	//glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
 	//
 	// LIGHT CLASS
 	//
-	GLfloat lightPosition[] = { 0.0f, 155.0f, 155.0f };
-	glUniform3f(shader->getLightID(), lightPosition[0], lightPosition[1], lightPosition[2]);
+	//GLfloat lightPosition[] = { 0.0f, 155.0f, 155.0f };
+	//glUniform3f(shader->getLightID(), lightPosition[0], lightPosition[1], lightPosition[2]);
 
-	GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
-	glUniform3f(shader->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
+	//GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
+	//glUniform3f(shader->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
 	//
 	// TEXTURE CLASS ATTRIBs
 	//
-	GLfloat shineDamper = 10.0f;
-	glUniform1f(shader->getshineDamperID(), shineDamper);
+	//GLfloat shineDamper = 10.0f;
+	//glUniform1f(shader->getshineDamperID(), shineDamper);
 
-	GLfloat reflectivity = 1.0f;
-	glUniform1f(shader->getreflectivityID(), reflectivity);
+	//GLfloat reflectivity = 1.0f;
+	//glUniform1f(shader->getreflectivityID(), reflectivity);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);

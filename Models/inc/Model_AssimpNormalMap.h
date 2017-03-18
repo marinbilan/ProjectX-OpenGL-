@@ -1,5 +1,5 @@
-#ifndef MODEL_Assimp__
-#define MODEL_Assimp__
+#ifndef MODEL_AssimpNormalMap__
+#define MODEL_AssimpNormalMap__
 //
 // ModelIf
 //
@@ -7,26 +7,28 @@
 
 namespace Models
 {
-struct Vertex
+struct VertexNM
 {
 	glm::vec3 pos;
 	glm::vec2 tex;
 	glm::vec3 normal;
+	glm::vec3 tangent;
 
-	Vertex() {}
+	VertexNM() {}
 
-	Vertex(const glm::vec3& _pos, const glm::vec2& _tex, const glm::vec3& _normal)
+	VertexNM(const glm::vec3& _pos, const glm::vec2& _tex, const glm::vec3& _normal, const glm::vec3& _tangent)
 	{
 		pos = _pos;
 		tex = _tex;
 		normal = _normal;
+		tangent = _tangent;
 	}
 };
 
-class Texture
+class TextureNM
 {
 public:
-	Texture(GLenum _textureTarget, const std::string& _fileName) {
+	TextureNM(GLenum _textureTarget, const std::string& _fileName) {
 
 		textureTarget = _textureTarget;
 		fileName = _fileName;
@@ -70,18 +72,19 @@ public:
 
 	void Bind(GLenum TextureUnit) {
 
-		glActiveTexture(TextureUnit);
-		glBindTexture(textureTarget, textureID);
+		glActiveTexture(TextureUnit); // textureTarget GL_TEXTURE0
+		glBindTexture(textureTarget, textureID); // textureTarget GL_TEXTURE_2D
+		std::cout << TextureUnit << "..." << textureID << std::endl;
 	}
 
-// private:
+private:
 	std::string fileName;
 
 	GLenum textureTarget;
 	GLuint textureID;
 };
 
-class Model_Assimp : public ModelsIf::ModelsIf
+class Model_AssimpNormalMap : public ModelsIf::ModelsIf
 {
 public:
 	//
@@ -89,12 +92,12 @@ public:
 	// CONSTRUCTORs / DESTRUCTORs
 	//
 	//	
-	Model_Assimp(const std::string& _filename,           // MODEL FILE NAME
+	Model_AssimpNormalMap(const std::string& _filename,           // MODEL FILE NAME
 				 Shaders::ShadersIf::ShadersIf* _shader, // SHADER
 				 Camera::CameraIf::CameraIf* _camera,    // CAMERA
 				 GLfloat* _light);                       // LIGHT
 
-	~Model_Assimp();
+	~Model_AssimpNormalMap();
 	//
 	//
 	// FUNCTIONs
@@ -117,7 +120,7 @@ public:
 	// OPERATORs
 	//
 	//	
-	friend std::ostream& operator<<(std::ostream& output, Model_Assimp& info)
+	friend std::ostream& operator<<(std::ostream& output, Model_AssimpNormalMap& info)
 	{
 		return output;
 	}
@@ -126,7 +129,7 @@ private:
 
 	struct MeshEntry {
 
-		void Init(const std::vector<Vertex>& Vertices, const std::vector<unsigned int>& Indices);
+		void Init(const std::vector<VertexNM>& Vertices, const std::vector<unsigned int>& Indices);
 
 		GLuint VB;
 		GLuint IB;
@@ -139,7 +142,7 @@ private:
 	glm::mat4 modelMatrix;
 
 	std::vector<MeshEntry> m_Entries;
-	std::vector<Texture*>  m_Textures;
+	std::vector<TextureNM*>  m_Textures;
 	//
 	// SHADER
 	//

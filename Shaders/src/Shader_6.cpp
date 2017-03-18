@@ -23,26 +23,27 @@ Shaders::Shader_6::Shader_6(const char* vertexShader, const char* fragmentShader
 	textureCoordsID = glGetAttribLocation(shaderProgramID, "textureCoordinates");
 	// 
 	// [ UNIFORMs ]
-	//      
+	//
+	projectionMatrixID = glGetUniformLocation(shaderProgramID, "projectionMatrix");      
 	modelMatrixID = glGetUniformLocation(shaderProgramID, "transformationMatrix");
-	projectionMatrixID = glGetUniformLocation(shaderProgramID, "projectionMatrix");
 	viewMatrixID = glGetUniformLocation(shaderProgramID, "viewMatrix");
 	viewMatrixInvID = glGetUniformLocation(shaderProgramID, "viewMatrixInv");
 
-	lightColourID = glGetUniformLocation(shaderProgramID, "lightColour");
+	lightPositionID = glGetUniformLocation(shaderProgramID, "lightPosition");
 	// ===============
 	// FRAGMENT SHADER
 	// ===============
 	//
 	// [ UNIFORMs ]
 	//		
-	lightPositionID = glGetUniformLocation(shaderProgramID, "lightPosition");
+	modelTextureID = glGetUniformLocation(shaderProgramID, "modelTexture");
+	lightColourID = glGetUniformLocation(shaderProgramID, "lightColour");
 	shineDamperID = glGetUniformLocation(shaderProgramID, "shineDamper");
 	reflectivityID = glGetUniformLocation(shaderProgramID, "reflectivity");
 	//
-	// Set Projection Matrix
-    //
-	projectionMatrix = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.1f, 1000.f);
+	// Set Projection Matrix TO DO: HEIGHT WIDTH
+    // 
+	projectionMatrix = glm::perspective(glm::radians(60.0f), 1366.0f / 768.0f, 0.1f, 1000.f);
 
 	glUseProgram(shaderProgramID);
 	glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &projectionMatrix[0][0]);
@@ -100,6 +101,11 @@ GLuint const Shaders::Shader_6::getViewMatrixInvID() const
 GLuint const Shaders::Shader_6::getModelMatrixID() const
 {
 	return modelMatrixID;
+}
+
+GLuint const Shaders::Shader_6::getmodelTextureID() const
+{
+	return modelTextureID;
 }
 
 GLuint const Shaders::Shader_6::getLightID() const

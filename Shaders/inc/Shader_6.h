@@ -49,6 +49,7 @@ public:
 	// 
 	// [ UNIFORMs ]
 	//
+	virtual GLuint const getmodelTextureID() const;
 	virtual GLuint const getlightColorID() const;
 	virtual GLuint const getshineDamperID() const;
 	virtual GLuint const getreflectivityID() const;
@@ -66,13 +67,14 @@ public:
 		output << "normalsID:                " << info.normalsID << std::endl;
 		output << "textureCoordsID:          " << info.textureCoordsID << std::endl;
 		output << "" << std::endl;
-		output << "modelMatrixID:            " << info.modelMatrixID << std::endl;
 		output << "projectionMatrixID:       " << info.projectionMatrixID << std::endl;
 		output << "viewMatrixID:             " << info.viewMatrixID << std::endl;
 		output << "viewMatrixInvID:          " << info.viewMatrixInvID << std::endl;
+		output << "modelMatrixID:            " << info.modelMatrixID << std::endl;
 		output << "" << std::endl;
 		output << "lightPositionID:          " << info.lightPositionID << std::endl;	
 		output << "" << std::endl;
+		output << "modelTextureID:           " << info.modelTextureID << std::endl;
 		output << "lightColourID:            " << info.lightColourID << std::endl;
 		output << "shineDamperID:            " << info.shineDamperID << std::endl;
 		output << "reflectivityID:           " << info.reflectivityID << std::endl;
@@ -110,6 +112,7 @@ private:
 	//
 	// [ UNIFORMs ]
 	//
+	GLuint modelTextureID;
 	GLuint lightColourID;
 	GLuint shineDamperID;
 	GLuint reflectivityID;

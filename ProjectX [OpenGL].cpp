@@ -19,24 +19,14 @@
 #include "__libs\FreeImage\include\FreeImage.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
-////
-//// Database [ Db ]
-////
 //
-// Shaders
+// Shaders Database [ Db ]
 //
 #include "Db\ShadersDb\shaderDb_1.h"
 #include "Db\ShadersDb\shaderDb_2.h" 
 #include "Db\ShadersDb\shaderDb_3.h" 
-#include "Db\ShadersDb\shaderDb_4.h"
-#include "Db\ShadersDb\shaderDb_5.h"
 #include "Db\ShadersDb\shaderDb_6.h"
 #include "Db\ShadersDb\shaderDb_7.h"
-//
-// Meshs
-//
-#include "Db\ModelsDb\mesh_1.h"
-
 //
 // Shaders [ Projection ]
 //
@@ -45,9 +35,7 @@
 #include "Shaders\inc\Shader_1.h" // MODEL         PN  [ PROJECTION ]    <pos, norms | proj, view, model | light, normsRot>
 #include "Shaders\inc\Shader_2.h" // GUI           P   [ NO PROJECTION ] <pos | model >
 #include "Shaders\inc\Shader_3.h" // SKYBOX        P   [ PROJECTION ]    <pos | proj, view >
-#include "Shaders\inc\Shader_4.h" // THIN MATRIX   PNT [ PROJECTION ]   
-#include "Shaders\inc\Shader_5.h" // TEXTURED CUBE PNT [ PROJECTION ]
-#include "Shaders\inc\Shader_6.h" 
+#include "Shaders\inc\Shader_6.h" // ASSIMP
 #include "Shaders\inc\Shader_7.h" // ASSIMP and NORMAL MAPPING
 //
 // Camera [ View ]
@@ -66,6 +54,7 @@
 #include "Models\inc\Model_6.h"
 #include "Models\inc\Mesh_1.h"
 #include "Models\inc\Model_Assimp.h"
+#include "Models\inc\Model_AssimpNormalMap.h"
 //
 // ASIMP TEST
 //
@@ -80,13 +69,12 @@ GLfloat light2[] = { 0.0f, 15.0f, 15.0f};
 // Shaders [ Projection ]
 //
 //
-Shaders::Shader_1* shader_1; 
-Shaders::Shader_2* shader_2; 
-Shaders::Shader_3* shader_3; 
-Shaders::Shader_4* shader_4; 
-Shaders::Shader_5* shader_5;
-Shaders::Shader_6* shader_6;
-Shaders::Shader_7* shader_7;
+Shaders::Shader_6* shader_6; // WITHOUT NORMAL MAP
+Shaders::Shader_7* shader_7; // WITH NORMAL MAP
+
+Shaders::Shader_1* shader_1; // DRAGON
+Shaders::Shader_2* shader_2; // GUI
+Shaders::Shader_3* shader_3; // SKYBOX
 //
 // Camera [ View ]
 //
@@ -94,20 +82,20 @@ Camera::Camera* camera;
 //
 // Models
 //
+Models::Model_Assimp*          modelAssimpTest1;
+Models::Model_AssimpNormalMap* meshNM;
+
 Models::Model_1*      model_1; // DRAGON
 Models::Model_GUI*    model_GUI;
 Models::Model_skyBox* model_skyBox;
 Models::Model_Assimp* mesh_Assimp;
-Models::Model_Assimp* mesh_Grass;
-
-Models::Model_6* model_6;
-Models::Mesh_1* mesh_1;
-// Mesh* m_pMesh;
+Models::Model_6*      model_6;
+Models::Mesh_1*       mesh_1;
 //
 // Variables and Constants
 //
-GLuint WIDTH = 1024;
-GLuint HEIGHT = 768;
+GLuint WIDTH;
+GLuint HEIGHT;
 
 GLfloat deltaTime = 0.0f; // Time between current frame and last frame
 GLfloat lastFrame = 0.0f; // Time of last frame
@@ -120,30 +108,83 @@ void RenderScene()
 	//
 	// UPDATE GAME STATE
 	//
+	// Update CAMERA
 	camera->updateCameraPosition();
 	//
-	// RENDER MODELs
+	// PREPARE MODEL
 	//
-	mesh_1->renderModel();
+	glm::mat4 modelMatrix = glm::mat4(1.0f);
+	modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, 0.0f, 0.0f));
+	modelMatrix = glm::rotate(modelMatrix, -1.55f, glm::vec3(1.0f, 0.0f, 0.0f));
+	modelMatrix = glm::scale(modelMatrix, glm::vec3(1.0f, 1.0f, (WIDTH / HEIGHT)));
+	//
+	// START SHADER
+	//
+	glUseProgram(shader_6->getShaderProgramID());
 
-	glBindVertexArray(6);
-	glUseProgram(18);
-	//m_pMesh->Render();
-	//mesh_Assimp->Render();
-	mesh_Grass->Render();
+	// UPDATE PROJECTION MATRIX only once in shader constructor
+	// UPDATE VIEW MATRIX
+	// UPDATE INVVIEW MATRIX
+	camera->updateCameraUniform(shader_6); 
+	// UPDATE MODEL MATRIX
+	glUniformMatrix4fv(shader_6->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]); 
+
+	GLfloat lightPosition[] = { 0.0f, 35.0f, 35.0f };
+	glUniform3f(shader_6->getLightID(), lightPosition[0], lightPosition[1], lightPosition[2]);
+	GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
+	glUniform3f(shader_6->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
+	GLfloat shineDamper = 15.0f;
+	glUniform1f(shader_6->getshineDamperID(), shineDamper);
+	GLfloat reflectivity = 1.6f;
+	glUniform1f(shader_6->getreflectivityID(), reflectivity);
+	//
+	// ----==== RENDER MODEL ====----
+	//
+	// ASSIMP MODEL RENDER
+	modelAssimpTest1->Render();
+	//modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5.0f, 15.0f));
+	//modelMatrix = glm::rotate(modelMatrix, -1.55f, glm::vec3(1.0f, 0.0f, 0.0f));
+	//glUniformMatrix4fv(shader_6->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
+	//mesh_Grass->Render();
+
 	glBindVertexArray(0);
 	glUseProgram(0);
+
+
+
+	// mesh_1->renderModel();
+
+	//
+	// ----==== RENDER NORMAL MAP MODEL ====----
+	//
+	// glBindVertexArray(6);
+	// glUseProgram(18);
+	//m_pMesh->Render();
+	//mesh_Assimp->Render();
+
+	//glUniform1i(shader_7->getmodelTextureID(), 0); // order texture connect with GL_TEXTURE0
+	//glUniform1i(shader_7->getnormalMapID(), 1);    // normal map texture connect with GL_TEXTURE1
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, 5); // order texture TextureID = 5
+	//glActiveTexture(GL_TEXTURE1);
+	//glBindTexture(GL_TEXTURE_2D, 6);  // normal map texture TextureID = 6
+    //meshNM->Render();
+
+	//glBindVertexArray(0);
+	//glUseProgram(0);
 
 	//model_6->renderModel();
 	
 	model_skyBox->renderModel();
-	//model_1->renderModel();
+	model_1->renderModel();
 	
 	model_GUI->renderModel();
 
+	//
+	// ----==== CLOCK ====----
+	//
 	//std::clock_t start = std::clock();
 	//double duration;
-
 	//std::clock_t end = std::clock();
 	//duration = (end - start) / (double)CLOCKS_PER_SEC;
 	//std::cout << "Trajanje algoritma: " << duration << std::endl;
@@ -200,8 +241,6 @@ int main(int argc, char** argv)
 	shader_1 = new Shaders::Shader_1(VS1, FS1);
 	shader_2 = new Shaders::Shader_2(VS2, FS2);
 	shader_3 = new Shaders::Shader_3(VS3, FS3);
-	shader_4 = new Shaders::Shader_4(VS4, FS4);
-	shader_5 = new Shaders::Shader_5(VS5, FS5);
 	shader_6 = new Shaders::Shader_6(VS6, FS6);
 	shader_7 = new Shaders::Shader_7(VS7, FS7);
 	//
@@ -210,8 +249,6 @@ int main(int argc, char** argv)
 	std::cout << *shader_1;
 	std::cout << *shader_2;
 	std::cout << *shader_3;
-	std::cout << *shader_4;
-	std::cout << *shader_5;
 	std::cout << *shader_6;
 	std::cout << *shader_7;
 	//
@@ -226,17 +263,14 @@ int main(int argc, char** argv)
 	// Models [ Model ] Initialization
 	//
 	//
+	modelAssimpTest1 = new Models::Model_Assimp("_src/_models/vanquish/", shader_6, camera, light1);
+	//meshNM = new Models::Model_AssimpNormalMap("_src/_models/barrel/", shader_7, camera, light1);
+
+	// TO DO: clean variable names
 	model_1 = new Models::Model_1(shader_1, camera, light1);
 	model_GUI = new Models::Model_GUI(shader_2);
 	model_skyBox = new Models::Model_skyBox(shader_3, camera);
 	model_6 = new Models::Model_6(shader_6, camera, light2);
-	mesh_1 = new Models::Mesh_1(mesh_1_NUM_VERT, mesh_1_Vertices, mesh_1_Normals, mesh_1_TextureCoords, shader_6, camera, light2);
-
-	// m_pMesh = new Mesh();
-	// m_pMesh->LoadMesh("_src/_models/phoenix/phoenix_ugv.md2");
-
-	mesh_Assimp = new Models::Model_Assimp("_src/_models/phoenix/phoenix_ugv.md2", shader_6, camera, light1);
-	mesh_Grass = new Models::Model_Assimp("_src/_models/cubesphere/", shader_6, camera, light1);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -254,8 +288,6 @@ int main(int argc, char** argv)
 		GLfloat currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-
-		// std::cout << deltaTime << std::endl;
 
 		glfwPollEvents();
 		do_movement();

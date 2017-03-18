@@ -77,8 +77,10 @@ public:
 	virtual GLuint const getViewMatrixID()         const { return 0; }	
 	virtual GLuint const getViewMatrixInvID()      const { return 0; }
 	virtual GLuint const getModelMatrixID()        const { return 0; }
+	virtual GLuint const getModelMatrixInvID()        const { return 0; }
 
-	virtual GLuint const getLightID()              const { return 0; }	
+	virtual GLuint const getLightID()              const { return 0; }
+	virtual GLuint const getViewPosID()            const { return 0; }
 	virtual GLuint const getNormalsRotationsID()   const { return 0; } 
 	//
 	

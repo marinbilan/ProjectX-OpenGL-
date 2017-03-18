@@ -32,7 +32,7 @@ Shaders::Shader_1::Shader_1(const char* vertexShader, const char* fragmentShader
 	//
 	// Set Projection Matrix
 	//
-	projectionMatrix = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.1f, 1000.f);
+	projectionMatrix = glm::perspective(glm::radians(60.0f), 1366.0f / 768.0f, 0.1f, 1000.f);
 
 	glUseProgram(shaderProgramID);
 	glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &projectionMatrix[0][0]);

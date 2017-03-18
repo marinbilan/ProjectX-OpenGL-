@@ -94,5 +94,4 @@ void do_movement()
 	{
 		camera->strafeRight(deltaTime);
 	}
-
 }

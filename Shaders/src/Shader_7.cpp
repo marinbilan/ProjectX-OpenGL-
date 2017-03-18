@@ -25,29 +25,28 @@ Shaders::Shader_7::Shader_7(const char* vertexShader, const char* fragmentShader
 	// 
 	// [ UNIFORMs ]
 	//      
-	modelMatrixID = glGetUniformLocation(shaderProgramID, "transformationMatrix");
 	projectionMatrixID = glGetUniformLocation(shaderProgramID, "projectionMatrix");
+	modelMatrixID = glGetUniformLocation(shaderProgramID, "transformationMatrix");
 	viewMatrixID = glGetUniformLocation(shaderProgramID, "viewMatrix");
 	viewMatrixInvID = glGetUniformLocation(shaderProgramID, "viewMatrixInv");
 
-	lightColourID = glGetUniformLocation(shaderProgramID, "lightColour");
+	lightPositionID = glGetUniformLocation(shaderProgramID, "lightPositionEyeSpace");	
 	// ===============
 	// FRAGMENT SHADER
 	// ===============
 	//
 	// [ UNIFORMs ]
 	//		
-	// TO DO: Connect texture units ThinMatrix 16:21
 	modelTextureID = glGetUniformLocation(shaderProgramID, "modelTexture");
 	normalMapID = glGetUniformLocation(shaderProgramID, "normalMap"); // TO DO: Bind to texture UNIT 1! Rendering Unit glBindTexture(TEXTURE2D, getnormalMapID())
 
-	lightPositionID = glGetUniformLocation(shaderProgramID, "lightPosition");
+	lightColourID = glGetUniformLocation(shaderProgramID, "lightColour");	
 	shineDamperID = glGetUniformLocation(shaderProgramID, "shineDamper");
 	reflectivityID = glGetUniformLocation(shaderProgramID, "reflectivity");
 	//
 	// Set Projection Matrix
     //
-	projectionMatrix = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.1f, 1000.f);
+	projectionMatrix = glm::perspective(glm::radians(60.0f), 1366.0f / 768.0f, 0.1f, 1000.f);
 
 	glUseProgram(shaderProgramID);
 	glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &projectionMatrix[0][0]);
@@ -56,7 +55,7 @@ Shaders::Shader_7::Shader_7(const char* vertexShader, const char* fragmentShader
 
 Shaders::Shader_7::~Shader_7()
 {
-	std::cout << "Shader_6 destructor called!" << std::endl;
+	std::cout << "Shader_7 destructor called!" << std::endl;
 }
 //
 //
@@ -125,6 +124,11 @@ GLuint const Shaders::Shader_7::getnormalMapID() const
 GLuint const Shaders::Shader_7::getLightID() const
 {
 	return lightPositionID;
+}
+
+GLuint const Shaders::Shader_7::getViewPosID() const
+{
+	return viewPosID;
 }
 
 GLuint const Shaders::Shader_7::getlightColorID() const
