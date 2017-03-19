@@ -128,6 +128,7 @@ private:
 
 		void Init(const std::vector<Vertex>& Vertices, const std::vector<unsigned int>& Indices);
 
+		GLuint VAO_;
 		GLuint VB;
 		GLuint IB;
 		unsigned int NumIndices;
@@ -136,6 +137,8 @@ private:
 	//
 	// MODEL VARIABLE	
 	//
+	GLuint VAO_;
+
 	glm::mat4 modelMatrix;
 
 	std::vector<MeshEntry> m_Entries;

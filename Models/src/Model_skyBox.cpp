@@ -139,29 +139,29 @@ void Models::Model_skyBox::VertexAttribPointers()
 
 void Models::Model_skyBox::renderModel()
 {
-
 	//
 	// Bind VAO and Activate SHADER(s)
 	//
 	glBindVertexArray(VAO);
 	glUseProgram(shader->getShaderProgramID());
 	//
-	// UPDATE CAMERA
+	// ENABLE ATTRIBs
+	//
+	glEnableVertexAttribArray(shader->getPositionsID());
+	//
+	// UPDATE UNIFORMs
 	//
 	camera->stopTranslate();
 	camera->updateCameraUniform(shader);
 	camera->updateCameraPosition();
-	//
-	// Enable attributes in shaderProgramID
-	//
-	glEnableVertexAttribArray(shader->getPositionsID());
+	glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
 	//
 	// ACTIVE TEXTURE
 	//
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texID); // Bind texture that we want to use to TEXTURE UNIT 0
 	//
-	// RENDER MODEL (mesh0)
+	// RENDER SKYBOX
 	//
 	glDrawArrays(GL_TRIANGLES, 0, num_ver);
 	//

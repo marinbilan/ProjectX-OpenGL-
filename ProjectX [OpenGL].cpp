@@ -22,21 +22,24 @@
 //
 // Shaders Database [ Db ]
 //
+#include "Db\ShadersDb\shaderDb_PNT.h"
+
+#include "Db\ShadersDb\shaderDb_7.h"
 #include "Db\ShadersDb\shaderDb_1.h"
 #include "Db\ShadersDb\shaderDb_2.h" 
 #include "Db\ShadersDb\shaderDb_3.h" 
-#include "Db\ShadersDb\shaderDb_6.h"
-#include "Db\ShadersDb\shaderDb_7.h"
 //
 // Shaders [ Projection ]
 //
 #include "Shaders\if\ShaderIf.h"
 
-#include "Shaders\inc\Shader_1.h" // MODEL         PN  [ PROJECTION ]    <pos, norms | proj, view, model | light, normsRot>
-#include "Shaders\inc\Shader_2.h" // GUI           P   [ NO PROJECTION ] <pos | model >
-#include "Shaders\inc\Shader_3.h" // SKYBOX        P   [ PROJECTION ]    <pos | proj, view >
-#include "Shaders\inc\Shader_6.h" // ASSIMP
-#include "Shaders\inc\Shader_7.h" // ASSIMP and NORMAL MAPPING
+#include "Shaders\inc\Shader_PNT.h" // VANQUISH ASSIMP PNT  < pos, norms, texCords >
+                                    // VERTEX SHADER        | proj, view, viewInv, transform, lightPos |
+                                    // FRAGMENT SHADER      | modelTexture, lightColour, shineDamper, reflectivity |
+#include "Shaders\inc\Shader_7.h"   // ASSIMP and NORMAL MAPPING
+#include "Shaders\inc\Shader_1.h"   // MODEL         PN  [ PROJECTION ]    <pos, norms | proj, view, model | light, normsRot>
+#include "Shaders\inc\Shader_2.h"   // GUI           P   [ NO PROJECTION ] <pos | model >
+#include "Shaders\inc\Shader_3.h"   // SKYBOX        P   [ PROJECTION ]    <pos | proj, view >
 //
 // Camera [ View ]
 //
@@ -69,9 +72,9 @@ GLfloat light2[] = { 0.0f, 15.0f, 15.0f};
 // Shaders [ Projection ]
 //
 //
-Shaders::Shader_6* shader_6; // WITHOUT NORMAL MAP
-Shaders::Shader_7* shader_7; // WITH NORMAL MAP
+Shaders::Shader_PNT* shader_PNT_1; // WITHOUT NORMAL MAP
 
+Shaders::Shader_7* shader_7; // WITH NORMAL MAP
 Shaders::Shader_1* shader_1; // DRAGON
 Shaders::Shader_2* shader_2; // GUI
 Shaders::Shader_3* shader_3; // SKYBOX
@@ -106,6 +109,28 @@ void RenderScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//
+	// #### IMPORTANT: For each render function: ####
+	//
+	// 1 ] Bind VAO glBindVertexArray(VAO); 
+	// 2 ] Active shader glUseProgram(ShaderID);
+	// 3 ] Bind Attribs (glEnableVertexAttribArray(0), glEnableVertexAttribArray(1))
+	// 4 ] Update Uniforms
+	// 5.1 ] Active Textures
+	// 5.2 ] Bind Textures
+	// 6 ] Disable everything
+	//
+	//
+	// ----==== RENDER SKYBOX ====----
+	//
+	model_skyBox->renderModel();
+	//
+	// LIGHT params
+	//
+	GLfloat lightPosition[] = { 0.0f, 35.0f, 35.0f };
+	GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
+	GLfloat shineDamper = 15.0f;
+	GLfloat reflectivity = 1.6f;
+	//
 	// UPDATE GAME STATE
 	//
 	// Update CAMERA
@@ -118,35 +143,29 @@ void RenderScene()
 	modelMatrix = glm::rotate(modelMatrix, -1.55f, glm::vec3(1.0f, 0.0f, 0.0f));
 	modelMatrix = glm::scale(modelMatrix, glm::vec3(1.0f, 1.0f, (WIDTH / HEIGHT)));
 	//
-	// START SHADER
+	// #### START SHADER ####
 	//
-	glUseProgram(shader_6->getShaderProgramID());
+	glUseProgram(shader_PNT_1->getShaderProgramID());
 
 	// UPDATE PROJECTION MATRIX only once in shader constructor
 	// UPDATE VIEW MATRIX
 	// UPDATE INVVIEW MATRIX
-	camera->updateCameraUniform(shader_6); 
+	camera->updateCameraUniform(shader_PNT_1);
 	// UPDATE MODEL MATRIX
-	glUniformMatrix4fv(shader_6->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]); 
-
-	GLfloat lightPosition[] = { 0.0f, 35.0f, 35.0f };
-	glUniform3f(shader_6->getLightID(), lightPosition[0], lightPosition[1], lightPosition[2]);
-	GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
-	glUniform3f(shader_6->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
-	GLfloat shineDamper = 15.0f;
-	glUniform1f(shader_6->getshineDamperID(), shineDamper);
-	GLfloat reflectivity = 1.6f;
-	glUniform1f(shader_6->getreflectivityID(), reflectivity);
+	glUniformMatrix4fv(shader_PNT_1->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
+	glUniform3f(shader_PNT_1->getLightID(), lightPosition[0], lightPosition[1], lightPosition[2]);
+	// TO DO: Texture ids
+	glUniform3f(shader_PNT_1->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
+	glUniform1f(shader_PNT_1->getshineDamperID(), shineDamper);
+	glUniform1f(shader_PNT_1->getreflectivityID(), reflectivity);
 	//
 	// ----==== RENDER MODEL ====----
 	//
-	// ASSIMP MODEL RENDER
+	// VANQUISH MODEL RENDER (6 meshes)
 	modelAssimpTest1->Render();
 	//modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5.0f, 15.0f));
 	//modelMatrix = glm::rotate(modelMatrix, -1.55f, glm::vec3(1.0f, 0.0f, 0.0f));
-	//glUniformMatrix4fv(shader_6->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
 	//mesh_Grass->Render();
-
 	glBindVertexArray(0);
 	glUseProgram(0);
 
@@ -175,10 +194,12 @@ void RenderScene()
 
 	//model_6->renderModel();
 	
-	model_skyBox->renderModel();
-	model_1->renderModel();
+	// WARNING: UPDATE UNIFORM(s)
+	//glUniformMatrix4fv(shader_3->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
 	
-	model_GUI->renderModel();
+	//model_1->renderModel();
+	
+	//model_GUI->renderModel();
 
 	//
 	// ----==== CLOCK ====----
@@ -238,19 +259,21 @@ int main(int argc, char** argv)
 	// Shaders [ Projection ] Initialization (only once)
 	//
 	//
+	shader_PNT_1 = new Shaders::Shader_PNT(VS_PNT, FS_PNT);
+
+	shader_3 = new Shaders::Shader_3(VS3, FS3);
+	shader_7 = new Shaders::Shader_7(VS7, FS7);
 	shader_1 = new Shaders::Shader_1(VS1, FS1);
 	shader_2 = new Shaders::Shader_2(VS2, FS2);
-	shader_3 = new Shaders::Shader_3(VS3, FS3);
-	shader_6 = new Shaders::Shader_6(VS6, FS6);
-	shader_7 = new Shaders::Shader_7(VS7, FS7);
 	//
 	// Shaders Info
 	//
-	std::cout << *shader_1;
-	std::cout << *shader_2;
+	std::cout << *shader_PNT_1;
+
 	std::cout << *shader_3;
-	std::cout << *shader_6;
-	std::cout << *shader_7;
+	//std::cout << *shader_7;
+	//std::cout << *shader_1;
+	//std::cout << *shader_2;
 	//
 	//
 	// Camera [ View ] Initialization
@@ -263,14 +286,13 @@ int main(int argc, char** argv)
 	// Models [ Model ] Initialization
 	//
 	//
-	modelAssimpTest1 = new Models::Model_Assimp("_src/_models/vanquish/", shader_6, camera, light1);
-	//meshNM = new Models::Model_AssimpNormalMap("_src/_models/barrel/", shader_7, camera, light1);
-
-	// TO DO: clean variable names
-	model_1 = new Models::Model_1(shader_1, camera, light1);
-	model_GUI = new Models::Model_GUI(shader_2);
+	modelAssimpTest1 = new Models::Model_Assimp("_src/_models/vanquish/", shader_PNT_1, camera, light1);
 	model_skyBox = new Models::Model_skyBox(shader_3, camera);
-	model_6 = new Models::Model_6(shader_6, camera, light2);
+
+	//meshNM = new Models::Model_AssimpNormalMap("_src/_models/barrel/", shader_7, camera, light1);
+	// TO DO: clean variable names
+	//model_1 = new Models::Model_1(shader_1, camera, light1);
+	//model_GUI = new Models::Model_GUI(shader_2);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 

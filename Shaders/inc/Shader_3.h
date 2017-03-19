@@ -43,6 +43,13 @@ public:
 	//	
 	friend std::ostream& operator<<(std::ostream& output, Shader_3& info)
 	{
+		output << "" << std::endl;
+		output << "shaderProgramID:          " << info.shaderProgramID << std::endl;
+		output << "" << std::endl;
+		output << "positionsID:              " << info.positionsID << std::endl;
+		output << "" << std::endl;
+		output << "projectionMatrixID:       " << info.projectionMatrixID << std::endl;
+		output << "viewMatrixID:             " << info.viewMatrixID << std::endl;
 		return output;
 	}
 

@@ -61,8 +61,6 @@ void Models::Model_Assimp::MeshEntry::Init(const std::vector<Vertex>& Vertices, 
 {
 	NumIndices = Indices.size();
 
-	GLuint VAO_;
-
 	glGenVertexArrays(1, &VAO_);
 	glBindVertexArray(VAO_);
 	glGenBuffers(1, &VB);
@@ -154,6 +152,8 @@ bool Models::Model_Assimp::InitMaterials(const aiScene* pScene, const std::strin
 
 void Models::Model_Assimp::Render()
 {
+	glBindVertexArray(VAO_);
+
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
@@ -178,6 +178,9 @@ void Models::Model_Assimp::Render()
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
+
+	glUseProgram(0);
+	glBindVertexArray(0);
 }
 
 
