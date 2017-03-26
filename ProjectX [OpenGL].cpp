@@ -23,6 +23,7 @@
 // Shaders Database [ Db ]
 //
 #include "Db\ShadersDb\shaderDb_PNT.h"
+#include "Db\ShadersDb\shaderDb_Water.h"
 
 #include "Db\ShadersDb\shaderDb_7.h"
 #include "Db\ShadersDb\shaderDb_1.h"
@@ -36,6 +37,8 @@
 #include "Shaders\inc\Shader_PNT.h" // VANQUISH ASSIMP PNT  < pos, norms, texCords >
                                     // VERTEX SHADER        | proj, view, viewInv, transform, lightPos |
                                     // FRAGMENT SHADER      | modelTexture, lightColour, shineDamper, reflectivity |
+#include "Shaders\inc\Shader_Water.h"
+
 #include "Shaders\inc\Shader_7.h"   // ASSIMP and NORMAL MAPPING
 #include "Shaders\inc\Shader_1.h"   // MODEL         PN  [ PROJECTION ]    <pos, norms | proj, view, model | light, normsRot>
 #include "Shaders\inc\Shader_2.h"   // GUI           P   [ NO PROJECTION ] <pos | model >
@@ -72,7 +75,8 @@ GLfloat light2[] = { 0.0f, 15.0f, 15.0f};
 // Shaders [ Projection ]
 //
 //
-Shaders::Shader_PNT* shader_PNT_1; // WITHOUT NORMAL MAP
+Shaders::Shader_PNT* shader_PNT_1;   // WITHOUT NORMAL MAP
+Shaders::Shader_Water* shader_Water;
 
 Shaders::Shader_7* shader_7; // WITH NORMAL MAP
 Shaders::Shader_1* shader_1; // DRAGON
@@ -113,12 +117,12 @@ void RenderScene()
 	//
 	// 1 ] Bind VAO glBindVertexArray(VAO); 
 	// 2 ] Active shader glUseProgram(ShaderID);
-	// 3 ] Bind Attribs (glEnableVertexAttribArray(0), glEnableVertexAttribArray(1))
-	// 4 ] Update Uniforms
+	// 3 ] Bind Attribs (glEnableVertexAttribArray(0), glEnableVertexAttribArray(1) ...)
+	// 4 ] Update Uniform(s)
 	// 5.1 ] Active Textures
 	// 5.2 ] Bind Textures
-	// 6 ] Disable everything
-	//
+	// 6 ] Render mesh (model)
+	// 7 ] Disable everything
 	//
 	// ----==== RENDER SKYBOX ====----
 	//
@@ -260,6 +264,7 @@ int main(int argc, char** argv)
 	//
 	//
 	shader_PNT_1 = new Shaders::Shader_PNT(VS_PNT, FS_PNT);
+	shader_Water = new Shaders::Shader_Water(VS_Water, FS_Water);
 
 	shader_3 = new Shaders::Shader_3(VS3, FS3);
 	shader_7 = new Shaders::Shader_7(VS7, FS7);
@@ -269,6 +274,7 @@ int main(int argc, char** argv)
 	// Shaders Info
 	//
 	std::cout << *shader_PNT_1;
+	std::cout << *shader_Water;
 
 	std::cout << *shader_3;
 	//std::cout << *shader_7;
