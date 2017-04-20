@@ -6,6 +6,7 @@ glm::vec3 front;
 
 GLfloat yaw = -90.0f;
 GLfloat pitch = 0.0f;
+GLfloat savePitch = 0.0f;
 GLfloat lastX = WIDTH / 2.0;
 GLfloat lastY = HEIGHT / 2.0;
 

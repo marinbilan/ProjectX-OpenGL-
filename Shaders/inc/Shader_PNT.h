@@ -43,6 +43,7 @@ public:
 	virtual GLuint const getModelMatrixID() const;
 
 	virtual GLuint const getLightID() const;
+	virtual GLuint const getplaneID() const;
 	// ===============
 	// FRAGMENT SHADER
 	// ===============
@@ -72,7 +73,8 @@ public:
 		output << "viewMatrixInvID:          " << info.viewMatrixInvID << std::endl;
 		output << "modelMatrixID:            " << info.modelMatrixID << std::endl;
 		output << "" << std::endl;
-		output << "lightPositionID:          " << info.lightPositionID << std::endl;	
+		output << "lightPositionID:          " << info.lightPositionID << std::endl;
+		output << "planeID:                  " << info.planeID << std::endl;
 		output << "" << std::endl;
 		output << "modelTextureID:           " << info.modelTextureID << std::endl;
 		output << "lightColourID:            " << info.lightColourID << std::endl;
@@ -106,6 +108,7 @@ private:
 	GLuint modelMatrixID;
 
 	GLuint lightPositionID;	
+	GLuint planeID;
 	// ===============
 	// FRAGMENT SHADER
 	// ===============

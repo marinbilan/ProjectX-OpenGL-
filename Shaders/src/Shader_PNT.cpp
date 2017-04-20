@@ -30,6 +30,7 @@ Shaders::Shader_PNT::Shader_PNT(const char* vertexShader, const char* fragmentSh
 	viewMatrixInvID = glGetUniformLocation(shaderProgramID, "viewMatrixInv");
 
 	lightPositionID = glGetUniformLocation(shaderProgramID, "lightPosition");
+	planeID = glGetUniformLocation(shaderProgramID, "plane");
 	// ===============
 	// FRAGMENT SHADER
 	// ===============
@@ -111,6 +112,11 @@ GLuint const Shaders::Shader_PNT::getmodelTextureID() const
 GLuint const Shaders::Shader_PNT::getLightID() const
 {
 	return lightPositionID;
+}
+
+GLuint const Shaders::Shader_PNT::getplaneID() const
+{
+	return planeID;
 }
 
 GLuint const Shaders::Shader_PNT::getlightColorID() const

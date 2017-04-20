@@ -81,6 +81,8 @@ public:
 	virtual GLuint const getCameraPositionID()     const { return 0; }
 
 	virtual GLuint const getLightID()              const { return 0; }
+	virtual GLuint const getlightPositionID()      const { return 0; }
+	virtual GLuint const getplaneID()              const { return 0; }
 	virtual GLuint const getViewPosID()            const { return 0; }
 	virtual GLuint const getNormalsRotationsID()   const { return 0; } 
 	//
@@ -101,10 +103,10 @@ public:
 	// Water Shader
 	virtual GLuint const getreflectionTextureID()  const { return 0; }
 	virtual GLuint const getrefractionTextureID()  const { return 0; }
-	virtual GLuint const dudvMapID()               const { return 0; }
+	virtual GLuint const getdudvMapID()            const { return 0; }
+
 	virtual GLuint const getmoveFactorID()         const { return 0; }
 	//
-
 	virtual GLuint const getlightColorID()         const { return 0; }
 	virtual GLuint const getshineDamperID()        const { return 0; }
 	virtual GLuint const getreflectivityID()       const { return 0; }

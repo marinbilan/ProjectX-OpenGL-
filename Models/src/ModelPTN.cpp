@@ -1,0 +1,157 @@
+#include "../../Models/inc/ModelPTN.h"
+
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+//
+//
+// CONSTRUCTORs / DESTRUCTOR(s)
+//
+//
+Models::ModelPTN::ModelPTN(char*                          _modelPath,
+	                       Loader::ModelLoader*           _modelPTNLoader,
+	                       Texture::TextureIf::TextureIf* _textureLoader,
+	                       char*                          _textureShaderParams,
+						   Shaders::ShadersIf::ShadersIf* _shader, 
+						   Camera::CameraIf::CameraIf*    _camera, 
+						   GLfloat*                       _light)
+{
+	// CONSTURCOTR params
+	modelPath           = _modelPath;
+	modelPTNLoader      = _modelPTNLoader;
+	textureLoader       = _textureLoader;
+	textureShaderParams = _textureShaderParams;
+	shader              = _shader;
+	camera              = _camera;
+	light               = _light;	
+	// MODEL params
+	modelMatrix = glm::mat4(1.0f);
+
+	modelPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+	angle = -1.55f;
+	modelRotateAround = glm::vec3(1.0f, 0.0f, 0.0f);
+	modelScale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+	modelMatrix = glm::translate(glm::mat4(1.0f), modelPosition);
+	modelMatrix = glm::rotate(modelMatrix, angle, modelRotateAround);
+	modelMatrix = glm::scale(modelMatrix, modelScale);
+	//
+	// GET Textures
+	//
+	texturesVectorId = textureLoader->getVectorOfTextures2DID();
+}
+
+Models::ModelPTN::~ModelPTN()
+{
+	std::cout << "ModelPTN destructor called!" << std::endl;
+}
+//
+// FUNCTION(s) - Add Clean function
+// 
+
+// SET
+void Models::ModelPTN::setModelScale(glm::vec3 _modelScale)
+{
+	modelMatrix = glm::mat4(1.0f);
+	modelScale = _modelScale;
+	modelMatrix = glm::scale(modelMatrix, modelScale);
+
+	glUseProgram(shader->getShaderProgramID());
+	glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
+	glUseProgram(0);
+}
+
+void Models::ModelPTN::setModelRotation(GLfloat _angle, glm::vec3 _modelRotateAround)
+{
+	modelMatrix = glm::mat4(1.0f);
+	angle = _angle;
+	modelRotateAround = _modelRotateAround;
+	modelMatrix = glm::rotate(modelMatrix, angle, modelRotateAround);
+
+	glUseProgram(shader->getShaderProgramID());
+	glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
+	glUseProgram(0);
+}
+
+void Models::ModelPTN::setModelPosition(glm::vec3 _modelPosition)
+{
+	modelMatrix = glm::mat4(1.0f);
+	modelPosition = _modelPosition;
+	modelMatrix = glm::translate(glm::mat4(1.0f), modelPosition);
+
+	glUseProgram(shader->getShaderProgramID());
+	glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
+	glUseProgram(0);
+}
+// GET
+glm::vec3 Models::ModelPTN::getModelScale()
+{
+	return modelScale;
+}
+
+glm::vec3 Models::ModelPTN::getModelRotation()
+{
+	return modelRotateAround;
+}
+
+glm::vec3 Models::ModelPTN::getModelPosition()
+{
+	return modelPosition;
+}
+//
+// RENDER MODEL
+//
+void Models::ModelPTN::render()
+{
+	glBindVertexArray(modelPTNLoader->VAO);
+
+	glEnableVertexAttribArray(0); // VERTEXs
+	glEnableVertexAttribArray(1); // TEXTURECOORDs
+	glEnableVertexAttribArray(2); // NORMALs
+
+	for (unsigned int i = 0; i < modelPTNLoader->meshesVector.size(); i++) {
+
+		glBindBuffer(GL_ARRAY_BUFFER, modelPTNLoader->meshesVector[i].VBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelPTNLoader->meshesVector[i].IBO);
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), 0);                 // 
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
+
+		glUseProgram(shader->getShaderProgramID()); // One shader for all meshes for now
+		//
+		// UPDATE UNIFORMs 
+		//
+		// VERTEX SHADER
+		camera->updateCameraUniformInv(shader);
+		glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);		
+		float lightPosition[] = { 0.0f, 5.0f, 15.0f };
+		glUniform3f(shader->getLightID(), lightPosition[0], lightPosition[1], lightPosition[2]);
+		// FRAGMENT SHADER
+		GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
+		glUniform3f(shader->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
+		glUniform1f(shader->getshineDamperID(), 15.0f);
+		glUniform1f(shader->getreflectivityID(), 1.6f);			
+		//
+		// uniform sampler2D modelTexture
+		//
+		glUniform1i(shader->getmodelTextureID(), i); // shader textureID from each mesh connect with GL_TEXTURE0, GL_TEXTURE1...
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, texturesVectorId[i]);
+		//
+		// DRAW MESHEs
+		//
+		glDrawElements(GL_TRIANGLES, modelPTNLoader->meshesVector[i].numIndices, GL_UNSIGNED_INT, 0);
+
+		glUseProgram(0);
+	}
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+
+	glBindVertexArray(0);
+}
+
+
+
+
+
+

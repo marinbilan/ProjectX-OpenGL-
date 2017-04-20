@@ -26,6 +26,14 @@ public:
 	// FUNCTIONs
 	// 
 	//
+	virtual glm::vec3 getcameraPosition();
+	virtual GLfloat getcameraPositionX();
+	virtual GLfloat getcameraPositionY();
+
+	//virtual void setcameraPosition(glm::vec3 _position);
+
+	virtual void setcameraPositionY(GLfloat _positionY);
+
 	virtual void moveForward(GLfloat deltaTime);
 	virtual void moveBack(GLfloat deltaTime);
 	virtual void strafeLeft(GLfloat deltaTime);
@@ -34,8 +42,10 @@ public:
 	virtual void camFront(glm::vec3 _cameraFront);
 	
 	virtual void stopTranslate();
+	virtual void invertCameraY();
 	virtual void updateCameraPosition();
 	virtual void updateCameraUniform(Shaders::ShadersIf::ShadersIf* shader);
+	virtual void updateCameraUniformInv(Shaders::ShadersIf::ShadersIf* shader);
 	//
 	// OPERATORs
 	//

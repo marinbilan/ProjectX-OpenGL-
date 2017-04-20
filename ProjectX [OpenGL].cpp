@@ -1,70 +1,22 @@
 //
 // GAMEDEV Framework Marin Bilan @2017
 // cd "D:\Marin\__Programming\Projects\Programing\ProjectX [OpenGL]\ProjectX [OpenGL]"
-//
-#include <stdio.h>
-#include <iostream>
-#include <string>
-#include <ctime>
-#include <vector>
-// GLEW
-#include "__libs\glew-1.13.0\include\GL\glew.h"
-// GLFW
-#include "__libs\glfw-3.2.1.bin.WIN32\include\GLFW\glfw3.h"
-// GLM
-#include "__libs\glm\glm\glm.hpp"
-#include "__libs\glm\glm\gtc\matrix_transform.hpp"
-
-// FREEIMAGE
-#include "__libs\FreeImage\include\FreeImage.h"
-
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
-//
+// System libs includes
+#include "Includes\libsIncludes.h"
 // Shaders Database [ Db ]
-//
-#include "Db\ShadersDb\shaderDb_PNT.h"
-#include "Db\ShadersDb\shaderDb_Water.h"
-
-#include "Db\ShadersDb\shaderDb_7.h"
-#include "Db\ShadersDb\shaderDb_1.h"
-#include "Db\ShadersDb\shaderDb_2.h" 
-#include "Db\ShadersDb\shaderDb_3.h" 
-//
+#include "Includes\shadersDbIncludes.h"
 // Shaders [ Projection ]
-//
-#include "Shaders\if\ShaderIf.h"
-
-#include "Shaders\inc\Shader_PNT.h" // VANQUISH ASSIMP PNT  < pos, norms, texCords >
-                                    // VERTEX SHADER        | proj, view, viewInv, transform, lightPos |
-                                    // FRAGMENT SHADER      | modelTexture, lightColour, shineDamper, reflectivity |
-#include "Shaders\inc\Shader_Water.h"
-
-#include "Shaders\inc\Shader_7.h"   // ASSIMP and NORMAL MAPPING
-#include "Shaders\inc\Shader_1.h"   // MODEL         PN  [ PROJECTION ]    <pos, norms | proj, view, model | light, normsRot>
-#include "Shaders\inc\Shader_2.h"   // GUI           P   [ NO PROJECTION ] <pos | model >
-#include "Shaders\inc\Shader_3.h"   // SKYBOX        P   [ PROJECTION ]    <pos | proj, view >
-//
+#include "Includes\shadersIncludes.h"
 // Camera [ View ]
-//
-#include "Camera\if\CameraIf.h"
-
-#include "Camera\inc\Camera.h"
-//
+#include "Includes\cameraIncludes.h"
+// TEXTUREs
+#include "Includes\texturesIncludes.h"
 // Models [ Model ]
-//
-#include "Models\if\ModelIf.h"
-
-#include "Models\inc\Model_1.h"
-#include "Models\inc\Model_GUI.h"
-#include "Models\inc\Model_skyBox.h"
-#include "Models\inc\Model_6.h"
-#include "Models\inc\Mesh_1.h"
-#include "Models\inc\Model_Assimp.h"
-#include "Models\inc\Model_AssimpNormalMap.h"
-//
-// ASIMP TEST
-//
-// #include "Assimp\Mesh.h"
+#include "Includes\modelsIncludes.h"
+// NEW
+#include "Loader\if\LoaderIf.h"
+#include "Loader\inc\ModelLoader.h"
 //
 // LIGHT
 //
@@ -75,8 +27,9 @@ GLfloat light2[] = { 0.0f, 15.0f, 15.0f};
 // Shaders [ Projection ]
 //
 //
-Shaders::Shader_PNT* shader_PNT_1;   // WITHOUT NORMAL MAP
-Shaders::Shader_Water* shader_Water;
+Shaders::Shader_PNT*        shaderPNT1;   // WITHOUT NORMAL MAP
+Shaders::Shader_Water*      shader_Water;
+Shaders::Shader_Water_Tile* shader_Water_Tile;
 
 Shaders::Shader_7* shader_7; // WITH NORMAL MAP
 Shaders::Shader_1* shader_1; // DRAGON
@@ -89,15 +42,29 @@ Camera::Camera* camera;
 //
 // Models
 //
-Models::Model_Assimp*          modelAssimpTest1;
+//Models::Model_Assimp*          modelAssimpTest1;
+Models::ModelLoaderAssimpPTN*  modelVanquish;
+Models::ModelPTN*  modelVanquishTest;
 Models::Model_AssimpNormalMap* meshNM;
+Models::Model_Water_Tile*      modelWaterTile;
 
 Models::Model_1*      model_1; // DRAGON
-Models::Model_GUI*    model_GUI;
+Models::Model_GUI*    model_GUI1;
+Models::Model_GUI*    model_GUI2;
 Models::Model_skyBox* model_skyBox;
-Models::Model_Assimp* mesh_Assimp;
+//Models::Model_Assimp* mesh_Assimp;
 Models::Model_6*      model_6;
 Models::Mesh_1*       mesh_1;
+//
+// LOADER
+//
+Loader::ModelLoader*     modelLoaderVanquish;
+Texture::TextureLoaderX* textureLoaderXVanquish;
+//
+// BUFFERs
+//
+WaterFrameBuffers* FBO1;
+WaterFrameBuffers* FBO2;
 //
 // Variables and Constants
 //
@@ -108,10 +75,25 @@ GLfloat deltaTime = 0.0f; // Time between current frame and last frame
 GLfloat lastFrame = 0.0f; // Time of last frame
 
 #include "Controls\Contorls.h"
+//
+// LIGHT params
+//
+GLfloat lightPosition[] = { 0.0f, 5.0f, 15.0f };
+GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
+GLfloat shineDamper = 15.0f; // def: 15.0f
+GLfloat reflectivity = 1.6f; // def: 1.6
 
-void RenderScene()
-{
+GLfloat plane1[] = { 0.0f, 1.0f, 0.0f, -0.01f };     // fbo LEFT - Render everything ABOVE
+GLfloat plane2[] = { 0.0f, -1.0f, 0.0f, -0.01f };    // fbo RIGHT - Render everything BELOW
+GLfloat plane3[] = { 0.0f, -1.0f, 0.0f, 100000.0f }; // HACK (glDisable doesn't work!)
+
+GLfloat moveFactor = 0;
+GLfloat WAVE_SPEED;
+
+void RenderScene(GLfloat deltaTime)
+{	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_CLIP_DISTANCE0);
 	//
 	// #### IMPORTANT: For each render function: ####
 	//
@@ -123,68 +105,80 @@ void RenderScene()
 	// 5.2 ] Bind Textures
 	// 6 ] Render mesh (model)
 	// 7 ] Disable everything
-	//
-	// ----==== RENDER SKYBOX ====----
-	//
-	model_skyBox->renderModel();
-	//
-	// LIGHT params
-	//
-	GLfloat lightPosition[] = { 0.0f, 35.0f, 35.0f };
-	GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
-	GLfloat shineDamper = 15.0f;
-	GLfloat reflectivity = 1.6f;
-	//
-	// UPDATE GAME STATE
-	//
-	// Update CAMERA
-	camera->updateCameraPosition();
-	//
-	// PREPARE MODEL
-	//
-	glm::mat4 modelMatrix = glm::mat4(1.0f);
-	modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, 0.0f, 0.0f));
-	modelMatrix = glm::rotate(modelMatrix, -1.55f, glm::vec3(1.0f, 0.0f, 0.0f));
-	modelMatrix = glm::scale(modelMatrix, glm::vec3(1.0f, 1.0f, (WIDTH / HEIGHT)));
-	//
-	// #### START SHADER ####
-	//
-	glUseProgram(shader_PNT_1->getShaderProgramID());
 
-	// UPDATE PROJECTION MATRIX only once in shader constructor
-	// UPDATE VIEW MATRIX
-	// UPDATE INVVIEW MATRIX
-	camera->updateCameraUniform(shader_PNT_1);
-	// UPDATE MODEL MATRIX
-	glUniformMatrix4fv(shader_PNT_1->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
-	glUniform3f(shader_PNT_1->getLightID(), lightPosition[0], lightPosition[1], lightPosition[2]);
-	// TO DO: Texture ids
-	glUniform3f(shader_PNT_1->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
-	glUniform1f(shader_PNT_1->getshineDamperID(), shineDamper);
-	glUniform1f(shader_PNT_1->getreflectivityID(), reflectivity);
 	//
-	// ----==== RENDER MODEL ====----
+	// FBO 1 [ BOTTOM LEFT GUI] texID = 8
 	//
-	// VANQUISH MODEL RENDER (6 meshes)
-	modelAssimpTest1->Render();
-	//modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 5.0f, 15.0f));
-	//modelMatrix = glm::rotate(modelMatrix, -1.55f, glm::vec3(1.0f, 0.0f, 0.0f));
-	//mesh_Grass->Render();
+	FBO1->bindReflectionFrameBuffer();
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_CLIP_DISTANCE0);
+	// INVERT CAM
+	GLfloat distance = 2 * (camera->getcameraPosition().y - 0.0f); // 0.0f water hight
+	camera->setcameraPositionY(camera->getcameraPosition().y - distance);
+	camera->invertCameraY(); 
+	camera->updateCameraPosition(); // Update viewMatrix
+	// RENDER skyBox from bottom camera position
+	model_skyBox->renderModel();
+	// RENDER vanquish from bottom camera position
+	glUseProgram(shaderPNT1->getShaderProgramID());
+	glUniform4f(shaderPNT1->getplaneID(), plane1[0], plane1[1], plane1[2], plane1[3]);
+	//modelVanquish->render(); 
+	modelVanquishTest->render();
+	// INVERT CAM BACK
+	camera->invertCameraY();
+	camera->setcameraPositionY(camera->getcameraPosition().y + distance);
+	camera->updateCameraPosition();
 	glBindVertexArray(0);
 	glUseProgram(0);
 
-
-
-	// mesh_1->renderModel();
-
+	FBO1->unbindCurrentFrameBuffer();
 	//
+	// FBO 2 [ NORMAL RIGHT GUI] texID = 12
+	//
+	FBO2->bindRefractionFrameBuffer();
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_CLIP_DISTANCE0);
+
+	model_skyBox->renderModel();
+	glUseProgram(shaderPNT1->getShaderProgramID());
+	glUniform4f(shaderPNT1->getplaneID(), plane2[0], plane2[1], plane2[2], plane2[3]);
+	//modelVanquish->render();
+	modelVanquishTest->render();
+	glBindVertexArray(0);
+	glUseProgram(0);
+
+	FBO2->unbindCurrentFrameBuffer();
+
+	// RENDER IN MAIN SCREEN
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glDisable(GL_CLIP_DISTANCE0);
+
+	model_skyBox->renderModel();
+
+	WAVE_SPEED = 0.001;
+	moveFactor += WAVE_SPEED;
+	glUseProgram(shader_Water_Tile->getShaderProgramID());
+	glUniform1f(shader_Water_Tile->getmoveFactorID(), moveFactor);
+	modelWaterTile->renderModel();
+	glUseProgram(0);
+	// Vanquish
+	glUseProgram(shaderPNT1->getShaderProgramID());
+	glUniform4f(shaderPNT1->getplaneID(), plane3[0], plane3[1], plane3[2], plane3[3]);
+	//modelVanquish->render();
+	modelVanquishTest->render();
+	glUseProgram(0);  
+
+	// RENDERIRANJE U PROZORE
+	model_GUI1->renderModel();  // FBO1 (texID = 8)
+	model_GUI2->renderModel();  // FBO2 (texID = 12)
+
 	// ----==== RENDER NORMAL MAP MODEL ====----
-	//
 	// glBindVertexArray(6);
 	// glUseProgram(18);
 	//m_pMesh->Render();
 	//mesh_Assimp->Render();
-
 	//glUniform1i(shader_7->getmodelTextureID(), 0); // order texture connect with GL_TEXTURE0
 	//glUniform1i(shader_7->getnormalMapID(), 1);    // normal map texture connect with GL_TEXTURE1
 	//glActiveTexture(GL_TEXTURE0);
@@ -192,22 +186,14 @@ void RenderScene()
 	//glActiveTexture(GL_TEXTURE1);
 	//glBindTexture(GL_TEXTURE_2D, 6);  // normal map texture TextureID = 6
     //meshNM->Render();
-
 	//glBindVertexArray(0);
 	//glUseProgram(0);
-
-	//model_6->renderModel();
-	
+	//model_6->renderModel();	
 	// WARNING: UPDATE UNIFORM(s)
-	//glUniformMatrix4fv(shader_3->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
-	
+	//glUniformMatrix4fv(shader_3->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);	
 	//model_1->renderModel();
-	
-	//model_GUI->renderModel();
 
-	//
 	// ----==== CLOCK ====----
-	//
 	//std::clock_t start = std::clock();
 	//double duration;
 	//std::clock_t end = std::clock();
@@ -232,6 +218,7 @@ int main(int argc, char** argv)
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	glfwWindowHint(GLFW_SAMPLES, 8);
 	//
 	// Give me screen resolution
 	//
@@ -263,8 +250,9 @@ int main(int argc, char** argv)
 	// Shaders [ Projection ] Initialization (only once)
 	//
 	//
-	shader_PNT_1 = new Shaders::Shader_PNT(VS_PNT, FS_PNT);
+	shaderPNT1 = new Shaders::Shader_PNT(VS_PNT, FS_PNT);
 	shader_Water = new Shaders::Shader_Water(VS_Water, FS_Water);
+	shader_Water_Tile = new Shaders::Shader_Water_Tile(VS_Water_Tile, FS_Water_Tile);
 
 	shader_3 = new Shaders::Shader_3(VS3, FS3);
 	shader_7 = new Shaders::Shader_7(VS7, FS7);
@@ -273,8 +261,9 @@ int main(int argc, char** argv)
 	//
 	// Shaders Info
 	//
-	std::cout << *shader_PNT_1;
+	std::cout << *shaderPNT1;
 	std::cout << *shader_Water;
+	std::cout << *shader_Water_Tile;
 
 	std::cout << *shader_3;
 	//std::cout << *shader_7;
@@ -288,23 +277,47 @@ int main(int argc, char** argv)
 	//
 	camera = new Camera::Camera();
 	//
+	// VANQUISH
 	//
-	// Models [ Model ] Initialization
-	//
-	//
-	modelAssimpTest1 = new Models::Model_Assimp("_src/_models/vanquish/", shader_PNT_1, camera, light1);
-	model_skyBox = new Models::Model_skyBox(shader_3, camera);
+	// LOAD MESHEs [ LOAD MESHEs correct ]
+	modelLoaderVanquish = new Loader::ModelLoader("_src/_models/vanquish/", "_src/_models/vanquish/modelParams.txt", shaderPNT1);
+	// LOAD TESTUREs [ LOAD TEXTURE with TextureLoaderX - should be TextureLoader ]
+	textureLoaderXVanquish = new Texture::TextureLoaderX();
+	textureLoaderXVanquish->loadVectorOfTextures2DID("_src/_models/vanquish/textures/", modelLoaderVanquish->getNumberOfMeshes());
+	// CREATE MODEL WRONG for now
+	//modelVanquish = new Models::ModelLoaderAssimpPTN("_src/_models/vanquish/", textureLoaderXVanquish, "_src/_models/vanquish/modelParams.txt", shaderPNT1, camera, light1);
+	modelVanquishTest = new Models::ModelPTN("_src/_models/vanquish/", modelLoaderVanquish, textureLoaderXVanquish, "_src/_models/vanquish/modelParams.txt", shaderPNT1, camera, light1);
 
+	//
+	// SKYBOX
+	//
+	model_skyBox = new Models::Model_skyBox(shader_3, camera);
+	//
+	// BUFFERs
+	//
+	FBO1 = new WaterFrameBuffers();
+	FBO2 = new WaterFrameBuffers();
+	std::cout << "REF TEXTURE 1: "   << FBO1->getReflectionTexture() << std::endl;
+	std::cout << "REF TEXTURE 2: " << FBO2->getRefractionTexture() << std::endl;
 	//meshNM = new Models::Model_AssimpNormalMap("_src/_models/barrel/", shader_7, camera, light1);
 	// TO DO: clean variable names
 	//model_1 = new Models::Model_1(shader_1, camera, light1);
-	//model_GUI = new Models::Model_GUI(shader_2);
+
+	model_GUI1 = new Models::Model_GUI("sword.png", shader_2, 8, glm::vec3(-0.7f, 0.5f, 0.f), glm::vec3(0.3f));
+	model_GUI2 = new Models::Model_GUI("socuwan.png", shader_2, 12, glm::vec3(0.7f, 0.5f, 0.0f), glm::vec3(0.3f));
+	// dudvMap
+	modelWaterTile = new Models::Model_Water_Tile("_src/water/waterDUDV.png", shader_Water_Tile, camera, 8, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(14.0f));
+	//
+	// Texture INFO
+	//
+	// std::cout << *textureLoaderVanquish;
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_MULTISAMPLE);
 	//
 	//
 	//Game loop
@@ -322,7 +335,7 @@ int main(int argc, char** argv)
 		//
 		// RENDER SCENE
 		//
-		RenderScene();
+		RenderScene(deltaTime);
 		//
 		//
 		//
