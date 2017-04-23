@@ -2,32 +2,26 @@
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 //
-//
 // CONSTRUCTORs / DESTRUCTOR(s)
 //
-//
-Models::ModelPTN::ModelPTN(char*                          _modelPath,
-	                       Loader::ModelLoader*           _modelPTNLoader,
-	                       Texture::TextureIf::TextureIf* _textureLoader,
+Models::ModelPTN::ModelPTN(Loader::ModelLoader*           _modelPTNLoader,
+	                       Loader::TextureLoader*         _textureLoader,
 	                       char*                          _textureShaderParams,
-						   Shaders::ShadersIf::ShadersIf* _shader, 
-						   Camera::CameraIf::CameraIf*    _camera, 
-						   GLfloat*                       _light)
+						   Shaders::ShadersIf::ShadersIf* _shader)
 {
 	// CONSTURCOTR params
-	modelPath           = _modelPath;
 	modelPTNLoader      = _modelPTNLoader;
 	textureLoader       = _textureLoader;
 	textureShaderParams = _textureShaderParams;
 	shader              = _shader;
-	camera              = _camera;
-	light               = _light;	
 	// MODEL params
 	modelMatrix = glm::mat4(1.0f);
-
+	// Position
 	modelPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+	// Rotate around axe
 	angle = -1.55f;
 	modelRotateAround = glm::vec3(1.0f, 0.0f, 0.0f);
+	// Scale
 	modelScale = glm::vec3(1.0f, 1.0f, 1.0f);
 
 	modelMatrix = glm::translate(glm::mat4(1.0f), modelPosition);
@@ -46,7 +40,6 @@ Models::ModelPTN::~ModelPTN()
 //
 // FUNCTION(s) - Add Clean function
 // 
-
 // SET
 void Models::ModelPTN::setModelScale(glm::vec3 _modelScale)
 {
@@ -108,7 +101,6 @@ void Models::ModelPTN::render()
 	glEnableVertexAttribArray(2); // NORMALs
 
 	for (unsigned int i = 0; i < modelPTNLoader->meshesVector.size(); i++) {
-
 		glBindBuffer(GL_ARRAY_BUFFER, modelPTNLoader->meshesVector[i].VBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelPTNLoader->meshesVector[i].IBO);
 
@@ -118,18 +110,13 @@ void Models::ModelPTN::render()
 
 		glUseProgram(shader->getShaderProgramID()); // One shader for all meshes for now
 		//
-		// UPDATE UNIFORMs 
+		// UPDATE UNIFORMs [ Update only uniforms related to model ]
 		//
 		// VERTEX SHADER
-		camera->updateCameraUniformInv(shader);
-		glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);		
-		float lightPosition[] = { 0.0f, 5.0f, 15.0f };
-		glUniform3f(shader->getLightID(), lightPosition[0], lightPosition[1], lightPosition[2]);
+		glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
 		// FRAGMENT SHADER
-		GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
-		glUniform3f(shader->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
 		glUniform1f(shader->getshineDamperID(), 15.0f);
-		glUniform1f(shader->getreflectivityID(), 1.6f);			
+		glUniform1f(shader->getreflectivityID(), 1.6f);
 		//
 		// uniform sampler2D modelTexture
 		//

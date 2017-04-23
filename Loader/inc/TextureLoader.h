@@ -11,15 +11,16 @@ public:
 	//
 	// CONSTRUCTORs / DESTRUCTORs
 	//
-	TextureLoader(char* _textureFolderPath, GLuint _numberOfTextures);
-
+	TextureLoader();
 	~TextureLoader();
 	//
 	// FUNCTIONs
 	// 
-	// TEXTUREs
-	virtual GLuint loadTexture2DID(std::string& _textureName);
-	virtual std::vector<GLuint> loadtexture2DVectorIDs(char* _textureFolderPath, GLuint _numberOfTextures);
+	virtual void loadSingleTexture2DID(char* _textureName);
+	virtual void loadVectorOfTextures2DID(char* _texturesFolderPath, GLuint _numberOfTextures);
+
+	virtual GLuint getSingleTexture2DID();
+	virtual std::vector<GLuint> getVectorOfTextures2DID();
 	//
 	// OPERATORs
 	//
@@ -36,23 +37,24 @@ private:
 	//
 	// Constructor Parameters
 	// 
-	char*  textureFolderPath;
+	char*  texturesFolderPath;
 	GLuint numberOfTextures;
 
 	GLuint textureID;
-	std::vector<GLuint> textureIDs;
-	//
+	std::vector<GLuint> vectorOfTextures2DID;
+
 	// FreeImage Parameters
-	//
 	GLuint            width;
 	GLuint            height;
 	FREE_IMAGE_FORMAT fif;
 	FIBITMAP*         dib;            // pointer to the image data
 	BYTE*             bits;           // image width and height
-	//
-	// Anisotropic Filtering Parameters
-	//
+									  // Anisotropic Filtering Parameters
 	GLfloat aniso;
+	//
+	// PRIVATE FUNCTIONs
+	//
+	virtual GLuint createSingleTexture2DID(std::string& _textureName);
 };
 }
 

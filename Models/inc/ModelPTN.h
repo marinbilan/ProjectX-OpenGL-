@@ -13,13 +13,10 @@ public:
 	//
 	// CONSTRUCTORs / DESTRUCTORs
 	//
-	ModelPTN(char*                          _modelPath,
-		     Loader::ModelLoader* _modelPTNLoader,
-		     Texture::TextureIf::TextureIf* _textureLoader,
+	ModelPTN(Loader::ModelLoader*           _modelPTNLoader,
+		     Loader::TextureLoader*         _textureLoader,
 		     char*                          _textureShaderParams,
-		     Shaders::ShadersIf::ShadersIf* _shader, 
-		     Camera::CameraIf::CameraIf*    _camera,    
-		     GLfloat*                       _light);                       
+		     Shaders::ShadersIf::ShadersIf* _shader);                       
 
 	~ModelPTN();
 	//
@@ -47,13 +44,10 @@ private:
 	//
 	// CONSTRUCTOR params
 	//
-	char*                          modelPath;
 	Loader::ModelLoader*           modelPTNLoader;
-	Texture::TextureIf::TextureIf* textureLoader;
+	Loader::TextureLoader*         textureLoader;
 	char*                          textureShaderParams;
 	Shaders::ShadersIf::ShadersIf* shader;
-	Camera::CameraIf::CameraIf*    camera;	
-	GLfloat*                       light;
 	//
 	// MODEL params
 	//
@@ -66,7 +60,7 @@ private:
 	//
 	// TEXTUREs
 	//
-	std::vector<GLuint>    texturesVectorId;
+	std::vector<GLuint> texturesVectorId;
 };
 }
 

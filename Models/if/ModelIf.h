@@ -27,6 +27,7 @@
 //
 #include "../../Textures/if/TextureIf.h"
 #include "../../Loader/inc/ModelLoader.h"
+#include "../../Loader/inc/TextureLoader.h"
 //
 // ShaderIf
 //

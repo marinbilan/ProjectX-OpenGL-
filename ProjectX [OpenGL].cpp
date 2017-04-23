@@ -10,31 +10,20 @@
 #include "Includes\shadersIncludes.h"
 // Camera [ View ]
 #include "Includes\cameraIncludes.h"
-// TEXTUREs
-#include "Includes\texturesIncludes.h"
 // Models [ Model ]
 #include "Includes\modelsIncludes.h"
-// NEW
+// NEW TODO: Move separate includes
 #include "Loader\if\LoaderIf.h"
+#include "Loader\inc\TextureLoader.h"
 #include "Loader\inc\ModelLoader.h"
+#include "FBOs\Inc\WaterFBO.h"
 //
-// LIGHT
+// Shaders [ Projection Matrix]
 //
-GLfloat light1[] = { 0.0f, 15.0f, 15.0f, 1.0f };
-GLfloat light2[] = { 0.0f, 15.0f, 15.0f};
-//
-//
-// Shaders [ Projection ]
-//
-//
-Shaders::Shader_PNT*        shaderPNT1;   // WITHOUT NORMAL MAP
-Shaders::Shader_Water*      shader_Water;
-Shaders::Shader_Water_Tile* shader_Water_Tile;
-
-Shaders::Shader_7* shader_7; // WITH NORMAL MAP
-Shaders::Shader_1* shader_1; // DRAGON
-Shaders::Shader_2* shader_2; // GUI
-Shaders::Shader_3* shader_3; // SKYBOX
+Shaders::ShaderPTN*         shaderPTN1;        // WITHOUT NORMAL MAP
+Shaders::Shader_Water_Tile* shader_Water_Tile; // WATER
+Shaders::Shader_2*          shader_2;          // GUI
+Shaders::Shader_3*          shader_3;          // SKYBOX
 //
 // Camera [ View ]
 //
@@ -42,24 +31,21 @@ Camera::Camera* camera;
 //
 // Models
 //
-//Models::Model_Assimp*          modelAssimpTest1;
-Models::ModelLoaderAssimpPTN*  modelVanquish;
-Models::ModelPTN*  modelVanquishTest;
-Models::Model_AssimpNormalMap* meshNM;
-Models::Model_Water_Tile*      modelWaterTile;
-
-Models::Model_1*      model_1; // DRAGON
-Models::Model_GUI*    model_GUI1;
-Models::Model_GUI*    model_GUI2;
-Models::Model_skyBox* model_skyBox;
-//Models::Model_Assimp* mesh_Assimp;
-Models::Model_6*      model_6;
-Models::Mesh_1*       mesh_1;
+Models::ModelPTN*         modelVanquishTest;
+Models::Model_skyBox*     model_skyBox;
+Models::Model_Water_Tile* modelWaterTile;
+Models::Model_GUI*        model_GUI1;
+Models::Model_GUI*        model_GUI2;
+//
+// LIGHT
+//
+GLfloat light1[] = { 0.0f, 15.0f, 15.0f, 1.0f };
+GLfloat light2[] = { 0.0f, 15.0f, 15.0f };
 //
 // LOADER
 //
-Loader::ModelLoader*     modelLoaderVanquish;
-Texture::TextureLoaderX* textureLoaderXVanquish;
+Loader::ModelLoader*   modelLoaderVanquish;
+Loader::TextureLoader* textureLoaderVanquish;
 //
 // BUFFERs
 //
@@ -121,10 +107,12 @@ void RenderScene(GLfloat deltaTime)
 	// RENDER skyBox from bottom camera position
 	model_skyBox->renderModel();
 	// RENDER vanquish from bottom camera position
-	glUseProgram(shaderPNT1->getShaderProgramID());
-	glUniform4f(shaderPNT1->getplaneID(), plane1[0], plane1[1], plane1[2], plane1[3]);
-	//modelVanquish->render(); 
-	modelVanquishTest->render();
+	glUseProgram(shaderPTN1->getShaderProgramID());
+	camera->updateCameraUniformInv(shaderPTN1); // For now update for each model - In future only once!
+	glUniform4f(shaderPTN1->getplaneID(), plane1[0], plane1[1], plane1[2], plane1[3]);
+	glUniform3f(shaderPTN1->getLightID(), lightPosition[0], lightPosition[1], lightPosition[2]);
+	glUniform3f(shaderPTN1->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
+	modelVanquishTest->render(); //modelVanquish->render(); 
 	// INVERT CAM BACK
 	camera->invertCameraY();
 	camera->setcameraPositionY(camera->getcameraPosition().y + distance);
@@ -142,31 +130,38 @@ void RenderScene(GLfloat deltaTime)
 	glEnable(GL_CLIP_DISTANCE0);
 
 	model_skyBox->renderModel();
-	glUseProgram(shaderPNT1->getShaderProgramID());
-	glUniform4f(shaderPNT1->getplaneID(), plane2[0], plane2[1], plane2[2], plane2[3]);
-	//modelVanquish->render();
-	modelVanquishTest->render();
+	glUseProgram(shaderPTN1->getShaderProgramID());
+	camera->updateCameraUniformInv(shaderPTN1);
+	glUniform4f(shaderPTN1->getplaneID(), plane2[0], plane2[1], plane2[2], plane2[3]);
+	glUniform3f(shaderPTN1->getLightID(), lightPosition[0], lightPosition[1], lightPosition[2]);
+	glUniform3f(shaderPTN1->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
+	modelVanquishTest->render(); //modelVanquish->render();
 	glBindVertexArray(0);
 	glUseProgram(0);
 
 	FBO2->unbindCurrentFrameBuffer();
-
-	// RENDER IN MAIN SCREEN
+	//
+	// ----==== RENDER IN MAIN SCREEN ====----
+	//
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_CLIP_DISTANCE0);
-
+	// RENDER SKYBOX
 	model_skyBox->renderModel();
-
+	// PREPARE WATER 
 	WAVE_SPEED = 0.001;
 	moveFactor += WAVE_SPEED;
 	glUseProgram(shader_Water_Tile->getShaderProgramID());
 	glUniform1f(shader_Water_Tile->getmoveFactorID(), moveFactor);
+	// RENDER WATER
 	modelWaterTile->renderModel();
 	glUseProgram(0);
-	// Vanquish
-	glUseProgram(shaderPNT1->getShaderProgramID());
-	glUniform4f(shaderPNT1->getplaneID(), plane3[0], plane3[1], plane3[2], plane3[3]);
-	//modelVanquish->render();
+	// PREPARE VANQUISH
+	glUseProgram(shaderPTN1->getShaderProgramID());
+	camera->updateCameraUniformInv(shaderPTN1);
+	glUniform4f(shaderPTN1->getplaneID(), plane3[0], plane3[1], plane3[2], plane3[3]);
+	glUniform3f(shaderPTN1->getLightID(), lightPosition[0], lightPosition[1], lightPosition[2]);
+	glUniform3f(shaderPTN1->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
+	// RENDER VANQUISH
 	modelVanquishTest->render();
 	glUseProgram(0);  
 
@@ -222,7 +217,7 @@ int main(int argc, char** argv)
 	//
 	// Give me screen resolution
 	//
-	get_resolution();
+	get_resolution(); 
 	std::cout << WIDTH << " " << HEIGHT << std::endl;
 
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "3Ddev", nullptr, nullptr); // 4th parameter = glfwGetPrimaryMonitor() for fullscreen
@@ -246,51 +241,30 @@ int main(int argc, char** argv)
 		std::cout << "Failed to initialize GLEW" << std::endl;
 	}
 	//
+	// SHADERs [ Projection ] Initialization (only once)
 	//
-	// Shaders [ Projection ] Initialization (only once)
-	//
-	//
-	shaderPNT1 = new Shaders::Shader_PNT(VS_PNT, FS_PNT);
-	shader_Water = new Shaders::Shader_Water(VS_Water, FS_Water);
+	shaderPTN1 = new Shaders::ShaderPTN(VSPTN, FSPTN);
 	shader_Water_Tile = new Shaders::Shader_Water_Tile(VS_Water_Tile, FS_Water_Tile);
-
-	shader_3 = new Shaders::Shader_3(VS3, FS3);
-	shader_7 = new Shaders::Shader_7(VS7, FS7);
-	shader_1 = new Shaders::Shader_1(VS1, FS1);
-	shader_2 = new Shaders::Shader_2(VS2, FS2);
-	//
+	shader_2 = new Shaders::Shader_2(VS2, FS2); // GUI
+	shader_3 = new Shaders::Shader_3(VS3, FS3); // skyBox
 	// Shaders Info
-	//
-	std::cout << *shaderPNT1;
-	std::cout << *shader_Water;
+	std::cout << *shaderPTN1;
 	std::cout << *shader_Water_Tile;
-
+	std::cout << *shader_2;
 	std::cout << *shader_3;
-	//std::cout << *shader_7;
-	//std::cout << *shader_1;
-	//std::cout << *shader_2;
 	//
-	//
-	// Camera [ View ] Initialization
-	//
-	//
+	// CAMERA [ View ] Initialization
 	//
 	camera = new Camera::Camera();
 	//
-	// VANQUISH
+	// MODELS
 	//
-	// LOAD MESHEs [ LOAD MESHEs correct ]
-	modelLoaderVanquish = new Loader::ModelLoader("_src/_models/vanquish/", "_src/_models/vanquish/modelParams.txt", shaderPNT1);
-	// LOAD TESTUREs [ LOAD TEXTURE with TextureLoaderX - should be TextureLoader ]
-	textureLoaderXVanquish = new Texture::TextureLoaderX();
-	textureLoaderXVanquish->loadVectorOfTextures2DID("_src/_models/vanquish/textures/", modelLoaderVanquish->getNumberOfMeshes());
-	// CREATE MODEL WRONG for now
-	//modelVanquish = new Models::ModelLoaderAssimpPTN("_src/_models/vanquish/", textureLoaderXVanquish, "_src/_models/vanquish/modelParams.txt", shaderPNT1, camera, light1);
-	modelVanquishTest = new Models::ModelPTN("_src/_models/vanquish/", modelLoaderVanquish, textureLoaderXVanquish, "_src/_models/vanquish/modelParams.txt", shaderPNT1, camera, light1);
-
-	//
+	// LOAD VANQUISH MESHs [ LOAD MESHs correct ]
+	modelLoaderVanquish = new Loader::ModelLoader("_src/_models/vanquish/", "_src/_models/vanquish/modelParams.txt", shaderPTN1);
+	textureLoaderVanquish = new Loader::TextureLoader();
+	textureLoaderVanquish->loadVectorOfTextures2DID("_src/_models/vanquish/textures/", modelLoaderVanquish->getNumberOfMeshes());
+	modelVanquishTest = new Models::ModelPTN(modelLoaderVanquish, textureLoaderVanquish, "_src/_models/vanquish/modelParams.txt", shaderPTN1);
 	// SKYBOX
-	//
 	model_skyBox = new Models::Model_skyBox(shader_3, camera);
 	//
 	// BUFFERs
@@ -302,15 +276,13 @@ int main(int argc, char** argv)
 	//meshNM = new Models::Model_AssimpNormalMap("_src/_models/barrel/", shader_7, camera, light1);
 	// TO DO: clean variable names
 	//model_1 = new Models::Model_1(shader_1, camera, light1);
-
+	//
+	// GUIs
+	//
 	model_GUI1 = new Models::Model_GUI("sword.png", shader_2, 8, glm::vec3(-0.7f, 0.5f, 0.f), glm::vec3(0.3f));
 	model_GUI2 = new Models::Model_GUI("socuwan.png", shader_2, 12, glm::vec3(0.7f, 0.5f, 0.0f), glm::vec3(0.3f));
 	// dudvMap
 	modelWaterTile = new Models::Model_Water_Tile("_src/water/waterDUDV.png", shader_Water_Tile, camera, 8, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(14.0f));
-	//
-	// Texture INFO
-	//
-	// std::cout << *textureLoaderVanquish;
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 

@@ -8,7 +8,7 @@
 //
 #include "../../__libs/glew-1.13.0/include/GL/glew.h"
 //
-// GLM
+// GLM [ For projection matrix ]
 //
 #include "../../__libs/glm/glm/glm.hpp"
 #include "../../__libs/glm/glm/gtc/matrix_transform.hpp"
@@ -21,18 +21,14 @@ class ShadersIf
 {
 public:
 	//
-	//
 	// CONSTRUCTORs / DESTRUCTORs [ DO not need constructor in interface class! ] ShadersIf() {}
 	//
-	//	
 	virtual ~ShadersIf()
 	{
 		std::cout << "ShadersIf destructor called!" << std::endl;
 	}
 	//
-	//
 	// FUNCTIONs
-	//
 	//
 	virtual GLuint createShader(const char* vertexShader, const char* fragmentShader)
 	{
@@ -67,8 +63,8 @@ public:
 	// [ ATTRIBs ]
 	//
 	virtual GLuint const getPositionsID()          const { return 0; }
-	virtual GLuint const getNormalsID()            const { return 0; }	
 	virtual GLuint const getTextureCoordsID()      const { return 0; }
+	virtual GLuint const getNormalsID()            const { return 0; }	
 	virtual GLuint const getTangentsID()           const { return 0; }
 	// 
 	// [ UNIFORMs ]
@@ -77,16 +73,14 @@ public:
 	virtual GLuint const getViewMatrixID()         const { return 0; }	
 	virtual GLuint const getViewMatrixInvID()      const { return 0; }
 	virtual GLuint const getModelMatrixID()        const { return 0; }
+	virtual GLuint const getLightID()              const { return 0; } // LIGHT POSITION
+	virtual GLuint const getlightPositionID()      const { return 0; } // REMOVE
+	virtual GLuint const getplaneID()              const { return 0; }
+	//
 	virtual GLuint const getModelMatrixInvID()     const { return 0; }
 	virtual GLuint const getCameraPositionID()     const { return 0; }
-
-	virtual GLuint const getLightID()              const { return 0; }
-	virtual GLuint const getlightPositionID()      const { return 0; }
-	virtual GLuint const getplaneID()              const { return 0; }
 	virtual GLuint const getViewPosID()            const { return 0; }
-	virtual GLuint const getNormalsRotationsID()   const { return 0; } 
-	//
-	
+	virtual GLuint const getNormalsRotationsID()   const { return 0; } 	
 	virtual GLuint const getgWorldID()             const { return 0; }    	
 	virtual GLuint const getuseFakeLightingID()    const { return 0; }
 	// ===============
@@ -95,27 +89,21 @@ public:
 	// 
 	// [ UNIFORMs ]
 	//
-	virtual GLuint const gettextureSamplerID()     const { return 0; }
-
-	virtual GLuint const getmodelTextureID()       const { return 0; }
-	virtual GLuint const getnormalMapID()          const { return 0; }
-
-	// Water Shader
-	virtual GLuint const getreflectionTextureID()  const { return 0; }
-	virtual GLuint const getrefractionTextureID()  const { return 0; }
-	virtual GLuint const getdudvMapID()            const { return 0; }
-
-	virtual GLuint const getmoveFactorID()         const { return 0; }
-	//
 	virtual GLuint const getlightColorID()         const { return 0; }
 	virtual GLuint const getshineDamperID()        const { return 0; }
 	virtual GLuint const getreflectivityID()       const { return 0; }
+	virtual GLuint const getmodelTextureID()       const { return 0; }
+	//
+	virtual GLuint const gettextureSamplerID()     const { return 0; }
+	virtual GLuint const getnormalMapID()          const { return 0; }
+	virtual GLuint const getreflectionTextureID()  const { return 0; }
+	virtual GLuint const getrefractionTextureID()  const { return 0; }
+	virtual GLuint const getdudvMapID()            const { return 0; }
+	virtual GLuint const getmoveFactorID()         const { return 0; }
 	virtual GLuint const getskyColorID()           const { return 0; }
 	//
-	//
 	// OPERATORs
-	//
-	//				
+	//			
 private:
 
 };
