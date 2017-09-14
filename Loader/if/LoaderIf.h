@@ -25,7 +25,7 @@
 //
 // Texturef
 //
-#include "../../Textures/if/TextureIf.h"
+// #include "../../Textures/if/TextureIf.h"
 //
 // ShaderIf
 //
@@ -33,7 +33,7 @@
 //
 // CameraIf
 //
-#include "../../Camera/if/CameraIf.h"
+// #include "../../Camera/if/CameraIf.h"
 
 namespace Loader
 {
@@ -52,14 +52,15 @@ public:
 	//
 	// FUNCTIONs
 	//
-	// TEXTUREs
-	virtual GLuint loadTexture2DID(std::string& _textureName)                                              { return 0; }
-	virtual std::vector<GLuint> loadtexture2DVectorIDs(char* _textureFolderPath, GLuint _numberOfTextures) { return dummyReturn; }
 	// MODEL
-	virtual bool initFromScene(const aiScene* _pScene)                                                     { return false; };
-	virtual void initMesh(GLuint _index, const aiMesh* _paiMesh)                                           {};
-	// GET
-	virtual GLuint getNumberOfMeshes() { return 0; };
+	virtual bool initFromScene(const aiScene* _pScene)                                     { return false; };
+	virtual void initMesh(GLuint _index, const aiMesh* _paiMesh)                           {};
+	virtual GLuint getNumberOfMeshes()                                                     { return 0; };
+	// TEXTUREs
+	virtual void loadSingleTexture2DID(char* _textureName) {};
+	virtual void loadVectorOfTextures2DID()                {};
+	virtual GLuint getSingleTexture2DID()                  { return 0; };
+	virtual std::vector<GLuint> getVectorOfTextures2DID()  { return dummyReturn; };
 private:
 	std::vector<GLuint> dummyReturn;
 };

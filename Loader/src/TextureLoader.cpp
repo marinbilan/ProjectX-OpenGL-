@@ -5,8 +5,16 @@
 //
 // CONSTRUCTORs / DESTRUCTORs
 //
-Loader::TextureLoader::TextureLoader()
+Loader::TextureLoader::TextureLoader(char* _texturesFolderPath, GLuint _numberOfTextures)
 {
+	texturesFolderPath = _texturesFolderPath;
+	numberOfTextures = _numberOfTextures; // should be equal to number od meshes
+	// PATH
+	textures = "textures/";
+	textureName = "texture";
+	textureNameExt = ".png";
+
+	loadVectorOfTextures2DID();
 }
 
 Loader::TextureLoader::~TextureLoader()
@@ -53,32 +61,14 @@ void Loader::TextureLoader::loadSingleTexture2DID(char* _textureName)
 	FreeImage_Unload(dib);
 }
 
-void Loader::TextureLoader::loadVectorOfTextures2DID(char* _texturesFolderPath, GLuint _numberOfTextures)
+void Loader::TextureLoader::loadVectorOfTextures2DID()
 {
-	texturesFolderPath = _texturesFolderPath;
-	numberOfTextures = _numberOfTextures;
-
 	for (GLuint i = 0; i < numberOfTextures; i++) {
-		std::string textureName = "texture";
-		std::string textureNameExt = ".png";
-		std::string textureFile = texturesFolderPath + textureName + std::to_string(i) + textureNameExt;
-
+		std::string textureFile = texturesFolderPath + textures + textureName + std::to_string(i) + textureNameExt;
 		vectorOfTextures2DID.push_back(createSingleTexture2DID(textureFile));
 	}
 }
 
-GLuint Loader::TextureLoader::getSingleTexture2DID()
-{
-	return textureID;
-}
-
-std::vector<GLuint> Loader::TextureLoader::getVectorOfTextures2DID()
-{
-	return vectorOfTextures2DID;
-}
-//
-// PRIVATE
-//
 GLuint Loader::TextureLoader::createSingleTexture2DID(std::string& _textureName)
 {
 	width = 0;
@@ -117,6 +107,15 @@ GLuint Loader::TextureLoader::createSingleTexture2DID(std::string& _textureName)
 	return textureID;
 }
 
+GLuint Loader::TextureLoader::getSingleTexture2DID()
+{
+	return textureID;
+}
+
+std::vector<GLuint> Loader::TextureLoader::getVectorOfTextures2DID()
+{
+	return vectorOfTextures2DID;
+}
 
 
 

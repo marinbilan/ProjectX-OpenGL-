@@ -32,10 +32,8 @@ public:
 	//
 	// CONSTRUCTORs / DESTRUCTORs
 	//
-	ModelLoader(char*                          _modelName,
-		        char*                          _textureShaderParams,
-		        Shaders::ShadersIf::ShadersIf* _shader);
-
+	ModelLoader(char* _modelName,
+		        char*  _textureShaderParams);
 	~ModelLoader();
 	//
 	// FUNCTIONs
@@ -74,9 +72,8 @@ public:
 	glm::mat4 modelMatrix;
 	std::vector<MeshEntry> meshesVector;
 
-	char*                          modelPath;
-	char*                          textureShaderParams;
-	Shaders::ShadersIf::ShadersIf* shader;
+	char* modelPath;
+	char*  textureShaderParams;
 };
 }
 

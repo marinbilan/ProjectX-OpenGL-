@@ -15,9 +15,7 @@ public:
 	//
 	ModelPTN(Loader::ModelLoader*           _modelPTNLoader,
 		     Loader::TextureLoader*         _textureLoader,
-		     char*                          _textureShaderParams,
 		     Shaders::ShadersIf::ShadersIf* _shader);                       
-
 	~ModelPTN();
 	//
 	// FUNCTIONs
@@ -30,7 +28,7 @@ public:
 	virtual glm::vec3 getModelScale();
 	virtual glm::vec3 getModelRotation();
 	virtual glm::vec3 getModelPosition();
-
+	// RENDER
 	virtual void render();
 	//
 	// OPERATORs
@@ -46,13 +44,11 @@ private:
 	//
 	Loader::ModelLoader*           modelPTNLoader;
 	Loader::TextureLoader*         textureLoader;
-	char*                          textureShaderParams;
 	Shaders::ShadersIf::ShadersIf* shader;
 	//
 	// MODEL params
 	//
 	glm::mat4 modelMatrix;
-
 	glm::vec3 modelPosition;
 	GLfloat   angle;
 	glm::vec3 modelRotateAround;

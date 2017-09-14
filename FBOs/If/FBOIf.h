@@ -28,6 +28,19 @@ public:
 	//
 	// FUNCTIONs
 	//
+	virtual void bindReflectionFrameBuffer() {}
+	virtual void bindRefractionFrameBuffer() {}
+	virtual void unbindCurrentFrameBuffer() {}
+	virtual int getReflectionTexture() { return 0;  }
+	virtual int getRefractionTexture() { return 0; }
+	virtual int getRefractionDepthTexture() { return 0; }
+	virtual void initialiseReflectionFrameBuffer() {}
+	virtual void initialiseRefractionFrameBuffer() {}
+	virtual void bindFrameBuffer(int frameBuffer, int width, int height) {}
+	virtual int createFrameBuffer() { return 0; }
+	int createTextureAttachment(int width, int height) { return 0; }
+	int createDepthTextureAttachment(int width, int height) { return 0; }
+	int createDepthBufferAttachment(int width, int height) { return 0; }
 	//
 	// OPERATORs
 	//			

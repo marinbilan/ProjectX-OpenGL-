@@ -5,12 +5,10 @@
 //
 // CONSTRUCTORs / DESTRUCTORs
 //
-Loader::ModelLoader::ModelLoader(char*                          _modelName,
-	                             char*                          _textureShaderParams,
-	                             Shaders::ShadersIf::ShadersIf* _shader)
+Loader::ModelLoader::ModelLoader(char* _modelName,
+	                             char*  _textureShaderParams)
 {
 	modelMatrix = glm::mat4(1.0f);
-
 	modelPath = _modelName;
 	textureShaderParams = _textureShaderParams;
 	//
@@ -32,7 +30,6 @@ Loader::ModelLoader::ModelLoader(char*                          _modelName,
 		std::cout << "Error parsing: " << modelPath << " " << model << " " << Importer.GetErrorString() << std::endl;
 	}
 }
-
 
 Loader::ModelLoader::~ModelLoader()
 {

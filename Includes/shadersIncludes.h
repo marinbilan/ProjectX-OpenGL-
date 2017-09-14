@@ -3,6 +3,8 @@
 //
 #include "..\Shaders\if\ShaderIf.h"
 
+#include "..\Shaders\\inc\ShaderLearningOpenGL1.h"
+
 #include "..\Shaders\inc\ShaderPTN.h" // VANQUISH ASSIMP PNT  < pos, norms, texCords >
 									   // VERTEX SHADER        | proj, view, viewInv, transform, lightPos |
 									   // FRAGMENT SHADER      | modelTexture, lightColour, shineDamper, reflectivity |

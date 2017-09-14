@@ -89,7 +89,7 @@ public:
 	// 
 	// [ UNIFORMs ]
 	//
-	virtual GLuint const getlightColorID()         const { return 0; }
+	virtual GLuint const getlightColorID()         const { return 0; }	
 	virtual GLuint const getshineDamperID()        const { return 0; }
 	virtual GLuint const getreflectivityID()       const { return 0; }
 	virtual GLuint const getmodelTextureID()       const { return 0; }
@@ -101,6 +101,9 @@ public:
 	virtual GLuint const getdudvMapID()            const { return 0; }
 	virtual GLuint const getmoveFactorID()         const { return 0; }
 	virtual GLuint const getskyColorID()           const { return 0; }
+	// LEARNING OPENGL
+	virtual GLuint const getObjectColorID()        const { return 0; }
+	virtual GLuint const getLightColorID()         const { return 0; }
 	//
 	// OPERATORs
 	//			

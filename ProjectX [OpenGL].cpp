@@ -17,13 +17,20 @@
 #include "Loader\inc\TextureLoader.h"
 #include "Loader\inc\ModelLoader.h"
 #include "FBOs\Inc\WaterFBO.h"
+#include "Renderer\inc\Renderer.h"
+
+#include "FBOs\if\FBOIf.h"
+#include "FBOs\inc\WaterFBO.h"
 //
 // Shaders [ Projection Matrix]
 //
-Shaders::ShaderPTN*         shaderPTN1;        // WITHOUT NORMAL MAP
-Shaders::Shader_Water_Tile* shader_Water_Tile; // WATER
-Shaders::Shader_2*          shader_2;          // GUI
-Shaders::Shader_3*          shader_3;          // SKYBOX
+// >>>> --------------------------------------------------
+Shaders::ShaderLearningOpenGL1* shaderOpenLearningOpenGL1;
+// >>>> --------------------------------------------------
+Shaders::ShaderPTN*             shaderPTN1;        // WITHOUT NORMAL MAP
+Shaders::Shader_Water_Tile*     shader_Water_Tile; // WATER
+Shaders::Shader_2*              shader_2;          // GUI
+Shaders::Shader_3*              shader_3;          // SKYBOX
 //
 // Camera [ View ]
 //
@@ -31,7 +38,10 @@ Camera::Camera* camera;
 //
 // Models
 //
-Models::ModelPTN*         modelVanquishTest;
+Models::ModelPTN*         modelVanquish;
+// >>>> ------------------------------------
+Models::ModelLearnOpenGL* modelLearnOpenGL1;
+// >>>> ------------------------------------
 Models::Model_skyBox*     model_skyBox;
 Models::Model_Water_Tile* modelWaterTile;
 Models::Model_GUI*        model_GUI1;
@@ -44,13 +54,19 @@ GLfloat light2[] = { 0.0f, 15.0f, 15.0f };
 //
 // LOADER
 //
+// >>>> ----------------------------------------
 Loader::ModelLoader*   modelLoaderVanquish;
 Loader::TextureLoader* textureLoaderVanquish;
+// >>>> ----------------------------------------
 //
 // BUFFERs
 //
-WaterFrameBuffers* FBO1;
-WaterFrameBuffers* FBO2;
+FBOs::WaterFBO* waterFBO1;
+FBOs::WaterFBO* waterFBO2;
+//
+// RENDERER
+//
+Renderer::Renderer* renderer;
 //
 // Variables and Constants
 //
@@ -69,9 +85,9 @@ GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
 GLfloat shineDamper = 15.0f; // def: 15.0f
 GLfloat reflectivity = 1.6f; // def: 1.6
 
-GLfloat plane1[] = { 0.0f, 1.0f, 0.0f, -0.01f };     // fbo LEFT - Render everything ABOVE
-GLfloat plane2[] = { 0.0f, -1.0f, 0.0f, -0.01f };    // fbo RIGHT - Render everything BELOW
-GLfloat plane3[] = { 0.0f, -1.0f, 0.0f, 100000.0f }; // HACK (glDisable doesn't work!)
+GLfloat planeModelPTNAbove[] = { 0.0f, 1.0f, 0.0f, 0.0f };     // fbo LEFT - Render everything ABOVE
+GLfloat planeModelPTNBelow[] = { 0.0f, -1.0f, 0.0f, 0.0f };    // fbo RIGHT - Render everything BELOW
+GLfloat planeModelPTN[] = { 0.0f, -1.0f, 0.0f, 100000.0f };    // HACK (glDisable doesn't work!)
 
 GLfloat moveFactor = 0;
 GLfloat WAVE_SPEED;
@@ -91,81 +107,51 @@ void RenderScene(GLfloat deltaTime)
 	// 5.2 ] Bind Textures
 	// 6 ] Render mesh (model)
 	// 7 ] Disable everything
-
 	//
 	// FBO 1 [ BOTTOM LEFT GUI] texID = 8
-	//
-	FBO1->bindReflectionFrameBuffer();
-
+	// IMPORTANT: Render everything above (Camera is below and inverted) (Normal plane vector y = +1.0)
+	waterFBO1->bindReflectionFrameBuffer();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CLIP_DISTANCE0);
-	// INVERT CAM
-	GLfloat distance = 2 * (camera->getcameraPosition().y - 0.0f); // 0.0f water hight
-	camera->setcameraPositionY(camera->getcameraPosition().y - distance);
-	camera->invertCameraY(); 
-	camera->updateCameraPosition(); // Update viewMatrix
-	// RENDER skyBox from bottom camera position
-	model_skyBox->renderModel();
-	// RENDER vanquish from bottom camera position
-	glUseProgram(shaderPTN1->getShaderProgramID());
-	camera->updateCameraUniformInv(shaderPTN1); // For now update for each model - In future only once!
-	glUniform4f(shaderPTN1->getplaneID(), plane1[0], plane1[1], plane1[2], plane1[3]);
-	glUniform3f(shaderPTN1->getLightID(), lightPosition[0], lightPosition[1], lightPosition[2]);
-	glUniform3f(shaderPTN1->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
-	modelVanquishTest->render(); //modelVanquish->render(); 
-	// INVERT CAM BACK
-	camera->invertCameraY();
-	camera->setcameraPositionY(camera->getcameraPosition().y + distance);
-	camera->updateCameraPosition();
-	glBindVertexArray(0);
-	glUseProgram(0);
-
-	FBO1->unbindCurrentFrameBuffer();
+	// RENDER FROM BELOW ( Invert CAM )
+	renderer->renderSkyBoxAbove();
+	// renderer->renderModelPTNFromBelow(planeModelPTNAbove); // (y = +1)
+	renderer->renderModelPTN(true, planeModelPTNAbove, camera, modelVanquish, shaderPTN1);
+	waterFBO1->unbindCurrentFrameBuffer();
 	//
 	// FBO 2 [ NORMAL RIGHT GUI] texID = 12
 	//
-	FBO2->bindRefractionFrameBuffer();
-
+	waterFBO2->bindRefractionFrameBuffer();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CLIP_DISTANCE0);
-
-	model_skyBox->renderModel();
-	glUseProgram(shaderPTN1->getShaderProgramID());
-	camera->updateCameraUniformInv(shaderPTN1);
-	glUniform4f(shaderPTN1->getplaneID(), plane2[0], plane2[1], plane2[2], plane2[3]);
-	glUniform3f(shaderPTN1->getLightID(), lightPosition[0], lightPosition[1], lightPosition[2]);
-	glUniform3f(shaderPTN1->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
-	modelVanquishTest->render(); //modelVanquish->render();
-	glBindVertexArray(0);
-	glUseProgram(0);
-
-	FBO2->unbindCurrentFrameBuffer();
-	//
-	// ----==== RENDER IN MAIN SCREEN ====----
-	//
+	// RENDER FROM ABOVE ( Normal CAM )
+	model_skyBox->renderModel(); // check this
+	renderer->renderModelPTN(false, planeModelPTNBelow, camera, modelVanquish, shaderPTN1); // (y = -1)
+	waterFBO2->unbindCurrentFrameBuffer();
+	// =============================================
+	// ----==== START RENDER IN MAIN SCREEN ====----
+	// =============================================
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_CLIP_DISTANCE0);
-	// RENDER SKYBOX
-	model_skyBox->renderModel();
+    // RENDER order is IMPORTANT!
+	// 1] SkyBox
+	// 2] Water
+	// 3] Model
+	renderer->renderSkyBox();
 	// PREPARE WATER 
 	WAVE_SPEED = 0.001;
 	moveFactor += WAVE_SPEED;
 	glUseProgram(shader_Water_Tile->getShaderProgramID());
-	glUniform1f(shader_Water_Tile->getmoveFactorID(), moveFactor);
-	// RENDER WATER
-	modelWaterTile->renderModel();
-	glUseProgram(0);
-	// PREPARE VANQUISH
-	glUseProgram(shaderPTN1->getShaderProgramID());
-	camera->updateCameraUniformInv(shaderPTN1);
-	glUniform4f(shaderPTN1->getplaneID(), plane3[0], plane3[1], plane3[2], plane3[3]);
-	glUniform3f(shaderPTN1->getLightID(), lightPosition[0], lightPosition[1], lightPosition[2]);
-	glUniform3f(shaderPTN1->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
-	// RENDER VANQUISH
-	modelVanquishTest->render();
-	glUseProgram(0);  
+	glUniform1f(shader_Water_Tile->getmoveFactorID(), moveFactor);	
 
-	// RENDERIRANJE U PROZORE
+	modelWaterTile->renderModel(); // plane high (y = +100000)
+	renderer->renderModelPTN(false, planeModelPTNAbove, camera, modelVanquish, shaderPTN1); // Do experiment with model on -y position
+	// renderer->renderModelLearningOpenGL();
+	// =============================================
+	// ----==== STOP RENDER IN MAIN SCREEN ====----
+	// =============================================
+
+	// RENDER IN GUIs
 	model_GUI1->renderModel();  // FBO1 (texID = 8)
 	model_GUI2->renderModel();  // FBO2 (texID = 12)
 
@@ -203,6 +189,16 @@ void get_resolution() {
 	HEIGHT = mode->height;
 }
 
+void characterModCallback(GLFWwindow* window, unsigned int keyCode, int modifierKey) 
+{
+	if (keyCode == 43)
+	{	
+		std::cout << "> ";
+		std::string stringKey;	
+		std::getline(std::cin, stringKey);
+	}
+}
+
 int main(int argc, char** argv)
 {
 	std::cout << "Starting GLFW context, OpenGL 3.3" << std::endl;
@@ -231,6 +227,7 @@ int main(int argc, char** argv)
 	glfwMakeContextCurrent(window);
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetCharModsCallback(window, characterModCallback);
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	//
@@ -243,15 +240,19 @@ int main(int argc, char** argv)
 	//
 	// SHADERs [ Projection ] Initialization (only once)
 	//
+	// >>>> ---------------------------------------------------------------------------------------------
+	shaderOpenLearningOpenGL1 = new Shaders::ShaderLearningOpenGL1(VSLearningOpenGL1, FSLearningOpenGL1);
+	// >>>> ---------------------------------------------------------------------------------------------
 	shaderPTN1 = new Shaders::ShaderPTN(VSPTN, FSPTN);
 	shader_Water_Tile = new Shaders::Shader_Water_Tile(VS_Water_Tile, FS_Water_Tile);
 	shader_2 = new Shaders::Shader_2(VS2, FS2); // GUI
 	shader_3 = new Shaders::Shader_3(VS3, FS3); // skyBox
 	// Shaders Info
+	//std::cout << *shaderOpenLearningOpenGL1;
 	std::cout << *shaderPTN1;
-	std::cout << *shader_Water_Tile;
-	std::cout << *shader_2;
-	std::cout << *shader_3;
+	//std::cout << *shader_Water_Tile;
+	//std::cout << *shader_2;
+	//std::cout << *shader_3;
 	//
 	// CAMERA [ View ] Initialization
 	//
@@ -260,19 +261,22 @@ int main(int argc, char** argv)
 	// MODELS
 	//
 	// LOAD VANQUISH MESHs [ LOAD MESHs correct ]
-	modelLoaderVanquish = new Loader::ModelLoader("_src/_models/vanquish/", "_src/_models/vanquish/modelParams.txt", shaderPTN1);
-	textureLoaderVanquish = new Loader::TextureLoader();
-	textureLoaderVanquish->loadVectorOfTextures2DID("_src/_models/vanquish/textures/", modelLoaderVanquish->getNumberOfMeshes());
-	modelVanquishTest = new Models::ModelPTN(modelLoaderVanquish, textureLoaderVanquish, "_src/_models/vanquish/modelParams.txt", shaderPTN1);
+	// >>>> ------------------------------------------------------------------------
+	modelLoaderVanquish = new Loader::ModelLoader("_src/_models/_vanquish/", "_src/_models/vanquish/modelParams.txt");
+	textureLoaderVanquish = new Loader::TextureLoader("_src/_models/_vanquish/", modelLoaderVanquish->getNumberOfMeshes());
+	modelVanquish = new Models::ModelPTN(modelLoaderVanquish, textureLoaderVanquish, shaderPTN1);
+	//
+	// modelLearnOpenGL1 = new Models::ModelLearnOpenGL(modelLoaderVanquish, textureLoaderVanquish, "_src/_models/vanquish/modelParams.txt", shaderOpenLearningOpenGL1);
+	// >>>> ------------------------------------------------------------------------
 	// SKYBOX
 	model_skyBox = new Models::Model_skyBox(shader_3, camera);
 	//
 	// BUFFERs
 	//
-	FBO1 = new WaterFrameBuffers();
-	FBO2 = new WaterFrameBuffers();
-	std::cout << "REF TEXTURE 1: "   << FBO1->getReflectionTexture() << std::endl;
-	std::cout << "REF TEXTURE 2: " << FBO2->getRefractionTexture() << std::endl;
+	waterFBO1 = new FBOs::WaterFBO();
+	waterFBO2 = new FBOs::WaterFBO();
+	//std::cout << "REF TEXTURE 1: "   << waterFBO1->getReflectionTexture() << std::endl;
+	//std::cout << "REF TEXTURE 2: " << waterFBO2->getRefractionTexture() << std::endl;
 	//meshNM = new Models::Model_AssimpNormalMap("_src/_models/barrel/", shader_7, camera, light1);
 	// TO DO: clean variable names
 	//model_1 = new Models::Model_1(shader_1, camera, light1);
@@ -280,10 +284,18 @@ int main(int argc, char** argv)
 	// GUIs
 	//
 	model_GUI1 = new Models::Model_GUI("sword.png", shader_2, 8, glm::vec3(-0.7f, 0.5f, 0.f), glm::vec3(0.3f));
-	model_GUI2 = new Models::Model_GUI("socuwan.png", shader_2, 12, glm::vec3(0.7f, 0.5f, 0.0f), glm::vec3(0.3f));
+	model_GUI2 = new Models::Model_GUI("socuwan.png", shader_2, 12, glm::vec3(0.7f, 0.5f, 0.0f), glm::vec3(0.3));
 	// dudvMap
 	modelWaterTile = new Models::Model_Water_Tile("_src/water/waterDUDV.png", shader_Water_Tile, camera, 8, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(14.0f));
-
+	//
+	// RENDERER
+	//
+	renderer = new Renderer::Renderer(camera);
+	// INIT MODELs
+	renderer->initSkyBoxRenderer(shader_3, model_skyBox);
+	// >>>> ------------------------------------------------------------------------
+	// renderer->initModelLearningOpenGL(shaderOpenLearningOpenGL1, modelLearnOpenGL1); // CURRENT
+	// >>>> ------------------------------------------------------------------------
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	glEnable(GL_CULL_FACE);
@@ -292,7 +304,7 @@ int main(int argc, char** argv)
 	glEnable(GL_MULTISAMPLE);
 	//
 	//
-	//Game loop
+	// GAME LOOP
 	//
 	//
 	while (!glfwWindowShouldClose(window))

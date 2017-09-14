@@ -6,18 +6,16 @@
 //
 Models::ModelPTN::ModelPTN(Loader::ModelLoader*           _modelPTNLoader,
 	                       Loader::TextureLoader*         _textureLoader,
-	                       char*                          _textureShaderParams,
 						   Shaders::ShadersIf::ShadersIf* _shader)
 {
 	// CONSTURCOTR params
-	modelPTNLoader      = _modelPTNLoader;
-	textureLoader       = _textureLoader;
-	textureShaderParams = _textureShaderParams;
-	shader              = _shader;
+	modelPTNLoader = _modelPTNLoader;
+	textureLoader  = _textureLoader;
+	shader         = _shader;
 	// MODEL params
 	modelMatrix = glm::mat4(1.0f);
 	// Position
-	modelPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+	modelPosition = glm::vec3(0.0f, 5.0f, 0.0f);
 	// Rotate around axe
 	angle = -1.55f;
 	modelRotateAround = glm::vec3(1.0f, 0.0f, 0.0f);
@@ -116,7 +114,7 @@ void Models::ModelPTN::render()
 		glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
 		// FRAGMENT SHADER
 		glUniform1f(shader->getshineDamperID(), 15.0f);
-		glUniform1f(shader->getreflectivityID(), 1.6f);
+		glUniform1f(shader->getreflectivityID(), 0.6f);
 		//
 		// uniform sampler2D modelTexture
 		//

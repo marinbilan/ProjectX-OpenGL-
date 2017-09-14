@@ -23,9 +23,8 @@
 //
 #include "../../__libs/FreeImage/include/FreeImage.h"
 //
-// Texturef
+// Loader
 //
-#include "../../Textures/if/TextureIf.h"
 #include "../../Loader/inc/ModelLoader.h"
 #include "../../Loader/inc/TextureLoader.h"
 //
@@ -60,17 +59,14 @@ public:
 	virtual void setModelRotation() {};
 	virtual void setModelPosition(glm::vec3 _modelPosition) {};
 	// GET
-	virtual GLuint getNumberOfMeshes() { return 0; };
-
+	virtual GLuint getNumberOfMeshes()   { return 0; };
 	virtual glm::vec3 getModelScale()    { return dummyVec3; };
 	virtual glm::vec3 getModelRotation() { return dummyVec3; };
 	virtual glm::vec3 getModelPosition() { return dummyVec3; };
-	//
 	// ASSIMP
-	//
 	virtual bool initFromScene(const aiScene* _pScene)           { return false; };
 	virtual void initMesh(GLuint _index, const aiMesh* _paiMesh) { };
-
+	// RENDER
 	virtual void render() {};
 	//
 	// OPERATORs
