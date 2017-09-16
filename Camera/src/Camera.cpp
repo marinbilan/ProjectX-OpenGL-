@@ -3,9 +3,7 @@
 
 #include "../../Camera/inc/Camera.h"
 //
-//
 // CONSTRUCTORs / DESTRUCTOR(s)
-//
 //
 Camera::Camera::Camera()
 {
@@ -22,10 +20,8 @@ Camera::Camera::~Camera()
 	std::cout << "Camera destructor called!" << std::endl;
 }
 //
-//
 // FUNCTION(s)
 // 
-//
 glm::vec3 Camera::Camera::getcameraPosition()
 {
 	return cameraPos;
@@ -85,6 +81,21 @@ void Camera::Camera::stopTranslate()
 	viewMatrix[3][0] = 0;
 	viewMatrix[3][1] = 0;
 	viewMatrix[3][2] = 0;
+}
+
+void Camera::Camera::invertCameraDown()
+{
+	distance = 2 * (cameraPos.y - 0.0f);
+	setcameraPositionY(cameraPos.y - distance);
+	cameraFront.y = -cameraFront.y;
+	updateCameraPosition();
+}
+
+void Camera::Camera::invertCameraUp()
+{
+	cameraFront.y = -cameraFront.y;
+	setcameraPositionY(cameraPos.y + distance);
+	updateCameraPosition();
 }
 
 void Camera::Camera::invertCameraY()

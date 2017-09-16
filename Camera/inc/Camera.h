@@ -3,9 +3,7 @@
 
 #include <iostream>
 #include <string>
-//
 // CameraIf
-//
 #include "../if/CameraIf.h"
 
 namespace Camera
@@ -13,25 +11,19 @@ namespace Camera
 class Camera : public CameraIf::CameraIf
 {
 public:
-	//
-	//
-	// CONSTRUCTORs / DESTRUCTORs
-	//
-	//	
+	// CONSTRUCTORs / DESTRUCTORs	
 	Camera();
 
 	~Camera();
-	//
-	//
 	// FUNCTIONs
-	// 
-	//
 	virtual glm::vec3 getcameraPosition();
 	virtual GLfloat getcameraPositionX();
 	virtual GLfloat getcameraPositionY();
 
 	//virtual void setcameraPosition(glm::vec3 _position);
 
+	virtual void invertCameraDown();
+	virtual void invertCameraUp();
 	virtual void setcameraPositionY(GLfloat _positionY);
 
 	virtual void moveForward(GLfloat deltaTime);
@@ -46,10 +38,7 @@ public:
 	virtual void updateCameraPosition();
 	virtual void updateCameraUniform(Shaders::ShadersIf::ShadersIf* shader);
 	virtual void updateCameraUniformInv(Shaders::ShadersIf::ShadersIf* shader);
-	//
 	// OPERATORs
-	//
-	//	
 	friend std::ostream& operator<<(std::ostream& output, Camera& info)
 	{
 		// Add some info
@@ -57,14 +46,14 @@ public:
 	}
 	
 private:
-	//
 	// MODEL VARIABLEs
-	//
 	glm::mat4 viewMatrix;
 
 	glm::vec3 cameraPos;
 	glm::vec3 cameraFront; 
 	glm::vec3 cameraUp;
+
+	GLfloat distance;
 };
 }
 

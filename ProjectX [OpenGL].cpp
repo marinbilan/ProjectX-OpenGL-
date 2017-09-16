@@ -1,4 +1,3 @@
-//
 // GAMEDEV Framework Marin Bilan @2017
 // cd "D:\Marin\__Programming\Projects\Programing\ProjectX [OpenGL]\ProjectX [OpenGL]"
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
@@ -24,13 +23,11 @@
 //
 // Shaders [ Projection Matrix]
 //
-// >>>> --------------------------------------------------
-Shaders::ShaderLearningOpenGL1* shaderOpenLearningOpenGL1;
-// >>>> --------------------------------------------------
 Shaders::ShaderPTN*             shaderPTN1;        // WITHOUT NORMAL MAP
 Shaders::Shader_Water_Tile*     shader_Water_Tile; // WATER
 Shaders::Shader_2*              shader_2;          // GUI
 Shaders::Shader_3*              shader_3;          // SKYBOX
+Shaders::ShaderLearningOpenGL1* shaderOpenLearningOpenGL1;
 //
 // Camera [ View ]
 //
@@ -39,9 +36,7 @@ Camera::Camera* camera;
 // Models
 //
 Models::ModelPTN*         modelVanquish;
-// >>>> ------------------------------------
 Models::ModelLearnOpenGL* modelLearnOpenGL1;
-// >>>> ------------------------------------
 Models::Model_skyBox*     model_skyBox;
 Models::Model_Water_Tile* modelWaterTile;
 Models::Model_GUI*        model_GUI1;
@@ -54,10 +49,8 @@ GLfloat light2[] = { 0.0f, 15.0f, 15.0f };
 //
 // LOADER
 //
-// >>>> ----------------------------------------
 Loader::ModelLoader*   modelLoaderVanquish;
 Loader::TextureLoader* textureLoaderVanquish;
-// >>>> ----------------------------------------
 //
 // BUFFERs
 //
@@ -108,52 +101,49 @@ void RenderScene(GLfloat deltaTime)
 	// 6 ] Render mesh (model)
 	// 7 ] Disable everything
 	//
-	// FBO 1 [ BOTTOM LEFT GUI] texID = 8
+	// RENDER INVERTED CAM 
+	//
 	// IMPORTANT: Render everything above (Camera is below and inverted) (Normal plane vector y = +1.0)
-	waterFBO1->bindReflectionFrameBuffer();
+	waterFBO1->bindReflectionFrameBuffer(); // FBO 1 [ BOTTOM LEFT GUI] texID = 8
+	camera->invertCameraDown();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CLIP_DISTANCE0);
-	// RENDER FROM BELOW ( Invert CAM )
-	renderer->renderSkyBoxAbove();
-	// renderer->renderModelPTNFromBelow(planeModelPTNAbove); // (y = +1)
-	renderer->renderModelPTN(true, planeModelPTNAbove, camera, modelVanquish, shaderPTN1);
+
+	renderer->renderSkyBox(camera, model_skyBox);                                    // RENDER FROM BELOW ( Invert CAM )
+	renderer->renderModelPTN(planeModelPTNAbove, camera, modelVanquish, shaderPTN1); // RENDER FROM BELOW ( Invert CAM )
+
 	waterFBO1->unbindCurrentFrameBuffer();
+	camera->invertCameraUp();
 	//
-	// FBO 2 [ NORMAL RIGHT GUI] texID = 12
+	// RENDER NORMAL CAM // TODO: Create invertCam function in camera class then invert on begining and on end
 	//
-	waterFBO2->bindRefractionFrameBuffer();
+	waterFBO2->bindRefractionFrameBuffer(); // FBO 2 [ NORMAL RIGHT GUI] texID = 12
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CLIP_DISTANCE0);
-	// RENDER FROM ABOVE ( Normal CAM )
-	model_skyBox->renderModel(); // check this
-	renderer->renderModelPTN(false, planeModelPTNBelow, camera, modelVanquish, shaderPTN1); // (y = -1)
+
+	renderer->renderSkyBox(camera, model_skyBox);
+	// renderer->renderModelPTN(planeModelPTNBelow, camera, modelVanquish, shaderPTN1); // (y = -1)
+
 	waterFBO2->unbindCurrentFrameBuffer();
 	// =============================================
-	// ----==== START RENDER IN MAIN SCREEN ====----
+	// ----==== START RENDER IN MAIN SCREEN ====---- // RENDER order is IMPORTANT!
 	// =============================================
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_CLIP_DISTANCE0);
-    // RENDER order is IMPORTANT!
 	// 1] SkyBox
+	renderer->renderSkyBox(camera, model_skyBox);
 	// 2] Water
+	renderer->renderWater(shader_Water_Tile, modelWaterTile);
 	// 3] Model
-	renderer->renderSkyBox();
-	// PREPARE WATER 
-	WAVE_SPEED = 0.001;
-	moveFactor += WAVE_SPEED;
-	glUseProgram(shader_Water_Tile->getShaderProgramID());
-	glUniform1f(shader_Water_Tile->getmoveFactorID(), moveFactor);	
-
-	modelWaterTile->renderModel(); // plane high (y = +100000)
-	renderer->renderModelPTN(false, planeModelPTNAbove, camera, modelVanquish, shaderPTN1); // Do experiment with model on -y position
-	// renderer->renderModelLearningOpenGL();
+	renderer->renderModelPTN(planeModelPTN, camera, modelVanquish, shaderPTN1);
+	// renderer->renderModelLearningOpenGL(shaderOpenLearningOpenGL1, modelLearnOpenGL1);
 	// =============================================
 	// ----==== STOP RENDER IN MAIN SCREEN ====----
 	// =============================================
 
 	// RENDER IN GUIs
-	model_GUI1->renderModel();  // FBO1 (texID = 8)
-	model_GUI2->renderModel();  // FBO2 (texID = 12)
+	model_GUI1->renderModel();  // FBO1 (texID = 8) TODO Hardcoded numbers
+	model_GUI2->renderModel();  // FBO2 (texID = 12) TODO
 
 	// ----==== RENDER NORMAL MAP MODEL ====----
 	// glBindVertexArray(6);
@@ -260,14 +250,11 @@ int main(int argc, char** argv)
 	//
 	// MODELS
 	//
-	// LOAD VANQUISH MESHs [ LOAD MESHs correct ]
-	// >>>> ------------------------------------------------------------------------
 	modelLoaderVanquish = new Loader::ModelLoader("_src/_models/_vanquish/", "_src/_models/vanquish/modelParams.txt");
 	textureLoaderVanquish = new Loader::TextureLoader("_src/_models/_vanquish/", modelLoaderVanquish->getNumberOfMeshes());
 	modelVanquish = new Models::ModelPTN(modelLoaderVanquish, textureLoaderVanquish, shaderPTN1);
-	//
+
 	// modelLearnOpenGL1 = new Models::ModelLearnOpenGL(modelLoaderVanquish, textureLoaderVanquish, "_src/_models/vanquish/modelParams.txt", shaderOpenLearningOpenGL1);
-	// >>>> ------------------------------------------------------------------------
 	// SKYBOX
 	model_skyBox = new Models::Model_skyBox(shader_3, camera);
 	//
@@ -290,12 +277,8 @@ int main(int argc, char** argv)
 	//
 	// RENDERER
 	//
-	renderer = new Renderer::Renderer(camera);
-	// INIT MODELs
-	renderer->initSkyBoxRenderer(shader_3, model_skyBox);
-	// >>>> ------------------------------------------------------------------------
-	// renderer->initModelLearningOpenGL(shaderOpenLearningOpenGL1, modelLearnOpenGL1); // CURRENT
-	// >>>> ------------------------------------------------------------------------
+	renderer = new Renderer::Renderer();
+
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	glEnable(GL_CULL_FACE);
@@ -327,6 +310,5 @@ int main(int argc, char** argv)
 	}
 
 	glfwTerminate();
-
 	return 0;
 }
