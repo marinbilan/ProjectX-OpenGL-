@@ -104,13 +104,13 @@ public:
 	// LEARNING OPENGL
 	virtual GLuint const getObjectColorID()        const { return 0; }
 	virtual GLuint const getLightColorID()         const { return 0; }
+	// Depth Map
+	virtual GLuint const getLightSpaceMatrixID()   const { return 0; }
 	//
 	// OPERATORs
 	//			
 private:
-
 };
 }
 }
-
 #endif

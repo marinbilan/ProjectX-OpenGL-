@@ -20,6 +20,7 @@
 
 #include "FBOs\if\FBOIf.h"
 #include "FBOs\inc\WaterFBO.h"
+#include "FBOs\inc\FBOShaddowMapping.h"
 //
 // Shaders [ Projection Matrix]
 //
@@ -28,6 +29,7 @@ Shaders::Shader_Water_Tile*     shader_Water_Tile; // WATER
 Shaders::Shader_2*              shader_2;          // GUI
 Shaders::Shader_3*              shader_3;          // SKYBOX
 Shaders::ShaderLearningOpenGL1* shaderOpenLearningOpenGL1;
+Shaders::ShaderDepthMapFBO*     shaderDepthMapFBO1;
 //
 // Camera [ View ]
 //
@@ -56,6 +58,8 @@ Loader::TextureLoader* textureLoaderVanquish;
 //
 FBOs::WaterFBO* waterFBO1;
 FBOs::WaterFBO* waterFBO2;
+
+FBOs::FBOShaddowMapping* FBOShadowMapping1;
 //
 // RENDERER
 //
@@ -115,16 +119,31 @@ void RenderScene(GLfloat deltaTime)
 	waterFBO1->unbindCurrentFrameBuffer();
 	camera->invertCameraUp();
 	//
-	// RENDER NORMAL CAM // TODO: Create invertCam function in camera class then invert on begining and on end
+	// RENDER IN SHADOW MAP with shadow map shader
 	//
-	waterFBO2->bindRefractionFrameBuffer(); // FBO 2 [ NORMAL RIGHT GUI] texID = 12
+	float near_plane = 1.0f, far_plane = 7.5f;
+	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+
+	glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
+		                              glm::vec3(0.0f, 0.0f, 0.0f),
+		                              glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+
+	FBOShadowMapping1->bindFBOShadowMapping();
+	glClear(GL_DEPTH_BUFFER_BIT);
+	renderer->renderModelPTN(planeModelPTN, camera, modelVanquish, shaderPTN1); // render model with shaderDepthMapFBO1
+	FBOShadowMapping1->unbindFBOShadowMapping();
+	//
+	// RENDER NORMAL CAM
+	//
+	waterFBO1->bindRefractionFrameBuffer(); // FBO 2 [ NORMAL RIGHT GUI] texID = 12
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CLIP_DISTANCE0);
 
 	renderer->renderSkyBox(camera, model_skyBox);
 	// renderer->renderModelPTN(planeModelPTNBelow, camera, modelVanquish, shaderPTN1); // (y = -1)
 
-	waterFBO2->unbindCurrentFrameBuffer();
+	waterFBO1->unbindCurrentFrameBuffer();
 	// =============================================
 	// ----==== START RENDER IN MAIN SCREEN ====---- // RENDER order is IMPORTANT!
 	// =============================================
@@ -192,17 +211,13 @@ void characterModCallback(GLFWwindow* window, unsigned int keyCode, int modifier
 int main(int argc, char** argv)
 {
 	std::cout << "Starting GLFW context, OpenGL 3.3" << std::endl;
-	//
 	// Init GLFW
-	//
 	glfwInit();
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_SAMPLES, 8);
-	//
 	// Give me screen resolution
-	//
 	get_resolution(); 
 	std::cout << WIDTH << " " << HEIGHT << std::endl;
 
@@ -220,26 +235,22 @@ int main(int argc, char** argv)
 	glfwSetCharModsCallback(window, characterModCallback);
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	//
 	// Initialize GLEW to setup the OpenGL Function pointers
-	//
 	if (glewInit() != GLEW_OK)
 	{
 		std::cout << "Failed to initialize GLEW" << std::endl;
 	}
-	//
 	// SHADERs [ Projection ] Initialization (only once)
-	//
-	// >>>> ---------------------------------------------------------------------------------------------
-	shaderOpenLearningOpenGL1 = new Shaders::ShaderLearningOpenGL1(VSLearningOpenGL1, FSLearningOpenGL1);
-	// >>>> ---------------------------------------------------------------------------------------------
 	shaderPTN1 = new Shaders::ShaderPTN(VSPTN, FSPTN);
 	shader_Water_Tile = new Shaders::Shader_Water_Tile(VS_Water_Tile, FS_Water_Tile);
 	shader_2 = new Shaders::Shader_2(VS2, FS2); // GUI
 	shader_3 = new Shaders::Shader_3(VS3, FS3); // skyBox
+	shaderOpenLearningOpenGL1 = new Shaders::ShaderLearningOpenGL1(VSLearningOpenGL1, FSLearningOpenGL1);
+	shaderDepthMapFBO1 = new Shaders::ShaderDepthMapFBO(VSDepthMapFBO, FSDepthMapFBO);
 	// Shaders Info
 	//std::cout << *shaderOpenLearningOpenGL1;
-	std::cout << *shaderPTN1;
+	// std::cout << *shaderPTN1;
+	std::cout << *shaderDepthMapFBO1;
 	//std::cout << *shader_Water_Tile;
 	//std::cout << *shader_2;
 	//std::cout << *shader_3;
@@ -262,16 +273,20 @@ int main(int argc, char** argv)
 	//
 	waterFBO1 = new FBOs::WaterFBO();
 	waterFBO2 = new FBOs::WaterFBO();
-	//std::cout << "REF TEXTURE 1: "   << waterFBO1->getReflectionTexture() << std::endl;
-	//std::cout << "REF TEXTURE 2: " << waterFBO2->getRefractionTexture() << std::endl;
+	std::cout << "REF TEXTURE 1: "   << waterFBO1->getReflectionTexture() << std::endl;
+	std::cout << "REF TEXTURE 2: " << waterFBO2->getReflectionTexture() << std::endl;
+
+	FBOShadowMapping1 = new FBOs::FBOShaddowMapping(380, 180, WIDTH, HEIGHT);
+	std::cout << "FBO Shadow Map ID: " << FBOShadowMapping1->getFBOShadowMapID() << std::endl;
+	std::cout << "FBO Shadow Map Texture ID: " << FBOShadowMapping1->getFBOShadowMapTextureID() << std::endl;
 	//meshNM = new Models::Model_AssimpNormalMap("_src/_models/barrel/", shader_7, camera, light1);
 	// TO DO: clean variable names
 	//model_1 = new Models::Model_1(shader_1, camera, light1);
 	//
 	// GUIs
 	//
-	model_GUI1 = new Models::Model_GUI("sword.png", shader_2, 8, glm::vec3(-0.7f, 0.5f, 0.f), glm::vec3(0.3f));
-	model_GUI2 = new Models::Model_GUI("socuwan.png", shader_2, 12, glm::vec3(0.7f, 0.5f, 0.0f), glm::vec3(0.3));
+	model_GUI1 = new Models::Model_GUI("sword.png", shader_2, FBOShadowMapping1->getFBOShadowMapTextureID(), glm::vec3(-0.7f, 0.5f, 0.f), glm::vec3(0.3f));
+	model_GUI2 = new Models::Model_GUI("socuwan.png", shader_2, 9, glm::vec3(0.7f, 0.5f, 0.0f), glm::vec3(0.3));
 	// dudvMap
 	modelWaterTile = new Models::Model_Water_Tile("_src/water/waterDUDV.png", shader_Water_Tile, camera, 8, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(14.0f));
 	//

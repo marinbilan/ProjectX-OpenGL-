@@ -7,3 +7,4 @@
 #include "..\Db\ShadersDb\shaderDb_Water_Tile.h"
 #include "..\Db\ShadersDb\shaderDb_2.h" 
 #include "..\Db\ShadersDb\shaderDb_3.h" 
+#include "..\Db\ShadersDb\shaderDbDepthMapFBO.h"

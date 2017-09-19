@@ -15,7 +15,7 @@ Models::ModelPTN::ModelPTN(Loader::ModelLoader*           _modelPTNLoader,
 	// MODEL params
 	modelMatrix = glm::mat4(1.0f);
 	// Position
-	modelPosition = glm::vec3(0.0f, 5.0f, 0.0f);
+	modelPosition = glm::vec3(0.0f, 0.0f, 0.0f);
 	// Rotate around axe
 	angle = -1.55f;
 	modelRotateAround = glm::vec3(1.0f, 0.0f, 0.0f);
@@ -118,7 +118,7 @@ void Models::ModelPTN::render()
 		//
 		// uniform sampler2D modelTexture
 		//
-		glUniform1i(shader->getmodelTextureID(), i); // shader textureID from each mesh connect with GL_TEXTURE0, GL_TEXTURE1...
+		glUniform1i(shader->getmodelTextureID(), i); // shader textureID from each mesh connect with (i = 0 = GL_TEXTURE0), (i = 1 = GL_TEXTURE1) ...
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, texturesVectorId[i]);
 		//

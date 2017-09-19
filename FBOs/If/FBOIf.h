@@ -41,6 +41,13 @@ public:
 	int createTextureAttachment(int width, int height) { return 0; }
 	int createDepthTextureAttachment(int width, int height) { return 0; }
 	int createDepthBufferAttachment(int width, int height) { return 0; }
+	virtual void initShaddowMapFBO() {};
+	// FBO Shadow Mapping
+	virtual void createFBOShadowMapping() {}
+	virtual void bindFBOShadowMapping() {}
+	virtual void unbindFBOShadowMapping() {}
+	virtual GLuint getFBOShadowMapID() { return 0; }
+	virtual GLuint getFBOShadowMapTextureID() { return 0; }
 	//
 	// OPERATORs
 	//			

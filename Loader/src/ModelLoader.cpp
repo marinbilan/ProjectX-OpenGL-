@@ -89,8 +89,8 @@ void Loader::ModelLoader::initMesh(GLuint _index, const aiMesh* _paiMesh)
 		const aiVector3D* pTexCoord = _paiMesh->HasTextureCoords(0) ? &(_paiMesh->mTextureCoords[0][i]) : &Zero3D;
 
 		Vertex v(glm::vec3(pPos->x, pPos->y, pPos->z),
-			glm::vec2(pTexCoord->x, pTexCoord->y),
-			glm::vec3(pNormal->x, pNormal->y, pNormal->z));
+			     glm::vec2(pTexCoord->x, pTexCoord->y),
+			     glm::vec3(pNormal->x, pNormal->y, pNormal->z));
 
 		vertices.push_back(v);
 	}
@@ -104,7 +104,6 @@ void Loader::ModelLoader::initMesh(GLuint _index, const aiMesh* _paiMesh)
 	}
 
 	meshesVector[_index].init(vertices, indices);
-
 }
 
 void Loader::ModelLoader::MeshEntry::init(std::vector<Vertex>& _vertices, std::vector<unsigned int>& _indices)

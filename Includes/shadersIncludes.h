@@ -11,3 +11,4 @@
 #include "..\Shaders\inc\Shader_Water_Tile.h"
 #include "..\Shaders\inc\Shader_2.h"   // GUI           P   [ NO PROJECTION ] <pos | model >
 #include "..\Shaders\inc\Shader_3.h"   // SKYBOX        P   [ PROJECTION ]    <pos | proj, view >
+#include "..\Shaders\inc\ShaderDepthMapFBO.h"

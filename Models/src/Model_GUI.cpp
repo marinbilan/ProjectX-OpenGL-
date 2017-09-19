@@ -44,6 +44,7 @@ Models::Model_GUI::Model_GUI(char* _fileName,
 	//
 	// TEXTURE
 	//
+	/*
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	FIBITMAP*         dib = 0;            //pointer to the image data
 	BYTE*             bits = 0;           //image width and height
@@ -75,6 +76,7 @@ Models::Model_GUI::Model_GUI(char* _fileName,
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -1.5);
 
 	FreeImage_Unload(dib);
+	*/
 	//
 	// VERTEX ATTRIBUTE POINTER(s)
 	//

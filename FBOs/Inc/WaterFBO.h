@@ -32,6 +32,8 @@ public:
 	int createTextureAttachment(int width, int height);
 	int createDepthTextureAttachment(int width, int height);
 	int createDepthBufferAttachment(int width, int height);
+
+	virtual void initShaddowMapFBO();
 	//
 	// OPERATORs
 	//

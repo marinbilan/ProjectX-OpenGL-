@@ -12,6 +12,7 @@ FBOs::WaterFBO::WaterFBO()
 
 	initialiseReflectionFrameBuffer();
 	initialiseRefractionFrameBuffer();
+	// initShaddowMapFBO();
 }
 
 FBOs::WaterFBO::~WaterFBO()
@@ -66,27 +67,28 @@ void FBOs::WaterFBO::initialiseRefractionFrameBuffer() {
 }
 
 void FBOs::WaterFBO::bindFrameBuffer(int frameBuffer, int width, int height) {
-	glBindTexture(GL_TEXTURE_2D, 0);//To make sure the texture isn't bound
+	glBindTexture(GL_TEXTURE_2D, 0); //To make sure the another texture isn't bound
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 	glViewport(0, 0, width, height);
 }
 
+// 1
 int FBOs::WaterFBO::createFrameBuffer() {
 
 	GLuint frameBuffer;
 
 	glGenFramebuffers(1, &frameBuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-	glDrawBuffer(GL_COLOR_ATTACHMENT0);
+	glDrawBuffer(GL_COLOR_ATTACHMENT0); // Doesn t need this
 
 	return frameBuffer;
 }
-
+// 2
 int FBOs::WaterFBO::createTextureAttachment(int width, int height) {
 
 	GLuint texture;
 	glGenTextures(1, &texture);
-
+	std::cout << ">>> texture: " << texture << std::endl;
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 	// ALTERNATIVNO: glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, nullptr);
@@ -114,7 +116,7 @@ int FBOs::WaterFBO::createDepthTextureAttachment(int width, int height) {
 
 	return texture;
 }
-
+// 3
 int FBOs::WaterFBO::createDepthBufferAttachment(int width, int height) {
 
 	GLuint depthBuffer;
@@ -127,4 +129,35 @@ int FBOs::WaterFBO::createDepthBufferAttachment(int width, int height) {
 	return depthBuffer;
 }
 
+//
+// TESTING DODATNO
+//
+void FBOs::WaterFBO::initShaddowMapFBO()
+{
+	unsigned int depthMapFBO;
+	glGenFramebuffers(1, &depthMapFBO);
 
+	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
+	unsigned int depthMap;
+	glGenTextures(1, &depthMap);
+
+	glBindTexture(GL_TEXTURE_2D, depthMap);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+	SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//
+	// Create new function for this
+	//
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	std::cout << ">>> depthMapFBO (Buffer): " << depthMapFBO << std::endl;
+	std::cout << ">>> depthMap (Texture): " << depthMapFBO << std::endl;
+}
