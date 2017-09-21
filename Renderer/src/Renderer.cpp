@@ -1,7 +1,5 @@
 #include "../inc/Renderer.h"
-//
 // CONSTRUCTORs / DESTRUCTORs
-//
 Renderer::Renderer::Renderer() {};
 
 void Renderer::Renderer::renderSkyBox(Camera::Camera* _camera, 
