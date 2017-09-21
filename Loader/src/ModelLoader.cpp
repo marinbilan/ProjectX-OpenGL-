@@ -2,22 +2,18 @@
 #include <string>
 
 #include "../../Loader/inc/ModelLoader.h"
-//
 // CONSTRUCTORs / DESTRUCTORs
-//
 Loader::ModelLoader::ModelLoader(char* _modelName,
 	                             char*  _textureShaderParams)
 {
 	modelMatrix = glm::mat4(1.0f);
 	modelPath = _modelName;
 	textureShaderParams = _textureShaderParams;
-	//
 	// CREATE MODEL
-	//
 	Assimp::Importer Importer;
 	std::string model = "model.3ds";
 
-	const aiScene* pScene = Importer.ReadFile(modelPath + model, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
+	pScene = Importer.ReadFile(modelPath + model, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
 
 	if (pScene)
 	{
@@ -34,6 +30,7 @@ Loader::ModelLoader::ModelLoader(char* _modelName,
 Loader::ModelLoader::~ModelLoader()
 {
 	std::cout << "ModelLoader destructor called!" << std::endl;
+	// delete pScene;
 }
 //
 // FUNCTION(s) - Add Clean function
@@ -49,10 +46,10 @@ bool Loader::ModelLoader::initFromScene(const aiScene* _pScene)
 	std::string str;
 
 	for (unsigned int i = 0; i < meshesVector.size(); i++) {
-
-		const aiMesh* paiMesh = _pScene->mMeshes[i];		
+		const aiMesh* paiMesh = _pScene->mMeshes[i];
 		initMesh(i, paiMesh);
 		// Parse params
+		/*
         std::getline(modelParams, str);
 		std::istringstream buf(str);
 		for (std::string word; buf >> word;)
@@ -71,6 +68,7 @@ bool Loader::ModelLoader::initFromScene(const aiScene* _pScene)
 			}
 		}
 		std::cout << std::endl;
+		*/
 	}
 
 	return true;
@@ -102,7 +100,6 @@ void Loader::ModelLoader::initMesh(GLuint _index, const aiMesh* _paiMesh)
 		indices.push_back(Face.mIndices[1]);
 		indices.push_back(Face.mIndices[2]);
 	}
-
 	meshesVector[_index].init(vertices, indices);
 }
 

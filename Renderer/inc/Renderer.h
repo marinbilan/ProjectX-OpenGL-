@@ -19,6 +19,7 @@ public:
 		                        Camera::Camera* _camera,
 		                        Models::ModelPTN* _modelPTN, 
 		                        Shaders::ShadersIf::ShadersIf* _shader);
+	virtual void renderDepthMap(Models::ModelPTN* _modelPTN, Shaders::ShadersIf::ShadersIf* _shader);
 	virtual void renderModelLearningOpenGL(Camera::Camera* _camera,  
 		                                   Shaders::ShadersIf::ShadersIf* _shader,
 		                                   Models::ModelLearnOpenGL* _modelLearningOpenGL);

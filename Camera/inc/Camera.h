@@ -12,7 +12,7 @@ class Camera : public CameraIf::CameraIf
 {
 public:
 	// CONSTRUCTORs / DESTRUCTORs	
-	Camera();
+	Camera(glm::vec3 _cameraPos, glm::vec3 _cameraFront, glm::vec3 _cameraUp);
 
 	~Camera();
 	// FUNCTIONs

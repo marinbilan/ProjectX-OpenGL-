@@ -2,11 +2,6 @@
 #define MODELLOADER__
 
 #include "../if/LoaderIf.h"
-//
-// GLM
-//
-#include "../../__libs/glm/glm/glm.hpp"
-#include "../../__libs/glm/glm/gtc/matrix_transform.hpp"
 
 namespace Loader
 {
@@ -20,35 +15,27 @@ struct Vertex
 
 	Vertex(glm::vec3& _position, glm::vec2& _textureCoord, glm::vec3& _normal)
 	{
-		position = _position;
+		position     = _position;
 		textureCoord = _textureCoord;
-		normal = _normal;
+		normal       = _normal;
 	}
 };
 
 class ModelLoader : public LoaderIf::LoaderIf
 {
 public:
-	//
 	// CONSTRUCTORs / DESTRUCTORs
-	//
 	ModelLoader(char* _modelName,
 		        char*  _textureShaderParams);
 	~ModelLoader();
-	//
 	// FUNCTIONs
-	// 
 	virtual GLuint getNumberOfMeshes();
 
 	virtual bool initFromScene(const aiScene* _pScene);
 	virtual void initMesh(GLuint _index, const aiMesh* _paiMesh);
-	//
 	// OPERATORs
-	//
 	friend std::ostream& operator<<(std::ostream& output, ModelLoader& info)
 	{
-
-
 		return output;
 	}
 
@@ -61,9 +48,6 @@ public:
 		GLuint IBO;
 
 		GLuint numIndices;
-
-		GLfloat shineDamper;
-		GLfloat reflectivity;
 	};
 
 	GLuint VAO;	
@@ -72,8 +56,10 @@ public:
 	glm::mat4 modelMatrix;
 	std::vector<MeshEntry> meshesVector;
 
+	const aiScene* pScene;
+
 	char* modelPath;
-	char*  textureShaderParams;
+	char* textureShaderParams;
 };
 }
 

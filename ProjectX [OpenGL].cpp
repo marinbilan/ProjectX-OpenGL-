@@ -38,6 +38,9 @@ Camera::Camera* camera;
 // Models
 //
 Models::ModelPTN*         modelVanquish;
+Models::ModelPTN*         modelTest1;
+Models::ModelPTN*         modelTest2;
+
 Models::ModelLearnOpenGL* modelLearnOpenGL1;
 Models::Model_skyBox*     model_skyBox;
 Models::Model_Water_Tile* modelWaterTile;
@@ -53,6 +56,9 @@ GLfloat light2[] = { 0.0f, 15.0f, 15.0f };
 //
 Loader::ModelLoader*   modelLoaderVanquish;
 Loader::TextureLoader* textureLoaderVanquish;
+
+Loader::ModelLoader*   loadModelTest1;
+Loader::TextureLoader* loadTextureTest1;
 //
 // BUFFERs
 //
@@ -114,7 +120,7 @@ void RenderScene(GLfloat deltaTime)
 	glEnable(GL_CLIP_DISTANCE0);
 
 	renderer->renderSkyBox(camera, model_skyBox);                                    // RENDER FROM BELOW ( Invert CAM )
-	renderer->renderModelPTN(planeModelPTNAbove, camera, modelVanquish, shaderPTN1); // RENDER FROM BELOW ( Invert CAM )
+	//renderer->renderModelPTN(planeModelPTNAbove, camera, modelVanquish, shaderPTN1); // RENDER FROM BELOW ( Invert CAM )
 
 	waterFBO1->unbindCurrentFrameBuffer();
 	camera->invertCameraUp();
@@ -123,15 +129,19 @@ void RenderScene(GLfloat deltaTime)
 	//
 	float near_plane = 1.0f, far_plane = 7.5f;
 	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-
-	glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
-		                              glm::vec3(0.0f, 0.0f, 0.0f),
-		                              glm::vec3(0.0f, 1.0f, 0.0f));
+	// Stara vrijednost zamijenjena novom testiranom camerom
+	//glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
+	//	                              glm::vec3(0.0f, 0.0f, 0.0f),
+	//	                              glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 lightView = glm::lookAt(glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 
 	FBOShadowMapping1->bindFBOShadowMapping();
 	glClear(GL_DEPTH_BUFFER_BIT);
-	renderer->renderModelPTN(planeModelPTN, camera, modelVanquish, shaderPTN1); // render model with shaderDepthMapFBO1
+	glUseProgram(shaderDepthMapFBO1->getShaderProgramID());
+	glUniformMatrix4fv(shaderDepthMapFBO1->getLightSpaceMatrixID(), 1, GL_FALSE, &lightSpaceMatrix[0][0]);
+	renderer->renderDepthMap(modelTest1, shaderDepthMapFBO1); // render model with shaderDepthMapFBO1
+	renderer->renderDepthMap(modelTest2, shaderDepthMapFBO1);
 	FBOShadowMapping1->unbindFBOShadowMapping();
 	//
 	// RENDER NORMAL CAM
@@ -152,9 +162,11 @@ void RenderScene(GLfloat deltaTime)
 	// 1] SkyBox
 	renderer->renderSkyBox(camera, model_skyBox);
 	// 2] Water
-	renderer->renderWater(shader_Water_Tile, modelWaterTile);
+	// renderer->renderWater(shader_Water_Tile, modelWaterTile);
 	// 3] Model
-	renderer->renderModelPTN(planeModelPTN, camera, modelVanquish, shaderPTN1);
+	// renderer->renderModelPTN(planeModelPTN, camera, modelVanquish, shaderPTN1);
+	renderer->renderModelPTN(planeModelPTN, camera, modelTest1, shaderPTN1);
+	renderer->renderModelPTN(planeModelPTN, camera, modelTest2, shaderPTN1);
 	// renderer->renderModelLearningOpenGL(shaderOpenLearningOpenGL1, modelLearnOpenGL1);
 	// =============================================
 	// ----==== STOP RENDER IN MAIN SCREEN ====----
@@ -162,7 +174,7 @@ void RenderScene(GLfloat deltaTime)
 
 	// RENDER IN GUIs
 	model_GUI1->renderModel();  // FBO1 (texID = 8) TODO Hardcoded numbers
-	model_GUI2->renderModel();  // FBO2 (texID = 12) TODO
+	// model_GUI2->renderModel();  // FBO2 (texID = 12) TODO
 
 	// ----==== RENDER NORMAL MAP MODEL ====----
 	// glBindVertexArray(6);
@@ -247,23 +259,37 @@ int main(int argc, char** argv)
 	shader_3 = new Shaders::Shader_3(VS3, FS3); // skyBox
 	shaderOpenLearningOpenGL1 = new Shaders::ShaderLearningOpenGL1(VSLearningOpenGL1, FSLearningOpenGL1);
 	shaderDepthMapFBO1 = new Shaders::ShaderDepthMapFBO(VSDepthMapFBO, FSDepthMapFBO);
-	// Shaders Info
-	//std::cout << *shaderOpenLearningOpenGL1;
-	// std::cout << *shaderPTN1;
+	// SHADERs INFO
 	std::cout << *shaderDepthMapFBO1;
-	//std::cout << *shader_Water_Tile;
-	//std::cout << *shader_2;
-	//std::cout << *shader_3;
-	//
-	// CAMERA [ View ] Initialization
-	//
-	camera = new Camera::Camera();
-	//
+	// CAMERA [ViewMatrix] INIT
+	camera = new Camera::Camera(glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // Light position
 	// MODELS
-	//
-	modelLoaderVanquish = new Loader::ModelLoader("_src/_models/_vanquish/", "_src/_models/vanquish/modelParams.txt");
-	textureLoaderVanquish = new Loader::TextureLoader("_src/_models/_vanquish/", modelLoaderVanquish->getNumberOfMeshes());
-	modelVanquish = new Models::ModelPTN(modelLoaderVanquish, textureLoaderVanquish, shaderPTN1);
+	// modelLoaderVanquish = new Loader::ModelLoader("_src/_models/_vanquish/", "_src/_models/vanquish/modelParams.txt");
+	// textureLoaderVanquish = new Loader::TextureLoader("_src/_models/_vanquish/", modelLoaderVanquish->getNumberOfMeshes());
+	// modelVanquish = new Models::ModelPTN(modelLoaderVanquish, textureLoaderVanquish, shaderPTN1, glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+
+	//loadModelTest1 = new Loader::ModelLoader("_src/_models/cubeNM/", "_src/_models/_dagger/modelParams.txt");
+	//loadTextureTest1 = new Loader::TextureLoader("_src/_models/cubeNM/", loadModelTest1->getNumberOfMeshes());
+
+	modelTest1 = new Models::ModelPTN("_src/_models/cubeNM/",
+		"cube",
+		loadModelTest1, 
+		loadTextureTest1, 
+		shaderPTN1, 
+		glm::vec3(0.0f, 0.0f, 0.0f), 
+		glm::vec3(0.01f, 0.01f, 0.001f),
+		glm::vec3(1.0f, 0.0f, 0.0f),
+		-1.55f);
+
+	modelTest2 = new Models::ModelPTN("_src/_models/cubeNM/",
+		"cube", 
+		loadModelTest1, 
+		loadTextureTest1, 
+		shaderPTN1, 
+		glm::vec3(0.0f, 0.2f, 0.0f), 
+		glm::vec3(0.001f, 0.001f, 0.001f),
+		glm::vec3(1.0f, 0.0f, 0.0f),
+		-1.55f);
 
 	// modelLearnOpenGL1 = new Models::ModelLearnOpenGL(modelLoaderVanquish, textureLoaderVanquish, "_src/_models/vanquish/modelParams.txt", shaderOpenLearningOpenGL1);
 	// SKYBOX
@@ -273,12 +299,7 @@ int main(int argc, char** argv)
 	//
 	waterFBO1 = new FBOs::WaterFBO();
 	waterFBO2 = new FBOs::WaterFBO();
-	std::cout << "REF TEXTURE 1: "   << waterFBO1->getReflectionTexture() << std::endl;
-	std::cout << "REF TEXTURE 2: " << waterFBO2->getReflectionTexture() << std::endl;
-
 	FBOShadowMapping1 = new FBOs::FBOShaddowMapping(380, 180, WIDTH, HEIGHT);
-	std::cout << "FBO Shadow Map ID: " << FBOShadowMapping1->getFBOShadowMapID() << std::endl;
-	std::cout << "FBO Shadow Map Texture ID: " << FBOShadowMapping1->getFBOShadowMapTextureID() << std::endl;
 	//meshNM = new Models::Model_AssimpNormalMap("_src/_models/barrel/", shader_7, camera, light1);
 	// TO DO: clean variable names
 	//model_1 = new Models::Model_1(shader_1, camera, light1);

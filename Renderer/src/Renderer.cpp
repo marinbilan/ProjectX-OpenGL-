@@ -26,9 +26,9 @@ void Renderer::Renderer::renderModelPTN(GLfloat* _planeModelPTN,
 	                                    Shaders::ShadersIf::ShadersIf* _shader)
 {
 	// Light Position
-	lightPositionModelPTN[0] = 0.0f;
-	lightPositionModelPTN[1] = 5.0f;
-	lightPositionModelPTN[2] = 15.0f;
+	lightPositionModelPTN[0] = 25.0f;
+	lightPositionModelPTN[1] = 25.0f;
+	lightPositionModelPTN[2] = 25.0f;
 	// Light Color
 	lightColorModelPTN[0] = 1.0f;
 	lightColorModelPTN[1] = 1.0f;
@@ -42,6 +42,14 @@ void Renderer::Renderer::renderModelPTN(GLfloat* _planeModelPTN,
 	glUniform3f(_shader->getlightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
 	// RENDER MODEL
 	_modelPTN->render();
+	glUseProgram(0);
+}
+
+void Renderer::Renderer::renderDepthMap(Models::ModelPTN* _modelPTN, Shaders::ShadersIf::ShadersIf* _shader)
+{
+	glUseProgram(_shader->getShaderProgramID());
+	// RENDER MODEL
+	_modelPTN->renderDepth(_shader);
 	glUseProgram(0);
 }
 

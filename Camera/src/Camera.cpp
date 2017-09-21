@@ -5,14 +5,15 @@
 //
 // CONSTRUCTORs / DESTRUCTOR(s)
 //
-Camera::Camera::Camera()
+Camera::Camera::Camera(glm::vec3 _cameraPos, glm::vec3 _cameraFront, glm::vec3 _cameraUp) :
+	            cameraPos(_cameraPos), cameraFront(_cameraFront), cameraUp(_cameraUp)
 {
 	//
 	// INITIALIZE CAMERA POSITION
 	//
-	cameraPos =   glm::vec3(0.0f, 0.0f, 15.0f);
-	cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-	cameraUp =    glm::vec3(0.0f, 1.0f, 0.0f);
+	// cameraPos =   glm::vec3(0.0f, 0.0f, 15.0f);
+	// cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+	// cameraUp =    glm::vec3(0.0f, 1.0f, 0.0f);
 }
 
 Camera::Camera::~Camera()
