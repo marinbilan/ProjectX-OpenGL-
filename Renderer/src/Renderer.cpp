@@ -64,3 +64,65 @@ void Renderer::Renderer::renderModelLearningOpenGL(Camera::Camera* _camera,
 	_modelLearningOpenGL->render();
 	glUseProgram(0);
 }
+// NEW
+
+void Renderer::Renderer::renderStaticModel(GLfloat* _planeModelPTN,
+	                                       Camera::Camera* _camera, 
+	                                       Models::ModelsIf::ModelsIf* _staticModel,
+	                                       Shaders::ShadersIf::ShadersIf* _shader)
+{
+	// Light Position
+	lightPositionModelPTN[0] = 25.0f;
+	lightPositionModelPTN[1] = 25.0f;
+	lightPositionModelPTN[2] = 25.0f;
+	// Light Color
+	lightColorModelPTN[0] = 1.0f;
+	lightColorModelPTN[1] = 1.0f;
+	lightColorModelPTN[2] = 1.0f;
+
+	glUseProgram(_shader->getShaderProgramID());
+	_camera->updateCameraUniformInv(_shader);
+	// UPDATE UNIFORMs (Not related to model)
+	glUniform4f(_shader->getplaneID(), _planeModelPTN[0], _planeModelPTN[1], _planeModelPTN[2], _planeModelPTN[3]);
+	glUniform3f(_shader->getLightID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
+	glUniform3f(_shader->getlightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
+
+	glBindVertexArray(_staticModel->getModelVAO());
+
+	glEnableVertexAttribArray(0); // VERTEXs
+	glEnableVertexAttribArray(1); // TEXTURECOORDs
+	glEnableVertexAttribArray(2); // NORMALs
+
+	for (unsigned int i = 0; i < _staticModel->getNumOfMeshes(); i++) {
+		glBindBuffer(GL_ARRAY_BUFFER, _staticModel->getVectorOfVBOs()[i]);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _staticModel->getVectorOfIBOs()[i]);
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), 0);                 // 
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
+
+		glUseProgram(_shader->getShaderProgramID()); // One shader for all meshes for now
+													//
+													// UPDATE UNIFORMs [ Update only uniforms related to model ]
+													//
+													// VERTEX SHADER
+		glUniformMatrix4fv(_shader->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
+		// FRAGMENT SHADER
+		glUniform1f(_shader->getshineDamperID(), 15.0f);
+		glUniform1f(_shader->getreflectivityID(), 0.6f);
+
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, _staticModel->getTexturesVectorId()[i]);
+		//
+		// DRAW MESHEs
+		//
+		glDrawElements(GL_TRIANGLES, _staticModel->getNumberOfIndicesVector()[i], GL_UNSIGNED_INT, 0);
+
+		glUseProgram(0);
+	}
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+
+	glBindVertexArray(0);
+}

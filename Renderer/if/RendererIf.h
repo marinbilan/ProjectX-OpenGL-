@@ -1,8 +1,12 @@
 #ifndef RENDERERIF__
 #define RENDERERIF__
 
+#include "..\..\Camera\if\CameraIf.h"
 #include "..\..\Camera\inc\Camera.h"
 #include "..\..\Shaders\if\ShaderIf.h"
+#include "..\..\Models\if\ModelIf.h"
+
+
 #include "..\..\Models\inc\Model_skyBox.h"
 #include "..\..\Models\inc\Model_Water_Tile.h"
 #include "..\..\Models\inc\ModelPTN.h"
@@ -33,6 +37,11 @@ public:
 	virtual void renderModelLearningOpenGL(Shaders::ShadersIf::ShadersIf* _shader,
 		                                   Camera::Camera* _camera,
 		                                   Models::ModelLearnOpenGL* _modelLearningOpenGL) {}
+	// NEW
+	virtual void renderStaticModel(GLfloat* _planeModelPTN,
+		                           Camera::Camera* _camera, 
+		                           Models::ModelsIf::ModelsIf* _staticModel,
+		                           Shaders::ShadersIf::ShadersIf* _shader) {}
 	// OPERATORs	
 };
 }

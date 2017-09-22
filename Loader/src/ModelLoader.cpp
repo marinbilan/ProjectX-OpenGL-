@@ -41,7 +41,7 @@ bool Loader::ModelLoader::initFromScene(const aiScene* _pScene)
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	
+
 	std::ifstream modelParams(textureShaderParams);
 	std::string str;
 
@@ -106,10 +106,9 @@ void Loader::ModelLoader::initMesh(GLuint _index, const aiMesh* _paiMesh)
 void Loader::ModelLoader::MeshEntry::init(std::vector<Vertex>& _vertices, std::vector<unsigned int>& _indices)
 {
 	numIndices = _indices.size();
-
+	
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _vertices.size(), &_vertices[0], GL_STATIC_DRAW);
 
 	glGenBuffers(1, &IBO);

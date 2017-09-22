@@ -165,7 +165,8 @@ void RenderScene(GLfloat deltaTime)
 	// renderer->renderWater(shader_Water_Tile, modelWaterTile);
 	// 3] Model
 	// renderer->renderModelPTN(planeModelPTN, camera, modelVanquish, shaderPTN1);
-	renderer->renderModelPTN(planeModelPTN, camera, modelTest1, shaderPTN1);
+	// renderer->renderModelPTN(planeModelPTN, camera, modelTest1, shaderPTN1);
+	renderer->renderStaticModel(planeModelPTN, camera, modelTest1, shaderPTN1);
 	renderer->renderModelPTN(planeModelPTN, camera, modelTest2, shaderPTN1);
 	// renderer->renderModelLearningOpenGL(shaderOpenLearningOpenGL1, modelLearnOpenGL1);
 	// =============================================

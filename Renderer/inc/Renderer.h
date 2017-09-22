@@ -23,6 +23,11 @@ public:
 	virtual void renderModelLearningOpenGL(Camera::Camera* _camera,  
 		                                   Shaders::ShadersIf::ShadersIf* _shader,
 		                                   Models::ModelLearnOpenGL* _modelLearningOpenGL);
+	// NEW
+	virtual void renderStaticModel(GLfloat* _planeModelPTN,
+		                           Camera::Camera* _camera, 
+		                           Models::ModelsIf::ModelsIf* _staticModel,
+		                           Shaders::ShadersIf::ShadersIf* _shader);
 	// OPERATORs
 private:
 	GLfloat distance;

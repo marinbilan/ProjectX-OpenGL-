@@ -40,6 +40,8 @@ public:
 	virtual void loadSingleTexture2DID(char* _textureName) {};
 	virtual void loadVectorOfTextures2DID()                {};
 	virtual GLuint getSingleTexture2DID()                  { return 0; };
+	virtual std::vector<GLuint> getVectorOfVBOs()          { return dummyReturn; };
+	virtual std::vector<GLuint> getVectorOfIBOs()          { return dummyReturn; };
 	virtual std::vector<GLuint> getVectorOfTextures2DID()  { return dummyReturn; };
 private:
 	std::vector<GLuint> dummyReturn;

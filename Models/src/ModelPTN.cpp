@@ -19,27 +19,33 @@ Models::ModelPTN::ModelPTN(std::string                    _modelPath,
 	                       angle(_angle)
 {
 	// MODEL and TEXTUREs
-	modelPTNLoader = new Loader::ModelLoader(const_cast<char *>(modelPath.c_str()), "_src/_models/_dagger/modelParams.txt");
+	modelPTNLoader = new Loader::ModelLoader(const_cast<char *>(modelPath.c_str()), "_src/_models/_dagger/modelParams.txt"); // Remove params
 	textureLoader = new Loader::TextureLoader(const_cast<char *>(modelPath.c_str()), modelPTNLoader->getNumberOfMeshes());
+	// GET VAO
+	VAO = modelPTNLoader->VAO;
+	numOfMeshes = modelPTNLoader->meshesVector.size();
+	// TODO clean up this:
+	for (unsigned int i = 0; i < numOfMeshes; i++)
+	{
+		vectorOfVBOs.push_back(modelPTNLoader->meshesVector[i].VBO);
+		vectorOfIBOs.push_back(modelPTNLoader->meshesVector[i].IBO);
+		numberOfIndicesForEachMesh.push_back(modelPTNLoader->meshesVector[i].numIndices);
+	}
+	// GET Textures IDs
+	texturesVectorId = textureLoader->getVectorOfTextures2DID();
 
 	modelMatrix = glm::mat4(1.0f);
-	// angle = -1.55f;
-	// modelRotateAround = glm::vec3(1.0f, 0.0f, 0.0f);
 	modelMatrix = glm::translate(glm::mat4(1.0f), modelPosition);
 	modelMatrix = glm::rotate(modelMatrix, angle, modelRotateAround);
 	modelMatrix = glm::scale(modelMatrix, modelScale);
-	shader         = _shader;
-	// GET Textures IDs
-	texturesVectorId = textureLoader->getVectorOfTextures2DID();
+	shader         = _shader; // Remove this
 }
 
 Models::ModelPTN::~ModelPTN()
 {
 	std::cout << "ModelPTN destructor called!" << std::endl;
 }
-//
-// FUNCTION(s) - Add Clean function
-// 
+// FUNCTIONs
 // SET
 void Models::ModelPTN::setModelPosition(glm::vec3 _modelPosition)
 {
@@ -75,6 +81,41 @@ void Models::ModelPTN::setModelRotation(glm::vec3 _modelRotateAround, GLfloat _a
 	glUseProgram(0);
 }
 // GET
+GLint Models::ModelPTN::getNumOfMeshes()
+{
+	return numOfMeshes;
+}
+
+GLint Models::ModelPTN::getModelVAO()
+{
+	return VAO;
+}
+
+std::vector<GLint> Models::ModelPTN::getVectorOfVBOs()
+{
+	return vectorOfVBOs;
+}
+
+std::vector<GLint> Models::ModelPTN::getVectorOfIBOs()
+{
+	return vectorOfIBOs;
+}
+
+std::vector<GLuint> Models::ModelPTN::getTexturesVectorId()
+{
+	return texturesVectorId;
+}
+
+std::vector<GLuint> Models::ModelPTN::getNumberOfIndicesVector()
+{
+	return numberOfIndicesForEachMesh;
+}
+
+glm::mat4 Models::ModelPTN::getModelMatrix()
+{
+	return modelMatrix;
+}
+
 glm::vec3 Models::ModelPTN::getModelPosition()
 {
 	return modelPosition;
@@ -90,7 +131,7 @@ glm::vec3 Models::ModelPTN::getModelRotation()
 	return modelRotateAround;
 }
 
-GLuint Models::ModelPTN::getModelAngle()
+GLfloat Models::ModelPTN::getModelAngle()
 {
 	return angle;
 }
@@ -106,8 +147,12 @@ void Models::ModelPTN::render()
 	glEnableVertexAttribArray(2); // NORMALs
 
 	for (unsigned int i = 0; i < modelPTNLoader->meshesVector.size(); i++) {
-		glBindBuffer(GL_ARRAY_BUFFER, modelPTNLoader->meshesVector[i].VBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelPTNLoader->meshesVector[i].IBO);
+		//glBindBuffer(GL_ARRAY_BUFFER, modelPTNLoader->meshesVector[i].VBO);
+		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelPTNLoader->meshesVector[i].IBO);
+		// glBindBuffer(GL_ARRAY_BUFFER, vectorOfVBOs[i]);
+		// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vectorOfIBOs[i]);
+		glBindBuffer(GL_ARRAY_BUFFER, getVectorOfVBOs()[i]);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, getVectorOfIBOs()[i]);
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), 0);                 // 
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
@@ -118,20 +163,23 @@ void Models::ModelPTN::render()
 		// UPDATE UNIFORMs [ Update only uniforms related to model ]
 		//
 		// VERTEX SHADER
-		glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
+		// glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
+		glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &getModelMatrix()[0][0]);
 		// FRAGMENT SHADER
 		glUniform1f(shader->getshineDamperID(), 15.0f);
 		glUniform1f(shader->getreflectivityID(), 0.6f);
 		//
 		// uniform sampler2D modelTexture
 		//
-		glUniform1i(shader->getmodelTextureID(), i); // shader textureID from each mesh connect with (i = 0 = GL_TEXTURE0), (i = 1 = GL_TEXTURE1) ...
+		// glUniform1i(shader->getmodelTextureID(), i); // shader textureID from each mesh connect with (i = 0 = GL_TEXTURE0), (i = 1 = GL_TEXTURE1) ...
 		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, texturesVectorId[i]);
+		// glBindTexture(GL_TEXTURE_2D, texturesVectorId[i]);
+		glBindTexture(GL_TEXTURE_2D, getTexturesVectorId()[i]);
 		//
 		// DRAW MESHEs
 		//
-		glDrawElements(GL_TRIANGLES, modelPTNLoader->meshesVector[i].numIndices, GL_UNSIGNED_INT, 0);
+		// glDrawElements(GL_TRIANGLES, modelPTNLoader->meshesVector[i].numIndices, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, getNumberOfIndicesVector()[i], GL_UNSIGNED_INT, 0);
 
 		glUseProgram(0);
 	}

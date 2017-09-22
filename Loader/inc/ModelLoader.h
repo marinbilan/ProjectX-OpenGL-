@@ -30,7 +30,6 @@ public:
 	~ModelLoader();
 	// FUNCTIONs
 	virtual GLuint getNumberOfMeshes();
-
 	virtual bool initFromScene(const aiScene* _pScene);
 	virtual void initMesh(GLuint _index, const aiMesh* _paiMesh);
 	// OPERATORs
@@ -39,25 +38,22 @@ public:
 		return output;
 	}
 
-//private:
 	struct MeshEntry 
 	{
 		void init(std::vector<Vertex>& _vertices, std::vector<unsigned int>& _indices);
 
 		GLuint VBO;
 		GLuint IBO;
-
+		//std::vector<GLuint> vectorOfVBOs;
+		//std::vector<GLuint> vectorOfIBOs;
 		GLuint numIndices;
 	};
 
 	GLuint VAO;	
 	GLuint numberOfMeshes;
-
 	glm::mat4 modelMatrix;
 	std::vector<MeshEntry> meshesVector;
-
 	const aiScene* pScene;
-
 	char* modelPath;
 	char* textureShaderParams;
 };
