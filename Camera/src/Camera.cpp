@@ -125,4 +125,19 @@ void Camera::Camera::updateCameraUniformInv(Shaders::ShadersIf::ShadersIf* shade
 	glUniformMatrix4fv(shader->getViewMatrixInvID(), 1, GL_FALSE, &viewMatrixInv[0][0]);
 }
 
+// NEW
 
+glm::mat4 Camera::Camera::getViewMatrix()
+{
+	return viewMatrix;
+}
+
+void Camera::Camera::invertCameraMatrix()
+{
+	viewMatrixInv = glm::inverse(viewMatrix);
+}
+
+glm::mat4 Camera::Camera::getInvViewMatrix()
+{
+	return viewMatrixInv;
+}

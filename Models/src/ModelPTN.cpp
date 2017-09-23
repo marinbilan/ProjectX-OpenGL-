@@ -81,22 +81,17 @@ void Models::ModelPTN::setModelRotation(glm::vec3 _modelRotateAround, GLfloat _a
 	glUseProgram(0);
 }
 // GET
-GLint Models::ModelPTN::getNumOfMeshes()
-{
-	return numOfMeshes;
-}
-
-GLint Models::ModelPTN::getModelVAO()
+GLuint Models::ModelPTN::getModelVAO()
 {
 	return VAO;
 }
 
-std::vector<GLint> Models::ModelPTN::getVectorOfVBOs()
+std::vector<GLuint> Models::ModelPTN::getVectorOfVBOs()
 {
 	return vectorOfVBOs;
 }
 
-std::vector<GLint> Models::ModelPTN::getVectorOfIBOs()
+std::vector<GLuint> Models::ModelPTN::getVectorOfIBOs()
 {
 	return vectorOfIBOs;
 }
@@ -109,6 +104,11 @@ std::vector<GLuint> Models::ModelPTN::getTexturesVectorId()
 std::vector<GLuint> Models::ModelPTN::getNumberOfIndicesVector()
 {
 	return numberOfIndicesForEachMesh;
+}
+
+GLuint Models::ModelPTN::getNumOfMeshes()
+{
+	return numOfMeshes;
 }
 
 glm::mat4 Models::ModelPTN::getModelMatrix()

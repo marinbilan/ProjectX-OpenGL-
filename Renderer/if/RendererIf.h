@@ -39,7 +39,7 @@ public:
 		                                   Models::ModelLearnOpenGL* _modelLearningOpenGL) {}
 	// NEW
 	virtual void renderStaticModel(GLfloat* _planeModelPTN,
-		                           Camera::Camera* _camera, 
+		                           Camera::CameraIf::CameraIf* _camera,
 		                           Models::ModelsIf::ModelsIf* _staticModel,
 		                           Shaders::ShadersIf::ShadersIf* _shader) {}
 	// OPERATORs	

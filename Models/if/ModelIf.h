@@ -28,18 +28,19 @@ public:
 		std::cout << "ModelsIf destructor called!" << std::endl;
 	}
 	// FUNCTIONs
-	virtual void VertexAttribPointers() {}
 	// SET
-	virtual void setModelPosition(glm::vec3 _modelPosition) {}
-	virtual void setModelScale() {}
-	virtual void setModelRotation() {}
+	virtual void setModelPosition(glm::vec3 _modelPosition)                     {}
+	virtual void setModelScale(glm::vec3 _modelScale)                           {}
+	virtual void setModelRotation(glm::vec3 _modelRotateAround, GLfloat _angle) {}
 	// GET
-	virtual GLint     getModelVAO()                  { return 0; };
-	virtual std::vector<GLint> getVectorOfVBOs()     { return dummyVec; }
-	virtual std::vector<GLint> getVectorOfIBOs()     { return dummyVec; }
-	virtual std::vector<GLuint> getTexturesVectorId() { return dummyVec2; }
-	virtual std::vector<GLuint> getNumberOfIndicesVector() { return dummyVec2; }
-	virtual GLint     getNumOfMeshes()   { return 0; };
+	virtual GLuint getModelVAO() { return 0; };
+
+	virtual std::vector<GLuint> getVectorOfVBOs()          { return dummyVec; }
+	virtual std::vector<GLuint> getVectorOfIBOs()          { return dummyVec; }
+	virtual std::vector<GLuint> getTexturesVectorId()      { return dummyVec; }
+	virtual std::vector<GLuint> getNumberOfIndicesVector() { return dummyVec; }
+	virtual GLuint getNumOfMeshes()                        { return 0; };
+
 	virtual glm::mat4 getModelMatrix()   { return  dummyMat4x4; }
 	virtual glm::vec3 getModelPosition() { return glm::vec3(0.0, 0.0, 0.0); }
 	virtual glm::vec3 getModelScale()    { return glm::vec3(0.0, 0.0, 0.0); }
@@ -51,8 +52,7 @@ public:
 	// OPERATORs		
 private:
 	// DUMMY RETURN
-	std::vector<GLint> dummyVec;
-	std::vector<GLuint> dummyVec2;
+	std::vector<GLuint> dummyVec;
 	glm::mat4 dummyMat4x4;
 };
 }

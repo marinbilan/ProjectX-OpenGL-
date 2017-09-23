@@ -21,14 +21,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
-
 	if (key == GLFW_KEY_C)
 	{
 		char c;
 		std::cout << "> ";	
 		std::cin >> c;
-	}
-		
+	}		
 	if (key >= 0 && key < 1024)
 	{
 		if (action == GLFW_PRESS)
@@ -73,26 +71,29 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	cameraFront = glm::normalize(front);
 	
 	camera->camFront(cameraFront);
+	camera->updateCameraPosition();
 }
 
 void do_movement()
 {
-	// Camera controls
-
 	if (keys[GLFW_KEY_W])
 	{
 		camera->moveForward(deltaTime);
+		camera->updateCameraPosition();
 	}
 	if (keys[GLFW_KEY_S])
 	{
 		camera->moveBack(deltaTime);
+		camera->updateCameraPosition();
 	}
 	if (keys[GLFW_KEY_A])
 	{
 		camera->strafeLeft(deltaTime);
+		camera->updateCameraPosition();
 	}
 	if (keys[GLFW_KEY_D])
 	{
 		camera->strafeRight(deltaTime);
+		camera->updateCameraPosition();
 	}
 }

@@ -38,6 +38,12 @@ public:
 	virtual void updateCameraPosition();
 	virtual void updateCameraUniform(Shaders::ShadersIf::ShadersIf* shader);
 	virtual void updateCameraUniformInv(Shaders::ShadersIf::ShadersIf* shader);
+	//
+	// NEW
+	//
+	virtual glm::mat4 getViewMatrix();
+	virtual glm::mat4 getInvViewMatrix();
+	virtual void invertCameraMatrix();
 	// OPERATORs
 	friend std::ostream& operator<<(std::ostream& output, Camera& info)
 	{
@@ -48,6 +54,7 @@ public:
 private:
 	// MODEL VARIABLEs
 	glm::mat4 viewMatrix;
+	glm::mat4 viewMatrixInv;
 
 	glm::vec3 cameraPos;
 	glm::vec3 cameraFront; 

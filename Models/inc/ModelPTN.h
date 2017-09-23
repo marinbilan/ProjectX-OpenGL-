@@ -25,12 +25,14 @@ public:
 	virtual void setModelScale(glm::vec3 _modelScale);
 	virtual void setModelRotation(glm::vec3 _modelRotateAround, GLfloat _angle);
 	// GET
-	virtual GLint      getModelVAO();
-	virtual std::vector<GLint> getVectorOfVBOs();
-	virtual std::vector<GLint> getVectorOfIBOs();
+	virtual GLuint getModelVAO();
+
+	virtual std::vector<GLuint> getVectorOfVBOs();
+	virtual std::vector<GLuint> getVectorOfIBOs();
 	virtual std::vector<GLuint> getTexturesVectorId();
 	virtual std::vector<GLuint> getNumberOfIndicesVector();
-	virtual GLint     getNumOfMeshes();
+	virtual GLuint              getNumOfMeshes();
+
 	virtual glm::mat4 getModelMatrix();
 	virtual glm::vec3 getModelPosition();
 	virtual glm::vec3 getModelScale();
@@ -59,10 +61,10 @@ private:
 
 	glm::mat4                      modelMatrix;
 	GLuint                         VAO;
-	std::vector<GLint>             vectorOfVBOs;
-	std::vector<GLint>             vectorOfIBOs;
+	std::vector<GLuint>            vectorOfVBOs;
+	std::vector<GLuint>            vectorOfIBOs;
+	std::vector<GLuint>            numberOfIndicesForEachMesh;
 	GLuint                         numOfMeshes;
-	std::vector<GLuint>             numberOfIndicesForEachMesh;
 	// TEXTUREs
 	std::vector<GLuint>            texturesVectorId;
 };

@@ -2,41 +2,20 @@
 // cd "D:\Marin\__Programming\Projects\Programing\ProjectX [OpenGL]\ProjectX [OpenGL]"
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 // System libs includes
-#include "Includes\libsIncludes.h"
-// Shaders Database [ Db ]
-#include "Includes\shadersDbIncludes.h"
-// Shaders [ Projection ]
-#include "Includes\shadersIncludes.h"
-// Camera [ View ]
-#include "Includes\cameraIncludes.h"
-// Models [ Model ]
-#include "Includes\modelsIncludes.h"
-// NEW TODO: Move separate includes
-#include "Loader\if\LoaderIf.h"
-#include "Loader\inc\TextureLoader.h"
-#include "Loader\inc\ModelLoader.h"
-#include "FBOs\Inc\WaterFBO.h"
-#include "Renderer\inc\Renderer.h"
+#include "Db\IncludesDb\includesDb.h"
 
-#include "FBOs\if\FBOIf.h"
-#include "FBOs\inc\WaterFBO.h"
-#include "FBOs\inc\FBOShaddowMapping.h"
-//
 // Shaders [ Projection Matrix]
-//
 Shaders::ShaderPTN*             shaderPTN1;        // WITHOUT NORMAL MAP
 Shaders::Shader_Water_Tile*     shader_Water_Tile; // WATER
 Shaders::Shader_2*              shader_2;          // GUI
 Shaders::Shader_3*              shader_3;          // SKYBOX
 Shaders::ShaderLearningOpenGL1* shaderOpenLearningOpenGL1;
 Shaders::ShaderDepthMapFBO*     shaderDepthMapFBO1;
-//
+
 // Camera [ View ]
-//
 Camera::Camera* camera;
-//
+
 // Models
-//
 Models::ModelPTN*         modelVanquish;
 Models::ModelPTN*         modelTest1;
 Models::ModelPTN*         modelTest2;
@@ -46,33 +25,28 @@ Models::Model_skyBox*     model_skyBox;
 Models::Model_Water_Tile* modelWaterTile;
 Models::Model_GUI*        model_GUI1;
 Models::Model_GUI*        model_GUI2;
-//
+
 // LIGHT
-//
 GLfloat light1[] = { 0.0f, 15.0f, 15.0f, 1.0f };
 GLfloat light2[] = { 0.0f, 15.0f, 15.0f };
-//
+
 // LOADER
-//
 Loader::ModelLoader*   modelLoaderVanquish;
 Loader::TextureLoader* textureLoaderVanquish;
 
 Loader::ModelLoader*   loadModelTest1;
 Loader::TextureLoader* loadTextureTest1;
-//
+
 // BUFFERs
-//
 FBOs::WaterFBO* waterFBO1;
 FBOs::WaterFBO* waterFBO2;
 
 FBOs::FBOShaddowMapping* FBOShadowMapping1;
-//
+
 // RENDERER
-//
 Renderer::Renderer* renderer;
-//
+
 // Variables and Constants
-//
 GLuint WIDTH;
 GLuint HEIGHT;
 
@@ -80,9 +54,8 @@ GLfloat deltaTime = 0.0f; // Time between current frame and last frame
 GLfloat lastFrame = 0.0f; // Time of last frame
 
 #include "Controls\Contorls.h"
-//
+
 // LIGHT params
-//
 GLfloat lightPosition[] = { 0.0f, 5.0f, 15.0f };
 GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
 GLfloat shineDamper = 15.0f; // def: 15.0f
@@ -159,16 +132,10 @@ void RenderScene(GLfloat deltaTime)
 	// =============================================
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_CLIP_DISTANCE0);
-	// 1] SkyBox
+
 	renderer->renderSkyBox(camera, model_skyBox);
-	// 2] Water
-	// renderer->renderWater(shader_Water_Tile, modelWaterTile);
-	// 3] Model
-	// renderer->renderModelPTN(planeModelPTN, camera, modelVanquish, shaderPTN1);
-	// renderer->renderModelPTN(planeModelPTN, camera, modelTest1, shaderPTN1);
 	renderer->renderStaticModel(planeModelPTN, camera, modelTest1, shaderPTN1);
 	renderer->renderModelPTN(planeModelPTN, camera, modelTest2, shaderPTN1);
-	// renderer->renderModelLearningOpenGL(shaderOpenLearningOpenGL1, modelLearnOpenGL1);
 	// =============================================
 	// ----==== STOP RENDER IN MAIN SCREEN ====----
 	// =============================================
@@ -220,6 +187,8 @@ void characterModCallback(GLFWwindow* window, unsigned int keyCode, int modifier
 		std::getline(std::cin, stringKey);
 	}
 }
+
+void RenderSceneMaster(GLfloat deltaTime);
 
 int main(int argc, char** argv)
 {
@@ -340,6 +309,7 @@ int main(int argc, char** argv)
 		// RENDER SCENE
 		//
 		RenderScene(deltaTime);
+		//RenderSceneMaster(deltaTime);
 		//
 		//
 		//
@@ -348,4 +318,12 @@ int main(int argc, char** argv)
 
 	glfwTerminate();
 	return 0;
+}
+
+void RenderSceneMaster(GLfloat deltaTime)
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_CLIP_DISTANCE0);
+
+	renderer->renderStaticModel(planeModelPTN, camera, modelTest1, shaderPTN1);
 }
