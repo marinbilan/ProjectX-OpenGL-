@@ -1,4 +1,21 @@
 #include "../inc/Renderer.h"
+//
+// #### IMPORTANT: For each render function: ####
+//
+// 1 ] Bind VAO glBindVertexArray(VAO); 
+// 2 ] Set Pointers    (glVertexAttribPointer); 
+// 3 ] Enable Pointers (glEnableVertexAttribArray); 
+// For each mesh:
+	// 4.1 ] glBindBuffer(GL_ARRAY_BUFFER)
+	// 4.2 ] glBindBuffer(GL_ELEMENT_ARRAY_BUFFER)
+	// 4.3 ] Active shader glUseProgram(ShaderID);
+	// 4.4 ] Update Uniform(s)
+
+	// 4.5 ] Active Textures
+	// 4.6 ] Bind Textures
+	// 4.7 ] Render mesh (model) (glDrawElements ili another method)
+// 5 ] Disable everything
+
 // CONSTRUCTORs / DESTRUCTORs
 Renderer::Renderer::Renderer() {};
 
@@ -65,7 +82,7 @@ void Renderer::Renderer::renderModelLearningOpenGL(Camera::Camera* _camera,
 	glUseProgram(0);
 }
 // NEW
-void Renderer::Renderer::renderStaticModel(GLfloat*                       _planeModelPTN,
+void Renderer::Renderer::renderStaticModel(glm::vec4                      _planeModelPTN,
 	                                       Camera::CameraIf::CameraIf*    _camera,
 	                                       Models::ModelsIf::ModelsIf*    _staticModel,
 	                                       Shaders::ShadersIf::ShadersIf* _shader)
@@ -86,30 +103,33 @@ void Renderer::Renderer::renderStaticModel(GLfloat*                       _plane
 	for (unsigned int i = 0; i < _staticModel->getNumOfMeshes(); i++) {
 		glBindBuffer(GL_ARRAY_BUFFER, _staticModel->getVectorOfVBOs()[i]);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _staticModel->getVectorOfIBOs()[i]);
-	// Get shader from vector od shaderIds. If shafer is ...
+		// Get shader from vector od shaderIds. If shafer is ...
 		glUseProgram(_shader->getShaderProgramID());
-		// VERTEX SHADER UNIFORMS
-		// Projection matrix updated in shader constructor (Only once)
-		glUniformMatrix4fv(_shader->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
-		_camera->invertCameraMatrix();
-		glUniformMatrix4fv(_shader->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
-		glUniformMatrix4fv(_shader->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
-		glUniform3f(_shader->getLightID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
-		glUniform4f(_shader->getplaneID(), _planeModelPTN[0], _planeModelPTN[1], _planeModelPTN[2], _planeModelPTN[3]);
-		// FRAGMENT SHADER UNIFORMS
-		glUniform3f(_shader->getlightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
-		glUniform1f(_shader->getshineDamperID(), 15.0f);
-		glUniform1f(_shader->getreflectivityID(), 0.6f);
-		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, _staticModel->getTexturesVectorId()[i]);
-		// RENDER MESH
-		glDrawElements(GL_TRIANGLES, _staticModel->getNumberOfIndicesVector()[i], GL_UNSIGNED_INT, 0);
-		//
-		glUseProgram(0);
+		if (!_shader->getShaderName().compare("shaderPTN1"))
+		{
+			// VERTEX SHADER UNIFORMS
+			// Projection matrix updated in shader constructor (Only once)
+			glUniformMatrix4fv(_shader->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
+			_camera->invertCameraMatrix();
+			glUniformMatrix4fv(_shader->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
+			glUniformMatrix4fv(_shader->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
+			glUniform3f(_shader->getLightID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
+			glUniform4f(_shader->getplaneID(), _planeModelPTN[0], _planeModelPTN[1], _planeModelPTN[2], _planeModelPTN[3]);
+			// FRAGMENT SHADER UNIFORMS
+			glUniform3f(_shader->getlightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
+			glUniform1f(_shader->getshineDamperID(), 15.0f);
+			glUniform1f(_shader->getreflectivityID(), 0.6f);
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, _staticModel->getTexturesVectorId()[i]);
+			// RENDER MESH
+			glDrawElements(GL_TRIANGLES, _staticModel->getNumberOfIndicesVector()[i], GL_UNSIGNED_INT, 0);
+			//
+			glUseProgram(0);
+		}
 	}
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
 
-	glBindVertexArray(0);
+	glBindVertexArray(0); // Unbind VAO
 }

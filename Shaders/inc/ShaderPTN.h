@@ -16,7 +16,7 @@ public:
 	// CONSTRUCTORs / DESTRUCTORs
 	//
 	//	
-	ShaderPTN(const char* vertexShader, const char* fragmentShader);
+	ShaderPTN(std::string _shaderName, const char* vertexShader, const char* fragmentShader);
 
 	~ShaderPTN();
 	//
@@ -24,6 +24,7 @@ public:
 	// FUNCTIONs
 	// 
 	//
+	virtual std::string getShaderName();
 	virtual GLuint const getShaderProgramID() const;
 	// =============
 	// VERTEX SHADER
@@ -82,6 +83,7 @@ public:
 	}
 
 private:
+	std::string shaderName;
 	GLuint shaderProgramID;
 
 	glm::mat4 projectionMatrix;

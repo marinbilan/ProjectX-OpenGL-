@@ -5,10 +5,10 @@
 //
 // CONSTRUCTORs / DESTRUCTORs
 //
-Shaders::ShaderPTN::ShaderPTN(const char* vertexShader, const char* fragmentShader)
+Shaders::ShaderPTN::ShaderPTN(std::string _shaderName, const char* vertexShader, const char* fragmentShader)
 {
 	std::cout << "ShaderPTN constructor called! " << std::endl;
-
+	shaderName = "shaderPTN1"; // Hardcoded shader name
     shaderProgramID = createShader(vertexShader, fragmentShader);
 	// =============
 	// VERTEX SHADER
@@ -50,6 +50,11 @@ Shaders::ShaderPTN::~ShaderPTN()
 // FUNCTIONs
 //
 //
+std::string Shaders::ShaderPTN::getShaderName()
+{
+	return shaderName;
+}
+
 GLuint const Shaders::ShaderPTN::getShaderProgramID() const
 {
 	return shaderProgramID;

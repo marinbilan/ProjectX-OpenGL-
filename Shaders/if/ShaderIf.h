@@ -54,7 +54,7 @@ public:
 
 		return shaderID;
 	}
-
+	virtual std::string getShaderName()             { return dummyString; }
 	virtual GLuint const getShaderProgramID() const { return 0; }
 	// =============
 	// VERTEX SHADER
@@ -110,6 +110,7 @@ public:
 	// OPERATORs
 	//			
 private:
+	std::string dummyString;
 };
 }
 }

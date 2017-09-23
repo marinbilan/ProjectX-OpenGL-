@@ -24,7 +24,7 @@ public:
 		                                   Shaders::ShadersIf::ShadersIf* _shader,
 		                                   Models::ModelLearnOpenGL* _modelLearningOpenGL);
 	// NEW
-	virtual void renderStaticModel(GLfloat* _planeModelPTN,
+	virtual void renderStaticModel(glm::vec4 _planeModelPTN,
 		                           Camera::CameraIf::CameraIf* _camera,
 		                           Models::ModelsIf::ModelsIf* _staticModel,
 		                           Shaders::ShadersIf::ShadersIf* _shader);

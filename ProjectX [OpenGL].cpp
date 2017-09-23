@@ -54,35 +54,12 @@ GLfloat deltaTime = 0.0f; // Time between current frame and last frame
 GLfloat lastFrame = 0.0f; // Time of last frame
 
 #include "Controls\Contorls.h"
-
-// LIGHT params
-GLfloat lightPosition[] = { 0.0f, 5.0f, 15.0f };
-GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
-GLfloat shineDamper = 15.0f; // def: 15.0f
-GLfloat reflectivity = 1.6f; // def: 1.6
-
-GLfloat planeModelPTNAbove[] = { 0.0f, 1.0f, 0.0f, 0.0f };     // fbo LEFT - Render everything ABOVE
-GLfloat planeModelPTNBelow[] = { 0.0f, -1.0f, 0.0f, 0.0f };    // fbo RIGHT - Render everything BELOW
 GLfloat planeModelPTN[] = { 0.0f, -1.0f, 0.0f, 100000.0f };    // HACK (glDisable doesn't work!)
-
-GLfloat moveFactor = 0;
-GLfloat WAVE_SPEED;
 
 void RenderScene(GLfloat deltaTime)
 {	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CLIP_DISTANCE0);
-	//
-	// #### IMPORTANT: For each render function: ####
-	//
-	// 1 ] Bind VAO glBindVertexArray(VAO); 
-	// 2 ] Active shader glUseProgram(ShaderID);
-	// 3 ] Bind Attribs (glEnableVertexAttribArray(0), glEnableVertexAttribArray(1) ...)
-	// 4 ] Update Uniform(s)
-	// 5.1 ] Active Textures
-	// 5.2 ] Bind Textures
-	// 6 ] Render mesh (model)
-	// 7 ] Disable everything
 	//
 	// RENDER INVERTED CAM 
 	//
@@ -134,8 +111,8 @@ void RenderScene(GLfloat deltaTime)
 	glDisable(GL_CLIP_DISTANCE0);
 
 	renderer->renderSkyBox(camera, model_skyBox);
-	renderer->renderStaticModel(planeModelPTN, camera, modelTest1, shaderPTN1);
-	renderer->renderModelPTN(planeModelPTN, camera, modelTest2, shaderPTN1);
+	renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest1, shaderPTN1);
+	renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest2, shaderPTN1);
 	// =============================================
 	// ----==== STOP RENDER IN MAIN SCREEN ====----
 	// =============================================
@@ -223,7 +200,7 @@ int main(int argc, char** argv)
 		std::cout << "Failed to initialize GLEW" << std::endl;
 	}
 	// SHADERs [ Projection ] Initialization (only once)
-	shaderPTN1 = new Shaders::ShaderPTN(VSPTN, FSPTN);
+	shaderPTN1 = new Shaders::ShaderPTN("shaderPTN1", VSPTN, FSPTN);
 	shader_Water_Tile = new Shaders::Shader_Water_Tile(VS_Water_Tile, FS_Water_Tile);
 	shader_2 = new Shaders::Shader_2(VS2, FS2); // GUI
 	shader_3 = new Shaders::Shader_3(VS3, FS3); // skyBox
@@ -232,15 +209,8 @@ int main(int argc, char** argv)
 	// SHADERs INFO
 	std::cout << *shaderDepthMapFBO1;
 	// CAMERA [ViewMatrix] INIT
-	camera = new Camera::Camera(glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // Light position
+	camera = new Camera::Camera(glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // Current Light position
 	// MODELS
-	// modelLoaderVanquish = new Loader::ModelLoader("_src/_models/_vanquish/", "_src/_models/vanquish/modelParams.txt");
-	// textureLoaderVanquish = new Loader::TextureLoader("_src/_models/_vanquish/", modelLoaderVanquish->getNumberOfMeshes());
-	// modelVanquish = new Models::ModelPTN(modelLoaderVanquish, textureLoaderVanquish, shaderPTN1, glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-
-	//loadModelTest1 = new Loader::ModelLoader("_src/_models/cubeNM/", "_src/_models/_dagger/modelParams.txt");
-	//loadTextureTest1 = new Loader::TextureLoader("_src/_models/cubeNM/", loadModelTest1->getNumberOfMeshes());
-
 	modelTest1 = new Models::ModelPTN("_src/_models/cubeNM/",
 		"cube",
 		loadModelTest1, 
@@ -260,13 +230,9 @@ int main(int argc, char** argv)
 		glm::vec3(0.001f, 0.001f, 0.001f),
 		glm::vec3(1.0f, 0.0f, 0.0f),
 		-1.55f);
-
-	// modelLearnOpenGL1 = new Models::ModelLearnOpenGL(modelLoaderVanquish, textureLoaderVanquish, "_src/_models/vanquish/modelParams.txt", shaderOpenLearningOpenGL1);
 	// SKYBOX
 	model_skyBox = new Models::Model_skyBox(shader_3, camera);
-	//
 	// BUFFERs
-	//
 	waterFBO1 = new FBOs::WaterFBO();
 	waterFBO2 = new FBOs::WaterFBO();
 	FBOShadowMapping1 = new FBOs::FBOShaddowMapping(380, 180, WIDTH, HEIGHT);
@@ -325,5 +291,5 @@ void RenderSceneMaster(GLfloat deltaTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CLIP_DISTANCE0);
 
-	renderer->renderStaticModel(planeModelPTN, camera, modelTest1, shaderPTN1);
+	renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest1, shaderPTN1);
 }
