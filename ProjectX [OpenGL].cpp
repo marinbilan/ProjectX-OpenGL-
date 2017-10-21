@@ -322,7 +322,7 @@ int main(int argc, char** argv)
 void RenderSceneMaster(GLfloat deltaTime)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	// glEnable(GL_CLIP_DISTANCE0);
+	glEnable(GL_CLIP_DISTANCE0);
 
 	renderer->renderSkyBox(camera, modelSkyBox00);
 	renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest1, shaderOpenLearningOpenGL00);
