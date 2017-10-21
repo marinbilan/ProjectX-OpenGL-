@@ -2,15 +2,14 @@
 #define RENDERERIF__
 
 #include "..\..\Camera\if\CameraIf.h"
-#include "..\..\Camera\inc\Camera.h"
 #include "..\..\Shaders\if\ShaderIf.h"
 #include "..\..\Models\if\ModelIf.h"
 
-
-#include "..\..\Models\inc\Model_skyBox.h"
-#include "..\..\Models\inc\Model_Water_Tile.h"
-#include "..\..\Models\inc\ModelPTN.h"
-#include "..\..\Models\inc\ModelLearnOpenGL.h"
+// TODO: Remove this
+#include "..\..\Models\inc\ModelSkyBox0.h"
+#include "..\..\Models\inc\ModelWaterTile0.h"
+#include "..\..\Models\inc\ModelPTN0.h"
+#include "..\..\Models\inc\ModelLearnOpenGL0.h"
 
 namespace Renderer
 {
@@ -25,18 +24,15 @@ public:
 		std::cout << "RendererIf destructor called!" << std::endl;
 	}
 	// FUNCTIONs
-	virtual void renderSkyBox(Camera::Camera* _camera, 
-		                      Models::Model_skyBox* _skyBox) {}
+	virtual void renderSkyBox(Camera::CameraIf::CameraIf* _camera,
+		                      Models::ModelSkyBox0* _skyBox) {}
 	virtual void renderWater(Shaders::ShadersIf::ShadersIf* _shader, 
-		                     Models::Model_Water_Tile* _modelWaterTile) {};
+		                     Models::ModelWaterTile0* _modelWaterTile) {};
 	virtual void renderModelPTN(GLfloat* _planeModelPTN, 
-		                        Camera::Camera* _camera, 
-		                        Models::ModelPTN* _modelPTN, 
+		                        Camera::CameraIf::CameraIf* _camera,
+		                        Models::ModelPTN0* _modelPTN, 
 		                        Shaders::ShadersIf::ShadersIf* _shader) {}
-	virtual void renderDepthMap(Models::ModelPTN* _modelPTN, Shaders::ShadersIf::ShadersIf* _shader) {}
-	virtual void renderModelLearningOpenGL(Shaders::ShadersIf::ShadersIf* _shader,
-		                                   Camera::Camera* _camera,
-		                                   Models::ModelLearnOpenGL* _modelLearningOpenGL) {}
+	virtual void renderDepthMap(Models::ModelPTN0* _modelPTN, Shaders::ShadersIf::ShadersIf* _shader) {}
 	// NEW
 	virtual void renderStaticModel(glm::vec4 _planeModelPTN,
 		                           Camera::CameraIf::CameraIf* _camera,

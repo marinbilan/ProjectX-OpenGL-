@@ -1,17 +1,7 @@
 #ifndef SHADERIF__
 #define SHADERIF__
 
-#include <iostream>
-#include <string>
-//
-// GLEW
-//
-#include "../../__libs/glew-1.13.0/include/GL/glew.h"
-//
-// GLM [ For projection matrix ]
-//
-#include "../../__libs/glm/glm/glm.hpp"
-#include "../../__libs/glm/glm/gtc/matrix_transform.hpp"
+#include "../../CommonFunctions/CommonFunctions.h"
 
 namespace Shaders
 {
@@ -54,21 +44,15 @@ public:
 
 		return shaderID;
 	}
-	virtual std::string getShaderName()             { return dummyString; }
-	virtual GLuint const getShaderProgramID() const { return 0; }
-	// =============
+	virtual std::string getShaderName()                  { return dummyString; }
+	virtual GLuint const getShaderProgramID()      const { return 0; }
 	// VERTEX SHADER
-	// =============
-	//
 	// [ ATTRIBs ]
-	//
 	virtual GLuint const getPositionsID()          const { return 0; }
 	virtual GLuint const getTextureCoordsID()      const { return 0; }
 	virtual GLuint const getNormalsID()            const { return 0; }	
 	virtual GLuint const getTangentsID()           const { return 0; }
-	// 
 	// [ UNIFORMs ]
-	//
 	virtual GLuint const getProjectionMatrixID()   const { return 0; }
 	virtual GLuint const getViewMatrixID()         const { return 0; }	
 	virtual GLuint const getViewMatrixInvID()      const { return 0; }
@@ -78,17 +62,16 @@ public:
 	virtual GLuint const getplaneID()              const { return 0; }
 	//
 	virtual GLuint const getModelMatrixInvID()     const { return 0; }
-	virtual GLuint const getCameraPositionID()     const { return 0; }
+	virtual GLuint const getCameraPositionID()     const { return 0; } // CAMERA POSITION
 	virtual GLuint const getViewPosID()            const { return 0; }
 	virtual GLuint const getNormalsRotationsID()   const { return 0; } 	
 	virtual GLuint const getgWorldID()             const { return 0; }    	
 	virtual GLuint const getuseFakeLightingID()    const { return 0; }
-	// ===============
+	// Depth Map
+	virtual GLuint const getLightSpaceMatrixID()   const { return 0; }
+	virtual GLuint const getInvMat3ModelID()       const { return 0; }
 	// FRAGMENT SHADER
-	// ===============
-	// 
 	// [ UNIFORMs ]
-	//
 	virtual GLuint const getlightColorID()         const { return 0; }	
 	virtual GLuint const getshineDamperID()        const { return 0; }
 	virtual GLuint const getreflectivityID()       const { return 0; }
@@ -101,14 +84,14 @@ public:
 	virtual GLuint const getdudvMapID()            const { return 0; }
 	virtual GLuint const getmoveFactorID()         const { return 0; }
 	virtual GLuint const getskyColorID()           const { return 0; }
+	// Depth Map
+	virtual GLuint const getDiffuseTextureID()     const { return 0; }
+	virtual GLuint const getShadowMapID()          const { return 0; }
 	// LEARNING OPENGL
 	virtual GLuint const getObjectColorID()        const { return 0; }
 	virtual GLuint const getLightColorID()         const { return 0; }
-	// Depth Map
-	virtual GLuint const getLightSpaceMatrixID()   const { return 0; }
-	//
-	// OPERATORs
-	//			
+	virtual GLuint const getmvpMatrixID()          const { return 0; }
+	// OPERATORs		
 private:
 	std::string dummyString;
 };

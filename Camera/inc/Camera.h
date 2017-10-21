@@ -1,9 +1,6 @@
 #ifndef CAMERA__
 #define CAMERA__
 
-#include <iostream>
-#include <string>
-// CameraIf
 #include "../if/CameraIf.h"
 
 namespace Camera
@@ -19,7 +16,7 @@ public:
 	virtual glm::vec3 getcameraPosition();
 	virtual GLfloat getcameraPositionX();
 	virtual GLfloat getcameraPositionY();
-
+	virtual GLfloat getcameraPositionZ();
 	//virtual void setcameraPosition(glm::vec3 _position);
 
 	virtual void invertCameraDown();

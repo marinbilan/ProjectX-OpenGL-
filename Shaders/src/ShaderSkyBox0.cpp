@@ -1,15 +1,15 @@
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 
-#include "../../Shaders/inc/Shader_3.h"
+#include "../../Shaders/inc/ShaderSkyBox0.h"
 //
 //
 // CONSTRUCTORs / DESTRUCTORs
 //
 //
-Shaders::Shader_3::Shader_3(const char* vertexShader, const char* fragmentShader)
+Shaders::ShaderSkyBox0::ShaderSkyBox0(const char* vertexShader, const char* fragmentShader)
 {
-	std::cout << "Shader_3 constructor called! " << std::endl;
+	//std::cout << "Shader_3 constructor called! " << std::endl;
 
 	shaderProgramID = createShader(vertexShader, fragmentShader);
 	// =============
@@ -34,30 +34,30 @@ Shaders::Shader_3::Shader_3(const char* vertexShader, const char* fragmentShader
 	glUseProgram(0);
 }
 
-Shaders::Shader_3::~Shader_3()
+Shaders::ShaderSkyBox0::~ShaderSkyBox0()
 {
-	std::cout << "Shader_3 destructor called!" << std::endl;
+	std::cout << "ShaderSkyBox0 destructor called!" << std::endl;
 }
 //
 //
 // FUNCTIONs
 // 
 //
-GLuint const Shaders::Shader_3::getShaderProgramID() const
+GLuint const Shaders::ShaderSkyBox0::getShaderProgramID() const
 {
 	return shaderProgramID;
 }
 //
 // [ ATTRIBs ] 
 //
-GLuint const Shaders::Shader_3::getPositionsID() const
+GLuint const Shaders::ShaderSkyBox0::getPositionsID() const
 {
 	return positionsID;
 }
 //
 // [ UNIFORMs ]
 //
-GLuint const Shaders::Shader_3::getViewMatrixID() const
+GLuint const Shaders::ShaderSkyBox0::getViewMatrixID() const
 {
 	return viewMatrixID;
 }

@@ -1,7 +1,6 @@
 #include "../inc/WaterFBO.h"
-//
+
 // CONSTRUCTORs / DESTRUCTOR(s)
-//
 FBOs::WaterFBO::WaterFBO()
 {
 	REFLECTION_WIDTH = 320;
@@ -88,7 +87,7 @@ int FBOs::WaterFBO::createTextureAttachment(int width, int height) {
 
 	GLuint texture;
 	glGenTextures(1, &texture);
-	std::cout << ">>> texture: " << texture << std::endl;
+	// std::cout << ">>> texture: " << texture << std::endl;
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 	// ALTERNATIVNO: glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, nullptr);

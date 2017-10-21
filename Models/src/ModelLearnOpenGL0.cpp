@@ -1,10 +1,10 @@
-#include "../../Models/inc/ModelLearnOpenGL.h"
+#include "../../Models/inc/ModelLearnOpenGL0.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 //
 // CONSTRUCTORs / DESTRUCTOR(s)
 //
-Models::ModelLearnOpenGL::ModelLearnOpenGL(Loader::ModelLoader*           _modelPTNLoader,
+Models::ModelLearnOpenGL0::ModelLearnOpenGL0(Loader::ModelLoader*           _modelPTNLoader,
 	                                       Loader::TextureLoader*         _textureLoader,
 	                                       char*                          _textureShaderParams,
 						                   Shaders::ShadersIf::ShadersIf* _shader)
@@ -30,10 +30,10 @@ Models::ModelLearnOpenGL::ModelLearnOpenGL(Loader::ModelLoader*           _model
 	//
 	// GET Textures
 	//
-	texturesVectorId = textureLoader->getVectorOfTextures2DID();
+	//texturesVectorId = textureLoader->getVectorOfTextures2DID();
 }
 
-Models::ModelLearnOpenGL::~ModelLearnOpenGL()
+Models::ModelLearnOpenGL0::~ModelLearnOpenGL0()
 {
 	std::cout << "ModelLearnOpenGL destructor called!" << std::endl;
 }
@@ -41,7 +41,7 @@ Models::ModelLearnOpenGL::~ModelLearnOpenGL()
 // FUNCTION(s) - Add Clean function
 // 
 // SET
-void Models::ModelLearnOpenGL::setModelScale(glm::vec3 _modelScale)
+void Models::ModelLearnOpenGL0::setModelScale(glm::vec3 _modelScale)
 {
 	modelMatrix = glm::mat4(1.0f);
 	modelScale = _modelScale;
@@ -52,7 +52,7 @@ void Models::ModelLearnOpenGL::setModelScale(glm::vec3 _modelScale)
 	glUseProgram(0);
 }
 
-void Models::ModelLearnOpenGL::setModelRotation(GLfloat _angle, glm::vec3 _modelRotateAround)
+void Models::ModelLearnOpenGL0::setModelRotation(GLfloat _angle, glm::vec3 _modelRotateAround)
 {
 	modelMatrix = glm::mat4(1.0f);
 	angle = _angle;
@@ -64,7 +64,7 @@ void Models::ModelLearnOpenGL::setModelRotation(GLfloat _angle, glm::vec3 _model
 	glUseProgram(0);
 }
 
-void Models::ModelLearnOpenGL::setModelPosition(glm::vec3 _modelPosition)
+void Models::ModelLearnOpenGL0::setModelPosition(glm::vec3 _modelPosition)
 {
 	modelMatrix = glm::mat4(1.0f);
 	modelPosition = _modelPosition;
@@ -75,24 +75,24 @@ void Models::ModelLearnOpenGL::setModelPosition(glm::vec3 _modelPosition)
 	glUseProgram(0);
 }
 // GET
-glm::vec3 Models::ModelLearnOpenGL::getModelScale()
+glm::vec3 Models::ModelLearnOpenGL0::getModelScale()
 {
 	return modelScale;
 }
 
-glm::vec3 Models::ModelLearnOpenGL::getModelRotation()
+glm::vec3 Models::ModelLearnOpenGL0::getModelRotation()
 {
 	return modelRotateAround;
 }
 
-glm::vec3 Models::ModelLearnOpenGL::getModelPosition()
+glm::vec3 Models::ModelLearnOpenGL0::getModelPosition()
 {
 	return modelPosition;
 }
 //
 // RENDER MODEL
 //
-void Models::ModelLearnOpenGL::render()
+void Models::ModelLearnOpenGL0::render()
 {
 	glBindVertexArray(modelPTNLoader->VAO);
 

@@ -1,8 +1,8 @@
-#ifndef MODEL_WATER_TILE__
-#define MODEL_WATER_TILE__
+#ifndef MODELWATERTILE0__
+#define MODELWATERTILE0__
 
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 //
 // ModelIf
 //
@@ -10,7 +10,7 @@
 
 namespace Models
 {
-class Model_Water_Tile : public ModelsIf::ModelsIf
+class ModelWaterTile0 : public ModelsIf::ModelsIf
 {
 public:
 	//
@@ -18,14 +18,14 @@ public:
 	// CONSTRUCTORs / DESTRUCTORs
 	//
 	//	
-	Model_Water_Tile(char* _fileName,
+	ModelWaterTile0(char* _fileName,
 		             Shaders::ShadersIf::ShadersIf* _shader,
 		             Camera::CameraIf::CameraIf* _camera,
 		             GLuint _textureID,
 		             glm::vec3 _position, 
 		             glm::vec3 _scale);
 
-	~Model_Water_Tile();
+	~ModelWaterTile0();
 	//
 	//
 	// FUNCTIONs
@@ -38,7 +38,7 @@ public:
 	// OPERATORs
 	//
 	//	
-	friend std::ostream& operator<<(std::ostream& output, Model_Water_Tile& info)
+	friend std::ostream& operator<<(std::ostream& output, ModelWaterTile0& info)
 	{
 		return output;
 	}

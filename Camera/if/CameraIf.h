@@ -1,15 +1,10 @@
 #ifndef CAMERAIF__
 #define CAMERAIF__
 
-#include <iostream>
-#include <string>
-// GLEW
-#include "../../__libs/glew-1.13.0/include/GL/glew.h"
-// GLM
-#include "../../__libs/glm/glm/glm.hpp"
-#include "../../__libs/glm/glm/gtc/matrix_transform.hpp"
+// TODO: Remove Shader from Camera Class
 // ShaderIf
 #include "../../Shaders/if/ShaderIf.h"
+#include "../../CommonFunctions/CommonFunctions.h"
 
 namespace Camera
 {
@@ -27,7 +22,7 @@ public:
 	virtual glm::vec3 getcameraPosition() { return glm::vec3(1.0f, 1.0f, 1.0f); };
 	virtual GLfloat getcameraPositionX()  { return 0; };
 	virtual GLfloat getcameraPositionY()  { return 0; };
-
+	virtual GLfloat getcameraPositionZ() { return 0; };
 	//virtual void setcameraPosition(glm::vec3 _position) {};
 	virtual void invertCameraDown() {};
 	virtual void invertCameraUp() {};

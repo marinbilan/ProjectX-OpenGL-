@@ -1,15 +1,15 @@
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 
-#include "../../Shaders/inc/Shader_Water_Tile.h"
+#include "../../Shaders/inc/ShaderWaterTile0.h"
 //
 //
 // CONSTRUCTORs / DESTRUCTORs
 //
 //
-Shaders::Shader_Water_Tile::Shader_Water_Tile(const char* vertexShader, const char* fragmentShader)
+Shaders::ShaderWaterTile0::ShaderWaterTile0(const char* vertexShader, const char* fragmentShader)
 {
-	std::cout << "Shader_Water_Tile constructor called! " << std::endl;
+	//std::cout << "Shader_Water_Tile constructor called! " << std::endl;
 
 	shaderProgramID = createShader(vertexShader, fragmentShader);
 	// =============
@@ -54,75 +54,75 @@ Shaders::Shader_Water_Tile::Shader_Water_Tile(const char* vertexShader, const ch
 	glUseProgram(0);
 }
 
-Shaders::Shader_Water_Tile::~Shader_Water_Tile()
+Shaders::ShaderWaterTile0::~ShaderWaterTile0()
 {
-	std::cout << "Shader_Water_Tile destructor called!" << std::endl;
+	std::cout << "ShaderWaterTile0 destructor called!" << std::endl;
 }
 //
 //
 // FUNCTIONs
 // 
 //
-GLuint const Shaders::Shader_Water_Tile::getShaderProgramID() const
+GLuint const Shaders::ShaderWaterTile0::getShaderProgramID() const
 {
 	return shaderProgramID;
 }
 //
 // [ ATTRIBs ]
 //
-GLuint const Shaders::Shader_Water_Tile::getPositionsID() const
+GLuint const Shaders::ShaderWaterTile0::getPositionsID() const
 {
 	return positionsID;
 }
 //
 // [ UNIFORMs ]
 //
-GLuint const Shaders::Shader_Water_Tile::getViewMatrixID() const
+GLuint const Shaders::ShaderWaterTile0::getViewMatrixID() const
 {
 	return viewMatrixID;
 }
 
-GLuint const Shaders::Shader_Water_Tile::getModelMatrixID() const
+GLuint const Shaders::ShaderWaterTile0::getModelMatrixID() const
 {
 	return modelMatrixID;
 }
 
-GLuint const Shaders::Shader_Water_Tile::getCameraPositionID() const
+GLuint const Shaders::ShaderWaterTile0::getCameraPositionID() const
 {
 	return cameraPositionID;
 }
 
-GLuint const Shaders::Shader_Water_Tile::getlightPositionID() const
+GLuint const Shaders::ShaderWaterTile0::getlightPositionID() const
 {
 	return lightPositionID;
 }
 
-GLuint const Shaders::Shader_Water_Tile::getreflectionTextureID() const
+GLuint const Shaders::ShaderWaterTile0::getreflectionTextureID() const
 {
 	return reflectionTextureID;
 }
 
-GLuint const Shaders::Shader_Water_Tile::getrefractionTextureID() const
+GLuint const Shaders::ShaderWaterTile0::getrefractionTextureID() const
 {
 	return refractionTextureID;
 }
 
-GLuint const Shaders::Shader_Water_Tile::getdudvMapID() const
+GLuint const Shaders::ShaderWaterTile0::getdudvMapID() const
 {
 	return dudvMapID;
 }
 
-GLuint const Shaders::Shader_Water_Tile::getnormalMapID() const
+GLuint const Shaders::ShaderWaterTile0::getnormalMapID() const
 {
 	return normalMapID;
 }
 
-GLuint const Shaders::Shader_Water_Tile::getlightColorID() const
+GLuint const Shaders::ShaderWaterTile0::getlightColorID() const
 {
 	return lightColourID;
 }
 
-GLuint const Shaders::Shader_Water_Tile::getmoveFactorID() const
+GLuint const Shaders::ShaderWaterTile0::getmoveFactorID() const
 {
 	return moveFactorID;
 }

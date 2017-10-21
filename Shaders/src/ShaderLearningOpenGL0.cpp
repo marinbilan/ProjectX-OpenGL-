@@ -1,13 +1,14 @@
 #include <iostream>
 #include <string>
 
-#include "../../Shaders/inc/ShaderLearningOpenGL1.h"
+#include "../../Shaders/inc/ShaderLearningOpenGL0.h"
 //
 // CONSTRUCTORs / DESTRUCTORs
 //
-Shaders::ShaderLearningOpenGL1::ShaderLearningOpenGL1(const char* vertexShader, const char* fragmentShader)
+Shaders::ShaderLearningOpenGL0::ShaderLearningOpenGL0(const char* vertexShader, const char* fragmentShader)
 {
-	std::cout << "ShaderPTN constructor called! " << std::endl;
+	//std::cout << "ShaderPTN constructor called! " << std::endl;
+	shaderName = "LearningOpenGL0"; // Hardcoded shader name
 
     shaderProgramID = createShader(vertexShader, fragmentShader);
 	// =============
@@ -34,7 +35,7 @@ Shaders::ShaderLearningOpenGL1::ShaderLearningOpenGL1(const char* vertexShader, 
 	glUseProgram(0);
 }
 
-Shaders::ShaderLearningOpenGL1::~ShaderLearningOpenGL1()
+Shaders::ShaderLearningOpenGL0::~ShaderLearningOpenGL0()
 {
 	std::cout << "ShaderPTN destructor called!" << std::endl;
 }
@@ -43,7 +44,12 @@ Shaders::ShaderLearningOpenGL1::~ShaderLearningOpenGL1()
 // FUNCTIONs
 //
 //
-GLuint const Shaders::ShaderLearningOpenGL1::getShaderProgramID() const
+std::string Shaders::ShaderLearningOpenGL0::getShaderName()
+{
+	return shaderName;
+}
+
+GLuint const Shaders::ShaderLearningOpenGL0::getShaderProgramID() const
 {
 	return shaderProgramID;
 }
@@ -53,36 +59,36 @@ GLuint const Shaders::ShaderLearningOpenGL1::getShaderProgramID() const
 //
 // ATTRIBs
 //
-GLuint const Shaders::ShaderLearningOpenGL1::getPositionsID() const
+GLuint const Shaders::ShaderLearningOpenGL0::getPositionsID() const
 {
 	return positionsID;
 }
 //
 // UNIFORMs
 //
-GLuint const Shaders::ShaderLearningOpenGL1::getProjectionMatrixID() const
+GLuint const Shaders::ShaderLearningOpenGL0::getProjectionMatrixID() const
 {
 	return projectionMatrixID;
 }
 
-GLuint const Shaders::ShaderLearningOpenGL1::getViewMatrixID() const
+GLuint const Shaders::ShaderLearningOpenGL0::getViewMatrixID() const
 {
 	return viewMatrixID;
 }
 
-GLuint const Shaders::ShaderLearningOpenGL1::getModelMatrixID() const
+GLuint const Shaders::ShaderLearningOpenGL0::getModelMatrixID() const
 {
 	return modelMatrixID;
 }
 //
 // FRAGMENT SHADER
 //
-GLuint const Shaders::ShaderLearningOpenGL1::getObjectColorID() const
+GLuint const Shaders::ShaderLearningOpenGL0::getObjectColorID() const
 {
 	return objectColorID;
 }
 
-GLuint const Shaders::ShaderLearningOpenGL1::getLightColorID() const
+GLuint const Shaders::ShaderLearningOpenGL0::getLightColorID() const
 {
 	return lightColorID;
 }

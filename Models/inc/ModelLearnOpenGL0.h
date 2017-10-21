@@ -1,5 +1,5 @@
-#ifndef MODELLEARNOPENGL__
-#define MODELLEARNOPENGL__
+#ifndef MODELLEARNOPENGL0__
+#define MODELLEARNOPENGL0__
 //
 // ModelIf
 //
@@ -7,17 +7,17 @@
 
 namespace Models
 {
-class ModelLearnOpenGL : public ModelsIf::ModelsIf
+class ModelLearnOpenGL0 : public ModelsIf::ModelsIf
 {
 public:
 	//
 	// CONSTRUCTORs / DESTRUCTORs
 	//
-	ModelLearnOpenGL(Loader::ModelLoader*           _modelPTNLoader,
+	ModelLearnOpenGL0(Loader::ModelLoader*           _modelPTNLoader,
 		             Loader::TextureLoader*         _textureLoader,
 		             char*                          _textureShaderParams,
 		             Shaders::ShadersIf::ShadersIf* _shader);                       
-	~ModelLearnOpenGL();
+	~ModelLearnOpenGL0();
 	//
 	// FUNCTIONs
 	// 
@@ -34,7 +34,7 @@ public:
 	//
 	// OPERATORs
 	//
-	friend std::ostream& operator<<(std::ostream& output, ModelLearnOpenGL& info)
+	friend std::ostream& operator<<(std::ostream& output, ModelLearnOpenGL0& info)
 	{
 		return output;
 	}

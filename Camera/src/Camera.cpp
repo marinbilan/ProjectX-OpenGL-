@@ -1,6 +1,3 @@
-#include <iostream>
-#include <string>
-
 #include "../../Camera/inc/Camera.h"
 //
 // CONSTRUCTORs / DESTRUCTOR(s)
@@ -36,6 +33,11 @@ GLfloat Camera::Camera::getcameraPositionX()
 GLfloat Camera::Camera::getcameraPositionY()
 {
 	return cameraPos.y;
+}
+
+GLfloat Camera::Camera::getcameraPositionZ()
+{
+	return cameraPos.z;
 }
 
 //void Camera::Camera::setcameraPosition(glm::vec3 _position)

@@ -1,26 +1,28 @@
 #ifndef LOADERIF__
 #define LOADERIF__
 
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <string>
-#include <vector>
-
-#include "..\..\__libs\glew-1.13.0\include\GL\glew.h"
-
-#include "../../__libs/assimp--3.0.1270-sdk/include/assimp/Importer.hpp"
-#include "../../__libs/assimp--3.0.1270-sdk/include/assimp/postprocess.h"
-#include "../../__libs/assimp--3.0.1270-sdk/include/assimp/mesh.h"
-#include "../../__libs/assimp--3.0.1270-sdk/include/assimp/scene.h"
-
-#include "../../__libs/glm/glm/glm.hpp"
-#include "../../__libs/glm/glm/gtc/matrix_transform.hpp"
-
-#include "../../__libs/FreeImage/include/FreeImage.h"
+#include "../../CommonFunctions/CommonFunctions.h"
+//
+//                          LoaderIf 
+//                          [struct Mesh] // Shared between ModelLoaderLearningOpenGL and TextureLoader
+//                          ----------
+//                             |
+//       --------------------------------------------------
+//       |                     |                          |
+//  ModelLoader     [ ModelLoaderLearningOpenGL ]    [ TextureLoader ]
+//                  [ struct Vert]
 
 namespace Loader
 {
+struct Mesh
+{
+	GLuint VBO;
+	GLuint IBO;
+	GLuint numIndices; // = number of vertices
+
+	GLuint texture0ID;
+};
+
 namespace LoaderIf
 {
 class LoaderIf
@@ -33,18 +35,18 @@ public:
 	}
 	// FUNCTIONs
 	// MODEL
-	virtual bool initFromScene(const aiScene* _pScene)                                     { return false; };
-	virtual void initMesh(GLuint _index, const aiMesh* _paiMesh)                           {};
-	virtual GLuint getNumberOfMeshes()                                                     { return 0; };
+	virtual void initScene(const aiScene* _pScene)                {};
+	virtual void initMesh(GLuint _index, const aiMesh* _paiMesh)  {};
+	// GET
+	virtual GLuint getModelVAO()                                  { return 0; };
+	virtual std::vector<Loader::Mesh> getVectorOfMeshes()         { return std::vector<Loader::Mesh>(); };
+	// SET
 	// TEXTUREs
-	virtual void loadSingleTexture2DID(char* _textureName) {};
-	virtual void loadVectorOfTextures2DID()                {};
-	virtual GLuint getSingleTexture2DID()                  { return 0; };
-	virtual std::vector<GLuint> getVectorOfVBOs()          { return dummyReturn; };
-	virtual std::vector<GLuint> getVectorOfIBOs()          { return dummyReturn; };
-	virtual std::vector<GLuint> getVectorOfTextures2DID()  { return dummyReturn; };
+	virtual GLuint createSingleTexture(std::string& _textureName) { return 0; };
+	// GET
+	// SET
+	virtual void setTextureForEachMesh()                          {};
 private:
-	std::vector<GLuint> dummyReturn;
 };
 }
 }

@@ -1,7 +1,7 @@
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 
-#include "../../Models/inc/Model_Water_Tile.h"
+#include "../../Models/inc/ModelWaterTile0.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 //
@@ -9,7 +9,7 @@
 // CONSTRUCTORs / DESTRUCTOR(s)
 //
 //
-Models::Model_Water_Tile::Model_Water_Tile(char* _fileName,
+Models::ModelWaterTile0::ModelWaterTile0(char* _fileName,
 	                                       Shaders::ShadersIf::ShadersIf* _shader, 
 	                                       Camera::CameraIf::CameraIf* _camera,
 	                                       GLuint _textureID,
@@ -118,23 +118,23 @@ Models::Model_Water_Tile::Model_Water_Tile(char* _fileName,
 	VertexAttribPointers();
 }
 
-Models::Model_Water_Tile::~Model_Water_Tile()
+Models::ModelWaterTile0::~ModelWaterTile0()
 {
-	std::cout << "Model_Water_Tile destructor called!" << std::endl;
+	std::cout << "ModelWaterTile0 destructor called!" << std::endl;
 }
 //
 //
 // FUNCTION(s)
 // 
 //
-void Models::Model_Water_Tile::VertexAttribPointers()
+void Models::ModelWaterTile0::VertexAttribPointers()
 {
 	glUseProgram(shader->getShaderProgramID());
 	glVertexAttribPointer(shader->getPositionsID(), 2, GL_FLOAT, GL_FALSE, 0, 0);
 	glUseProgram(0);
 }
 
-void Models::Model_Water_Tile::renderModel()
+void Models::ModelWaterTile0::renderModel()
 {
 	//
 	// Bind VAO and Activate SHADER(s)

@@ -1,8 +1,8 @@
-#ifndef MODEL_GUI__
-#define MODEL_GUI__
+#ifndef MODELGUI0__
+#define MODELGUI0__
 
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 //
 // ModelIf
 //
@@ -10,7 +10,7 @@
 
 namespace Models
 {
-class Model_GUI : public ModelsIf::ModelsIf
+class ModelGUI0 : public ModelsIf::ModelsIf
 {
 public:
 	//
@@ -18,13 +18,13 @@ public:
 	// CONSTRUCTORs / DESTRUCTORs
 	//
 	//	
-	Model_GUI(char* _fileName,
+	ModelGUI0(char* _fileName,
 		      Shaders::ShadersIf::ShadersIf* _shader,
 		      GLuint _textureID,
 		      glm::vec3 _position, 
 		      glm::vec3 _scale);
 
-	~Model_GUI();
+	~ModelGUI0();
 	//
 	//
 	// FUNCTIONs
@@ -37,7 +37,7 @@ public:
 	// OPERATORs
 	//
 	//	
-	friend std::ostream& operator<<(std::ostream& output, Model_GUI& info)
+	friend std::ostream& operator<<(std::ostream& output, ModelGUI0& info)
 	{
 		return output;
 	}

@@ -1,49 +1,91 @@
 // GAMEDEV Framework Marin Bilan @2017
 // cd "D:\Marin\__Programming\Projects\Programing\ProjectX [OpenGL]\ProjectX [OpenGL]"
-#define BUFFER_OFFSET(i) ((char *)NULL + (i))
-// System libs includes
-#include "Db\IncludesDb\includesDb.h"
 
-// Shaders [ Projection Matrix]
-Shaders::ShaderPTN*             shaderPTN1;        // WITHOUT NORMAL MAP
-Shaders::Shader_Water_Tile*     shader_Water_Tile; // WATER
-Shaders::Shader_2*              shader_2;          // GUI
-Shaders::Shader_3*              shader_3;          // SKYBOX
-Shaders::ShaderLearningOpenGL1* shaderOpenLearningOpenGL1;
-Shaders::ShaderDepthMapFBO*     shaderDepthMapFBO1;
+#include "Db\IncludesDb\includesDb.h"
+// +--------------------------+
+// | APPLICATION ARCHITECTURE |
+// +--------------------------+
+//                        
+//                                                                                               +-----------------+                       
+//                                                                                               | CommonFunctions |                      
+//                                                                                               +-----------------+                             
+//                                                                                                        |
+//                                                  +-----------------------------------------------------+------------------------------------------------------+
+//                                                  |                                                     |                                                      |
+//                                            #include "../../CommonFunctions/CommonFunctions.h"    #include "../../CommonFunctions/CommonFunctions.h"    #include "../../CommonFunctions/CommonFunctions.h"
+//                                            +------------+                                        +------------+                                        +------------+
+//                                            | [LoaderIf] |                                        | [ShaderIf] |                                        | [CameraIf] |
+//                                            +------------+                                        +------------+                                        +------------+
+//                                                  |                                                     | |                                                    | |
+//                                  +----------------------------+                                        | |                                                    | |
+//                                  |                            |                                        | |                                                    | |
+//                        -----------------------------  -----------------                           -------------                                           ----------
+//                        [ ModelLoaderLearningOpenGL ]  [ TextureLoader ]                           [ ShaderPTN ]                                           [ Camera ]
+//                        -----------------------------  -----------------                           -------------                                           ----------
+//                                  |                            |                                          |                                                      |     
+//                                  |                            |                                          |                                                      |
+//                                  +----------------------------+                                          |                                                      |
+//                                                 |                                                        |                                                      |
+//                                                 |                                                        |                                                      |
+//                                  #include "..ModelLoaderLearningOpenGL.h"                                |                                                      |
+//                                  #include "..TextureLoader.h"                                            |                                                      |
+//                                           +-----------+                                                  |                                                      |
+//                                           | [ModelIf] |                                                  |                                                      |
+//                                           +-----------+                                                  |                                                      |
+//                                                 | |                                                      |                                                      |
+//                                             ------------                                                 |                                                      |
+//                                             [ ModelPTN ]                                                 |                                                      |
+//                                             ------------                                                 |                                                      |
+//                                                   |                                                      |                                                      |
+//                                                   +------------------------------------------------------+------------------------------------------------------+
+//                                                                                                          |                                                       
+//                                           #include glew                                                  |                                                      
+//									         #include glfw                                                  |                                                      
+//                                           #include glm                                                   +---------------------+
+//                                           #include "..shadersDB.h" // GLSL Programs                      |                     | 
+//                                           // SHADERs                                                     |                     |
+//                                           #include "Shaders\if\ShaderIf.h"                               |               #include "..\..\Camera\if\CameraIf.h"
+//						                     #include "Shaders\inc\ShaderPTN.h"                             |               #include "..\..\Shaders\if\ShaderIf.h"
+//                                           // CAMERAs                                                     |               #include "..\..\Models\if\ModelIf.h"
+//                                           #include "Camera\if\CameraIf.h"                                |                     |
+//                                           #include "Camera\inc\Camera.h"                                 |               +--------------+
+//                                           // LOADER                                                      |               | [RendererIf] |
+//                                           #include "Loader\if\LoaderIf.h"                                |               +--------------+
+//                                           #include "Loader\inc\ModelLoader.h"                            |                     |
+//                                           #include "Loader\inc\TextureLoader.h"                          |                     |
+//                                           // MODEL                                                       |                     |
+//                                           #include "Models\if\ModelIf.h"                                 |                     |
+//                                           #include "Models\inc\ModelPTN.h"                               |                     |
+//									         // RENDERER                                                    |                     |
+//							                 #include "Renderer\inc\Renderer.h"                             |                     |
+//                                           +------------------+                                           |                     |
+//                                           | ProjectX [OpenGL]| <-----------------------------------------+---------------------+
+//						                     +------------------+
+//
+// Shaders [ Projection ]
+Shaders::ShaderSkyBox0*         shaderSkyBox00;            // SKYBOX
+Shaders::ShaderWaterTile0*      shaderWaterTile00;         // WATER
+Shaders::ShaderLearningOpenGL0* shaderOpenLearningOpenGL00;
+Shaders::ShaderPTN0*            shaderPTN00;               
+Shaders::ShaderGUI0*            shaderGUI00;               // GUI
 
 // Camera [ View ]
 Camera::Camera* camera;
 
-// Models
-Models::ModelPTN*         modelVanquish;
-Models::ModelPTN*         modelTest1;
-Models::ModelPTN*         modelTest2;
-
-Models::ModelLearnOpenGL* modelLearnOpenGL1;
-Models::Model_skyBox*     model_skyBox;
-Models::Model_Water_Tile* modelWaterTile;
-Models::Model_GUI*        model_GUI1;
-Models::Model_GUI*        model_GUI2;
-
-// LIGHT
-GLfloat light1[] = { 0.0f, 15.0f, 15.0f, 1.0f };
-GLfloat light2[] = { 0.0f, 15.0f, 15.0f };
-
-// LOADER
-Loader::ModelLoader*   modelLoaderVanquish;
-Loader::TextureLoader* textureLoaderVanquish;
-
-Loader::ModelLoader*   loadModelTest1;
-Loader::TextureLoader* loadTextureTest1;
-
-// BUFFERs
+// FBOs
 FBOs::WaterFBO* waterFBO1;
 FBOs::WaterFBO* waterFBO2;
 
-FBOs::FBOShaddowMapping* FBOShadowMapping1;
+// Models [ Model ]
+Models::ModelSkyBox0*     modelSkyBox00;
+Models::ModelWaterTile0*  modelWaterTile00;
+// Models::ModelLearnOpenGL* modelLearnOpenGL1;
+Models::ModelPTN0*        modelTest1;
+Models::ModelPTN0*        modelTest2;
+Models::ModelGUI0*        modelGUI00;
+Models::ModelGUI0*        modelGUI01;
 
-// RENDERER
+// Renderers
 Renderer::Renderer* renderer;
 
 // Variables and Constants
@@ -54,7 +96,8 @@ GLfloat deltaTime = 0.0f; // Time between current frame and last frame
 GLfloat lastFrame = 0.0f; // Time of last frame
 
 #include "Controls\Contorls.h"
-GLfloat planeModelPTN[] = { 0.0f, -1.0f, 0.0f, 100000.0f };    // HACK (glDisable doesn't work!)
+// GLfloat planeModelPTN[] = { 0.0f, -1.0f, 0.0f, 100000.0f };    // HACK (glDisable doesn't work!)
+
 
 void RenderScene(GLfloat deltaTime)
 {	
@@ -69,7 +112,7 @@ void RenderScene(GLfloat deltaTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CLIP_DISTANCE0);
 
-	renderer->renderSkyBox(camera, model_skyBox);                                    // RENDER FROM BELOW ( Invert CAM )
+	//renderer->renderSkyBox(camera, model_skyBox);                                    // RENDER FROM BELOW ( Invert CAM )
 	//renderer->renderModelPTN(planeModelPTNAbove, camera, modelVanquish, shaderPTN1); // RENDER FROM BELOW ( Invert CAM )
 
 	waterFBO1->unbindCurrentFrameBuffer();
@@ -77,22 +120,16 @@ void RenderScene(GLfloat deltaTime)
 	//
 	// RENDER IN SHADOW MAP with shadow map shader
 	//
-	float near_plane = 1.0f, far_plane = 7.5f;
-	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-	// Stara vrijednost zamijenjena novom testiranom camerom
-	//glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
-	//	                              glm::vec3(0.0f, 0.0f, 0.0f),
-	//	                              glm::vec3(0.0f, 1.0f, 0.0f));
-	glm::mat4 lightView = glm::lookAt(glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+	// -------------------------------- FRAME DEPTH BUFFER ----------------------------------------------
+	glEnable(GL_DEPTH_TEST);
+	glClear(GL_DEPTH_BUFFER_BIT); // Clear any data from last frame. No need to clear COLOR BUFFER because there is no attach for COLOR BUFFER
+	// FBOShadowMapping1->bindFBOShadowMapping();
 
-	FBOShadowMapping1->bindFBOShadowMapping();
-	glClear(GL_DEPTH_BUFFER_BIT);
-	glUseProgram(shaderDepthMapFBO1->getShaderProgramID());
-	glUniformMatrix4fv(shaderDepthMapFBO1->getLightSpaceMatrixID(), 1, GL_FALSE, &lightSpaceMatrix[0][0]);
-	renderer->renderDepthMap(modelTest1, shaderDepthMapFBO1); // render model with shaderDepthMapFBO1
-	renderer->renderDepthMap(modelTest2, shaderDepthMapFBO1);
-	FBOShadowMapping1->unbindFBOShadowMapping();
+	//renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest1, shaderPTNDepth0);
+	//renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest2, shaderPTNDepth0);
+
+	// FBOShadowMapping1->unbindFBOShadowMapping(); // After this process we have textureID (FBOShadowMapping1->getFBOShadowMapTextureID())
+	// ----------------------------------------------------------------------------------------------------
 	//
 	// RENDER NORMAL CAM
 	//
@@ -100,8 +137,8 @@ void RenderScene(GLfloat deltaTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CLIP_DISTANCE0);
 
-	renderer->renderSkyBox(camera, model_skyBox);
-	// renderer->renderModelPTN(planeModelPTNBelow, camera, modelVanquish, shaderPTN1); // (y = -1)
+	//renderer->renderSkyBox(camera, model_skyBox);
+	//renderer->renderModelPTN(planeModelPTNBelow, camera, modelVanquish, shaderPTN1); // (y = -1)
 
 	waterFBO1->unbindCurrentFrameBuffer();
 	// =============================================
@@ -110,15 +147,15 @@ void RenderScene(GLfloat deltaTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_CLIP_DISTANCE0);
 
-	renderer->renderSkyBox(camera, model_skyBox);
-	renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest1, shaderPTN1);
-	renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest2, shaderPTN1);
+	renderer->renderSkyBox(camera, modelSkyBox00);
+	renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest1, shaderOpenLearningOpenGL00);
+    renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest2, shaderOpenLearningOpenGL00);
 	// =============================================
 	// ----==== STOP RENDER IN MAIN SCREEN ====----
 	// =============================================
 
 	// RENDER IN GUIs
-	model_GUI1->renderModel();  // FBO1 (texID = 8) TODO Hardcoded numbers
+	modelGUI00->renderModel();  // FBO1 (texID = 8) TODO Hardcoded numbers
 	// model_GUI2->renderModel();  // FBO2 (texID = 12) TODO
 
 	// ----==== RENDER NORMAL MAP MODEL ====----
@@ -169,7 +206,16 @@ void RenderSceneMaster(GLfloat deltaTime);
 
 int main(int argc, char** argv)
 {
-	std::cout << "Starting GLFW context, OpenGL 3.3" << std::endl;
+	system("Color 2"); // Set CMD color green
+    // ---- SETUP LOG FILE ----
+	std::ofstream logFile("___Log/logFile.txt");
+	// ---- CREATE COMMON FUNCTIONs OBJECT ----
+	CommonFunctions* CF = new CommonFunctions(logFile);
+	CF->LOGFILE(LOG "My First msg from MAIN");
+
+	std::cout << "+---------------------------------+" << std::endl;
+	std::cout << "|  Starting GLFW context, OpenGL  |" << std::endl;
+	std::cout << "+---------------------------------+" << std::endl;
 	// Init GLFW
 	glfwInit();
 
@@ -177,8 +223,7 @@ int main(int argc, char** argv)
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_SAMPLES, 8);
 	// Give me screen resolution
-	get_resolution(); 
-	std::cout << WIDTH << " " << HEIGHT << std::endl;
+	get_resolution();
 
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "3Ddev", nullptr, nullptr); // 4th parameter = glfwGetPrimaryMonitor() for fullscreen
 
@@ -199,55 +244,40 @@ int main(int argc, char** argv)
 	{
 		std::cout << "Failed to initialize GLEW" << std::endl;
 	}
-	// SHADERs [ Projection ] Initialization (only once)
-	shaderPTN1 = new Shaders::ShaderPTN("shaderPTN1", VSPTN, FSPTN);
-	shader_Water_Tile = new Shaders::Shader_Water_Tile(VS_Water_Tile, FS_Water_Tile);
-	shader_2 = new Shaders::Shader_2(VS2, FS2); // GUI
-	shader_3 = new Shaders::Shader_3(VS3, FS3); // skyBox
-	shaderOpenLearningOpenGL1 = new Shaders::ShaderLearningOpenGL1(VSLearningOpenGL1, FSLearningOpenGL1);
-	shaderDepthMapFBO1 = new Shaders::ShaderDepthMapFBO(VSDepthMapFBO, FSDepthMapFBO);
-	// SHADERs INFO
-	std::cout << *shaderDepthMapFBO1;
-	// CAMERA [ViewMatrix] INIT
+	//
+	// ----==== SHADERs [ ProjectionMatrix ] Initialization (only once) ====----
+	//
+	shaderSkyBox00 = new Shaders::ShaderSkyBox0(VS3, FS3);
+	shaderWaterTile00 = new Shaders::ShaderWaterTile0(VS_Water_Tile, FS_Water_Tile);
+	shaderOpenLearningOpenGL00 = new Shaders::ShaderLearningOpenGL0(VSLearningOpenGL0, FSLearningOpenGL0);
+	shaderPTN00 = new Shaders::ShaderPTN0(VSPTN, FSPTN);
+	shaderGUI00 = new Shaders::ShaderGUI0(VS2, FS2);
+	// Shaders INFO
+	std::cout << *shaderOpenLearningOpenGL00;
+	std::cout << *shaderPTN00;
+	//
+	// ----==== CAMERAs [ ViewMatrix ] ====----
+	//
 	camera = new Camera::Camera(glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // Current Light position
-	// MODELS
-	modelTest1 = new Models::ModelPTN("_src/_models/cubeNM/",
-		"cube",
-		loadModelTest1, 
-		loadTextureTest1, 
-		shaderPTN1, 
-		glm::vec3(0.0f, 0.0f, 0.0f), 
-		glm::vec3(0.01f, 0.01f, 0.001f),
-		glm::vec3(1.0f, 0.0f, 0.0f),
-		-1.55f);
-
-	modelTest2 = new Models::ModelPTN("_src/_models/cubeNM/",
-		"cube", 
-		loadModelTest1, 
-		loadTextureTest1, 
-		shaderPTN1, 
-		glm::vec3(0.0f, 0.2f, 0.0f), 
-		glm::vec3(0.001f, 0.001f, 0.001f),
-		glm::vec3(1.0f, 0.0f, 0.0f),
-		-1.55f);
-	// SKYBOX
-	model_skyBox = new Models::Model_skyBox(shader_3, camera);
-	// BUFFERs
+	//
+	// ----==== FBOs ====----	
+	//
 	waterFBO1 = new FBOs::WaterFBO();
 	waterFBO2 = new FBOs::WaterFBO();
-	FBOShadowMapping1 = new FBOs::FBOShaddowMapping(380, 180, WIDTH, HEIGHT);
-	//meshNM = new Models::Model_AssimpNormalMap("_src/_models/barrel/", shader_7, camera, light1);
-	// TO DO: clean variable names
-	//model_1 = new Models::Model_1(shader_1, camera, light1);
 	//
-	// GUIs
+	// ----==== MODELs [ ModelMatrix ] ====----	
 	//
-	model_GUI1 = new Models::Model_GUI("sword.png", shader_2, FBOShadowMapping1->getFBOShadowMapTextureID(), glm::vec3(-0.7f, 0.5f, 0.f), glm::vec3(0.3f));
-	model_GUI2 = new Models::Model_GUI("socuwan.png", shader_2, 9, glm::vec3(0.7f, 0.5f, 0.0f), glm::vec3(0.3));
-	// dudvMap
-	modelWaterTile = new Models::Model_Water_Tile("_src/water/waterDUDV.png", shader_Water_Tile, camera, 8, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(14.0f));
+	modelSkyBox00 = new Models::ModelSkyBox0(shaderSkyBox00, camera);
+	modelTest1 = new Models::ModelPTN0(CF, "_src/_models/_vanquish/");	
+	modelTest2 = new Models::ModelPTN0(CF, "_src/_models/_dagger/");
+	modelWaterTile00 = new Models::ModelWaterTile0("_src/water/waterDUDV.png", shaderWaterTile00, camera, 8, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(14.0f));
+	modelGUI00 = new Models::ModelGUI0("sword.png", shaderGUI00, 10, glm::vec3(-0.7f, 0.5f, 0.f), glm::vec3(0.5f));
+	modelGUI01 = new Models::ModelGUI0("socuwan.png", shaderGUI00, 9, glm::vec3(0.7f, 0.5f, 0.0f), glm::vec3(0.3));
+	// Models INFO
+	std::cout << *modelTest1;
+	std::cout << *modelTest2;
 	//
-	// RENDERER
+	// ----==== RENDERERs ====----	
 	//
 	renderer = new Renderer::Renderer();
 
@@ -272,10 +302,13 @@ int main(int argc, char** argv)
 		glfwPollEvents();
 		do_movement();
 		//
+		// DO PROCESSING
+		//
+		//
 		// RENDER SCENE
 		//
-		RenderScene(deltaTime);
-		//RenderSceneMaster(deltaTime);
+		// RenderScene(deltaTime);
+		RenderSceneMaster(deltaTime);
 		//
 		//
 		//
@@ -289,7 +322,9 @@ int main(int argc, char** argv)
 void RenderSceneMaster(GLfloat deltaTime)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_CLIP_DISTANCE0);
+	// glEnable(GL_CLIP_DISTANCE0);
 
-	renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest1, shaderPTN1);
+	renderer->renderSkyBox(camera, modelSkyBox00);
+	renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest1, shaderOpenLearningOpenGL00);
+	renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest2, shaderOpenLearningOpenGL00);
 }

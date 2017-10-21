@@ -156,6 +156,7 @@ const char* FS_Water_Tile =
 //
 // ----==== DEPTHMAP SHADER ====----
 //
+/*
 const char* VSDepthMapFBO =
 "    #version 330 \r\n"
 ""
@@ -174,10 +175,34 @@ char* FSDepthMapFBO =
 ""
 "    void main()"
 "{}";
+*/
+const char* VSDepthMapFBO =
+"    #version 330 \r\n"
+""
+"    in vec3 in_position;"
+""
+"	 uniform mat4 mvpMatrix;"
+""
+"	 void main()"
+"	 {"
+"       gl_Position = mvpMatrix * vec4(in_position, 1.0);"
+"    }";
+
+char* FSDepthMapFBO =
+"    #version 330 \r\n"
+""
+"	out vec4 out_colour;"
+""
+"	uniform sampler2D modelTexture;"
+""
+"   void main()"
+"{"
+"	out_colour = vec4(1.0);"
+"}";
 //
-// ----==== LEARNING OPENGL SHADER 1 ====----
+// ----==== LEARNING OPENGL SHADER 0 ====----
 //
-const char* VSLearningOpenGL1 =
+const char* VSLearningOpenGL0 =
 "	#version 330 \r\n"
 ""
 "	in vec3 position;"
@@ -191,7 +216,7 @@ const char* VSLearningOpenGL1 =
 "		gl_Position = projection * view * model * vec4(position, 1.0f);"
 "}";
 
-const char* FSLearningOpenGL1 =
+const char* FSLearningOpenGL0 =
 "#version 330 \r\n"
 ""
 "	out vec4 color;"
@@ -392,4 +417,314 @@ const char* FS7 =
 "	out_Color = vec4(totalDiffuse, 1.0) * textureColour + vec4(totalSpecular, 1.0);"
 //"	out_Color = mix(vec4(skyColour, 1.0), out_Color, visibility);"
 ""
+"}";
+//
+// ----==== DEPTH MAP SHADER ====----
+//
+//
+// VERTEX SHADER
+//
+const char* DepthMapVertexShader =
+"#version 330 \r\n"
+""
+"in vec3 aPos;"
+"in vec2 aTexCoords;"
+"in vec3 aNormal;"
+""
+//"out vec2 TexCoords;" // NEW
+""
+"out VS_OUT {"
+"vec3 FragPos;"
+"vec3 Normal;"
+"vec2 TexCoords;"
+"vec4 FragPosLightSpace;" // NEW
+"} vs_out;"
+""
+"uniform mat4 projection;"
+"uniform mat4 view;"
+"uniform mat4 model;" // NEW
+"uniform mat4 lightSpaceMatrix;" // NEW
+"uniform mat3 invMat3Model;" // MY NEW
+""
+"void main()"
+"{"
+"	vs_out.FragPos = vec3(model * vec4(aPos, 1.0));"
+"	vs_out.Normal = transpose(invMat3Model) * aNormal;"
+"	vs_out.TexCoords = aTexCoords;"
+"	vs_out.FragPosLightSpace = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);" // NEW
+"	gl_Position = projection * view * model * vec4(aPos, 1.0);"
+"}";
+//
+// FRAGMENT SHADER
+//
+const char* DepthMapFragmentShader =
+"#version 330 \r\n"
+""
+"out vec4 FragColor;"
+""
+"in VS_OUT {"
+"vec3 FragPos;"
+"vec3 Normal;"
+"vec2 TexCoords;"
+"vec4 FragPosLightSpace;" // NEW
+"} fs_in;"
+""
+"uniform sampler2D diffuseTexture;"
+"uniform sampler2D shadowMap;" // NEW
+""
+"uniform vec3 lightPos;"
+"uniform vec3 viewPos;"
+""
+"float ShadowCalculation(vec4 fragPosLightSpace)"
+"{"
+""
+"	vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;"
+""
+"	projCoords = projCoords * 0.5 + 0.5;"
+""
+"	float closestDepth = texture(shadowMap, projCoords.xy).r;"
+""
+"	float currentDepth = projCoords.z;"
+""
+"	float shadow = currentDepth > closestDepth ? 1.0 : 0.0;"
+""
+"	return shadow;"
+"}"
+""
+"void main()"
+"{"
+"	vec3 color = texture(diffuseTexture, fs_in.TexCoords).rgb;"
+"	vec3 normal = normalize(fs_in.Normal);"
+"	vec3 lightColor = vec3(0.3);"
+""
+"	vec3 ambient = 0.3 * color;"
+""
+"	vec3 lightDir = normalize(lightPos - fs_in.FragPos);"
+"	float diff = max(dot(lightDir, normal), 0.0);"
+"	vec3 diffuse = diff * lightColor;"
+""
+"	vec3 viewDir = normalize(viewPos - fs_in.FragPos);"
+"	vec3 reflectDir = reflect(-lightDir, normal);"
+"	float spec = 0.0;"
+"	vec3 halfwayDir = normalize(lightDir + viewDir);"
+"	spec = pow(max(dot(normal, halfwayDir), 0.0), 64.0);"
+"	vec3 specular = spec * lightColor;"
+""
+"	float shadow = ShadowCalculation(fs_in.FragPosLightSpace);"
+"	vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * color;"
+""
+"	FragColor = vec4(lighting, 1.0);"
+"}";
+
+//
+// ----==== PTNDepth SHADER ====----
+//
+// VERTEX SHADER
+const char* VSPTNDepth0 =
+"#version 330 \r\n"
+""
+"	in vec3 position;"
+""
+"	uniform mat4 projectionMatrix;"
+"	uniform mat4 viewMatrix;"
+"	uniform mat4 transformationMatrix;"
+""
+"	void main(void) {"
+"		gl_Position = projectionMatrix * viewMatrix * transformationMatrix * vec4(position, 1.0);"
+"}";
+// FRAGMENT SHADER
+const char* FSPTNDepth0 =
+"#version 330 \r\n"
+""
+"	void main(void) {"
+//"		gl_FragColor = vec4(gl_FragCoord.z);"
+"}";
+
+//// VERTEX SHADER
+//const char* VSPTNDepth =
+//"#version 330 \r\n"
+//""
+//"	in vec3 position;"
+//"	in vec2 textureCoordinates;"
+//"	in vec3 normal;"
+//""
+//"	uniform mat4 projectionMatrix;"
+//"	uniform mat4 viewMatrix;"
+//"	uniform mat4 viewMatrixInv;"
+//"	uniform mat4 transformationMatrix;"
+//""
+//"	uniform mat4 toShadowMapSpace;" // NEW
+//""
+//"	uniform vec3 lightPosition;"
+//"	uniform vec4 plane;"
+//""
+//"	out vec2 pass_textureCoordinates;"
+//"	out vec3 surfaceNormal;"
+//"	out vec3 toLightVector;"
+//"	out vec3 toCameraVector;"
+//""
+//"	out vec4 shadowCoords;" // NEW
+//""
+//"	void main(void) {"
+//""
+//"		vec4 worldPosition = transformationMatrix * vec4(position, 1.0);"
+//"		mat4 toShadowMapSpace2 = -0.5 + 0.5 * toShadowMapSpace;" // NEW // Here we get info about display coords in texture sampling
+//"		shadowCoords = toShadowMapSpace2 * worldPosition;"       // NEW // (x, y) for texture coordinates and z component for depth in (x, y) chord
+//""
+//"		gl_ClipDistance[0] = dot(worldPosition, plane);"
+//"		gl_Position = projectionMatrix * viewMatrix * worldPosition;"
+//"		pass_textureCoordinates = textureCoordinates;"
+//""
+//"		surfaceNormal = ( transformationMatrix * vec4(normal, 0.0) ).xyz;"
+//"		toLightVector = lightPosition - worldPosition.xyz;"
+//"		toCameraVector = (viewMatrixInv * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;"
+//"}";
+//// FRAGMENT SHADER
+//const char* FSPTNDepth =
+//"#version 330 \r\n"
+//""
+//"	in vec2 pass_textureCoordinates;"
+//"	in vec3 surfaceNormal;"
+//"	in vec3 toLightVector;"
+//"	in vec3 toCameraVector;"
+//""
+//"	in vec4 shadowCoords;" // NEW
+//""
+//"	uniform vec3 lightColour;"
+//"	uniform float shineDamper;"
+//"	uniform float reflectivity;"
+//""
+//"	uniform sampler2D modelTexture;"
+//"	uniform sampler2D shadowMap;" // NEW
+//""
+//"	out vec4 out_Color;"
+//""
+//"	void main(void) {"
+//""
+//"		float objectNearestLight = texture(shadowMap, shadowCoords.xy).r;" // NEW r component (Depth info)
+//"		float lightFactor = 1.0f;" // NEW
+//"		if(shadowCoords.z > objectNearestLight) {" // NEW
+//"			lightFactor = 0.1;" // NEW
+//"		}" // NEW
+//""
+//"		vec3 unitNormal = normalize(surfaceNormal);"
+//"		vec3 unitLightVector = normalize(toLightVector);"
+//""
+//"		float nDot1 = dot(unitNormal, unitLightVector);"
+//"		float brightness = max(nDot1, 0.2);"
+//"		vec3 diffuse = brightness * lightColour;"
+//""
+//"		vec3 unitVectorToCamera = normalize(toCameraVector);"
+//"		vec3 lightDirection = -unitLightVector;"
+//"		vec3 reflectedLightDirection = reflect(lightDirection, unitNormal); "
+//""
+//"		float specularFactor = dot(reflectedLightDirection, unitVectorToCamera); "
+//"		specularFactor = max(specularFactor, 0.0); "
+//""
+//"		float dampedFactor = pow(specularFactor, shineDamper); "
+//""
+//"		vec3 finalSpecular = dampedFactor * reflectivity * lightColour;"
+//""
+//"		out_Color = vec4(diffuse * lightFactor, 1.0) * texture(modelTexture, pass_textureCoordinates) + vec4(finalSpecular, 1.0);" // NEW lightFactor
+//"}";
+
+// VERTEX SHADER
+const char* VSPTNDepth =
+"#version 330 \r\n"
+""
+"	in vec3 position;"
+"	in vec2 textureCoordinates;"
+"	in vec3 normal;"
+""
+"	uniform mat4 projectionMatrix;"
+"	uniform mat4 viewMatrix;"
+"	uniform mat4 viewMatrixInv;"
+"	uniform mat4 transformationMatrix;"
+""
+"	uniform vec3 lightPosition;"
+"	uniform vec4 plane;"
+""
+"	out vec2 pass_textureCoordinates;"
+"	out vec3 surfaceNormal;"
+"	out vec3 toLightVector;"
+"	out vec3 toCameraVector;"
+""
+"	uniform mat4 lightSpaceMatrix;" // NEW
+""
+"	out vec4 FragPosLightSpace;" // NEW
+""
+"	void main(void) {"
+""
+"		vec4 worldPosition = transformationMatrix * vec4(position, 1.0);"
+""
+"		gl_ClipDistance[0] = dot(worldPosition, plane);"
+"		gl_Position = projectionMatrix * viewMatrix * worldPosition;"
+"		pass_textureCoordinates = textureCoordinates;"
+""
+//"	    FragPosLightSpace = lightSpaceMatrix * vec4(vec3(transformationMatrix * vec4(position, 1.0)), 1.0);" // NEW
+"	    FragPosLightSpace = lightSpaceMatrix * transformationMatrix * vec4(position, 1.0);" // NEW Shadow coord
+""
+"		surfaceNormal = ( transformationMatrix * vec4(normal, 0.0) ).xyz;"
+"		toLightVector = lightPosition - worldPosition.xyz;"
+"		toCameraVector = (viewMatrixInv * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;"
+"}";
+// FRAGMENT SHADER
+const char* FSPTNDepth =
+"#version 330 \r\n"
+""
+"	in vec2 pass_textureCoordinates;"
+"	in vec3 surfaceNormal;"
+"	in vec3 toLightVector;"
+"	in vec3 toCameraVector;"
+""
+//"	in vec3 FragPos;" // NEW
+"	in vec4 FragPosLightSpace;" // NEW
+""
+"	uniform vec3 lightColour;"
+"	uniform float shineDamper;"
+"	uniform float reflectivity;"
+""
+"	uniform sampler2D modelTexture;"
+"	uniform sampler2D shadowMap;" // NEW
+""
+"	out vec4 out_Color;"
+""
+"	float ShadowCalculation(vec4 fragPosLightSpace)" // NEW FUNCTION
+"	{"
+"		vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;"
+"		projCoords = projCoords * 0.5 + 0.5;"
+"		float closestDepth = texture(shadowMap, projCoords.xy).r;"
+"		float currentDepth = projCoords.z;"
+"		float shadow = currentDepth > closestDepth ? 1.0 : 0.0;"
+"		return shadow;"
+"	}"
+""
+"	void main(void) {"
+""
+"		vec3 unitNormal = normalize(surfaceNormal);"
+"		vec3 unitLightVector = normalize(toLightVector);"
+""
+"		float nDot1 = dot(unitNormal, unitLightVector);"
+"		float brightness = max(nDot1, 0.2);"
+"		vec3 diffuse = brightness * lightColour;"
+""
+"		vec3 unitVectorToCamera = normalize(toCameraVector);"
+"		vec3 lightDirection = -unitLightVector;"
+"		vec3 reflectedLightDirection = reflect(lightDirection, unitNormal); "
+""
+"		float specularFactor = dot(reflectedLightDirection, unitVectorToCamera); "
+"		specularFactor = max(specularFactor, 0.0); "
+""
+"		float dampedFactor = pow(specularFactor, shineDamper); "
+""
+"		vec3 finalSpecular = dampedFactor * reflectivity * lightColour;"
+""
+"		float shadow = ShadowCalculation(FragPosLightSpace);" // NEW
+""
+//"		vec4 shadowCoordinateWdivide = FragPosLightSpace / FragPosLightSpace.w ;"
+//"		shadowCoordinateWdivide.z += 0.0005;"
+//"		float distanceFromLight = texture2D(shadowMap, shadowCoordinateWdivide.st).z;"
+//"		float shadow2 = 1.0;"
+//"		if (FragPosLightSpace.w > 0.0) shadow2 = distanceFromLight < shadowCoordinateWdivide.z ? 0.5 : 1.0;"
+"		out_Color = vec4(diffuse, 1.0) * texture(modelTexture, pass_textureCoordinates) * (1.3 - shadow) + vec4(finalSpecular, 1.0);" // NEW lightFactor
 "}";

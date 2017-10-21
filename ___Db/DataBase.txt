@@ -1,0 +1,30 @@
+//
+// Models Database with parameters
+//
+
+// ----==== Model Vanquish ====----
+_src/_models/_vanquish/	modelName	vanquish
+
+_src/_models/_vanquish/	modelPosition	4 -5 -4
+_src/_models/_vanquish/	modelScale              1 1 1
+_src/_models/_vanquish/	modelRotateAround 1 0 0
+_src/_models/_vanquish/	angle                        0.1
+
+
+// ----==== Model Dagger ====----
+_src/_models/_dagger/	modelName	model
+
+_src/_models/_dagger/	modelPosition	0 0.25 0.0
+_src/_models/_dagger/          modelScale              1 1      1
+_src/_models/_dagger/          modelRotateAround 1 0      0
+_src/_models/_dagger/          angle                        0.8457
+
+
+
+
+
+
+_src/_models/_raptor	shader0	whateverShader0
+_src/_models/_raptor	shader1	whateverShader1
+_src/_models/_raptor	shader2	whateverShader2
+_src/_models/_raptor	shader3	whateverShader3

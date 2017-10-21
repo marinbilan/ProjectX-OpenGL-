@@ -1,14 +1,14 @@
-#ifndef SHADER_2__
-#define SHADER_2__
+#ifndef SHADERGUI0__
+#define SHADERGUI0__
 
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 
 #include "../if/ShaderIf.h"
 
 namespace Shaders
 {
-class Shader_2 : public ShadersIf::ShadersIf
+class ShaderGUI0 : public ShadersIf::ShadersIf
 {
 public:
 	//
@@ -16,9 +16,9 @@ public:
 	// CONSTRUCTORs / DESTRUCTORs
 	//
 	//	
-	Shader_2(const char* vertexShader, const char* fragmentShader);
+	ShaderGUI0(const char* vertexShader, const char* fragmentShader);
 
-	~Shader_2();
+	~ShaderGUI0();
 	//
 	//
 	// FUNCTIONs
@@ -41,7 +41,7 @@ public:
 	// OPERATORs
 	//
 	//	
-	friend std::ostream& operator<<(std::ostream& output, Shader_2& info)
+	friend std::ostream& operator<<(std::ostream& output, ShaderGUI0& info)
 	{
 		output << "" << std::endl;
 		output << "shaderProgramID: " << info.shaderProgramID << std::endl;

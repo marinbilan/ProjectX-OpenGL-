@@ -1,11 +1,7 @@
 #ifndef FBOIF__
 #define FBOIF__
 
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <string>
-#include <vector>
+#include "../../CommonFunctions/CommonFunctions.h"
 //
 // GLEW
 //

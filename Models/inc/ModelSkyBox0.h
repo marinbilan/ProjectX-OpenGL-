@@ -1,8 +1,8 @@
-#ifndef MODEL_SKYBOX__
-#define MODEL_SKYBOX__
+#ifndef MODELSKYBOX0__
+#define MODELSKYBOX0__
 
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 //
 // ModelIf
 //
@@ -10,7 +10,7 @@
 
 namespace Models
 {
-class Model_skyBox : public ModelsIf::ModelsIf
+class ModelSkyBox0 : public ModelsIf::ModelsIf
 {
 public:
 	//
@@ -18,9 +18,9 @@ public:
 	// CONSTRUCTORs / DESTRUCTORs
 	//
 	//	
-	Model_skyBox(Shaders::ShadersIf::ShadersIf* _shader, Camera::CameraIf::CameraIf* _camera);
+	ModelSkyBox0(Shaders::ShadersIf::ShadersIf* _shader, Camera::CameraIf::CameraIf* _camera);
 
-	~Model_skyBox();
+	~ModelSkyBox0();
 	//
 	//
 	// FUNCTIONs
@@ -32,7 +32,7 @@ public:
 	// OPERATORs
 	//
 	//	
-	friend std::ostream& operator<<(std::ostream& output, Model_skyBox& info)
+	friend std::ostream& operator<<(std::ostream& output, ModelSkyBox0& info)
 	{
 		return output;
 	}

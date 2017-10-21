@@ -1,7 +1,5 @@
-#include <iostream>
-#include <string>
-
 #include "../../Loader/inc/ModelLoader.h"
+
 // CONSTRUCTORs / DESTRUCTORs
 Loader::ModelLoader::ModelLoader(char* _modelName,
 	                             char*  _textureShaderParams)
@@ -25,6 +23,8 @@ Loader::ModelLoader::ModelLoader(char* _modelName,
 	{
 		std::cout << "Error parsing: " << modelPath << " " << model << " " << Importer.GetErrorString() << std::endl;
 	}
+
+	Importer.FreeScene();
 }
 
 Loader::ModelLoader::~ModelLoader()
@@ -42,8 +42,8 @@ bool Loader::ModelLoader::initFromScene(const aiScene* _pScene)
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
-	std::ifstream modelParams(textureShaderParams);
-	std::string str;
+	//std::ifstream modelParams(textureShaderParams);
+	//std::string str;
 
 	for (unsigned int i = 0; i < meshesVector.size(); i++) {
 		const aiMesh* paiMesh = _pScene->mMeshes[i];

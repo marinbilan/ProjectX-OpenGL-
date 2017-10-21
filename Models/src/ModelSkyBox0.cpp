@@ -1,7 +1,7 @@
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 
-#include "../../Models/inc/Model_skyBox.h"
+#include "../../Models/inc/ModelSkyBox0.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 //
@@ -9,7 +9,7 @@
 // CONSTRUCTORs / DESTRUCTOR(s)
 //
 //
-Models::Model_skyBox::Model_skyBox(Shaders::ShadersIf::ShadersIf* _shader, Camera::CameraIf::CameraIf* _camera)
+Models::ModelSkyBox0::ModelSkyBox0(Shaders::ShadersIf::ShadersIf* _shader, Camera::CameraIf::CameraIf* _camera)
 {
 	//
 	// ADD SHADER(s)
@@ -121,23 +121,23 @@ Models::Model_skyBox::Model_skyBox(Shaders::ShadersIf::ShadersIf* _shader, Camer
 	VertexAttribPointers();
 }
 
-Models::Model_skyBox::~Model_skyBox()
+Models::ModelSkyBox0::~ModelSkyBox0()
 {
-	std::cout << "Model_skyBox destructor called!" << std::endl;
+	std::cout << "ModelSkyBox0 destructor called!" << std::endl;
 }
 //
 //
 // FUNCTION(s)
 // 
 //
-void Models::Model_skyBox::VertexAttribPointers()
+void Models::ModelSkyBox0::VertexAttribPointers()
 {
 	glUseProgram(shader->getShaderProgramID());
 	glVertexAttribPointer(shader->getPositionsID(), 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glUseProgram(0);
 }
 
-void Models::Model_skyBox::renderModel()
+void Models::ModelSkyBox0::renderModel()
 {
 	//
 	// Bind VAO and Activate SHADER(s)

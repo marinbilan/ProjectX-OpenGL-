@@ -11,18 +11,15 @@ public:
 	// CONSTRUCTORs / DESTRUCTORs
 	Renderer();
 	// FUNCTIONs
-	virtual void renderSkyBox(Camera::Camera* _camera, 
-		                      Models::Model_skyBox* _skyBox);
+	virtual void renderSkyBox(Camera::CameraIf::CameraIf* _camera,
+		                      Models::ModelSkyBox0* _skyBox);
 	virtual void renderWater(Shaders::ShadersIf::ShadersIf* _shader, 
-		                     Models::Model_Water_Tile* _modelWaterTile);
+		                     Models::ModelWaterTile0* _modelWaterTile);
 	virtual void renderModelPTN(GLfloat* _planeModelPTN, 
-		                        Camera::Camera* _camera,
-		                        Models::ModelPTN* _modelPTN, 
+		                        Camera::CameraIf::CameraIf* _camera,
+		                        Models::ModelPTN0* _modelPTN, 
 		                        Shaders::ShadersIf::ShadersIf* _shader);
-	virtual void renderDepthMap(Models::ModelPTN* _modelPTN, Shaders::ShadersIf::ShadersIf* _shader);
-	virtual void renderModelLearningOpenGL(Camera::Camera* _camera,  
-		                                   Shaders::ShadersIf::ShadersIf* _shader,
-		                                   Models::ModelLearnOpenGL* _modelLearningOpenGL);
+	virtual void renderDepthMap(Models::ModelPTN0* _modelPTN, Shaders::ShadersIf::ShadersIf* _shader);
 	// NEW
 	virtual void renderStaticModel(glm::vec4 _planeModelPTN,
 		                           Camera::CameraIf::CameraIf* _camera,

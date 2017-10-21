@@ -1,5 +1,5 @@
-#ifndef SHADERLEARNINGOPENGL1__
-#define SHADERLEARNINGOPENGL1__
+#ifndef SHADERLEARNINGOPENGL0__
+#define SHADERLEARNINGOPENGL0__
 
 #include <iostream>
 #include <string>
@@ -8,7 +8,7 @@
 
 namespace Shaders
 {
-class ShaderLearningOpenGL1 : public ShadersIf::ShadersIf
+class ShaderLearningOpenGL0 : public ShadersIf::ShadersIf
 {
 public:
 	//
@@ -16,9 +16,9 @@ public:
 	// CONSTRUCTORs / DESTRUCTORs
 	//
 	//	
-	ShaderLearningOpenGL1(const char* vertexShader, const char* fragmentShader);
+	ShaderLearningOpenGL0(const char* vertexShader, const char* fragmentShader);
 
-	~ShaderLearningOpenGL1();
+	~ShaderLearningOpenGL0();
 	//
 	//
 	// FUNCTIONs
@@ -31,6 +31,7 @@ public:
 	//
 	// [ ATTRIBs ]
 	//
+	virtual std::string getShaderName();
 	virtual GLuint const getPositionsID() const;
 	// 
 	// [ UNIFORMs ]
@@ -50,24 +51,26 @@ public:
 	// OPERATORs
 	//
 	//	
-	friend std::ostream& operator<<(std::ostream& output, ShaderLearningOpenGL1& info)
+	friend std::ostream& operator<<(std::ostream& output, ShaderLearningOpenGL0& info)
 	{
 		output << "" << std::endl;
-		output << ">>>> SHADER <<<<" << std::endl;
-		output << "shaderProgramID:          " << info.shaderProgramID << std::endl;
-		output << " VERTEX SHADER" << std::endl;		
-		output << "positionsID:              " << info.positionsID << std::endl;
-		output << "projectionMatrixID:       " << info.projectionMatrixID << std::endl;
-		output << "viewMatrixID:             " << info.viewMatrixID << std::endl;
-		output << "modelMatrixID:            " << info.modelMatrixID << std::endl;
-		output << " FRAGMENT SHADER " << std::endl;
-		output << "objectColorID:            " << info.objectColorID << std::endl;
-		output << "lightColorID:             " << info.lightColorID << std::endl;
+		output << "----==== SHADER ====----" << std::endl;
+		output << "Shader Name: " << info.shaderName << std::endl;
+		output << "ShaderProgramID: " << info.shaderProgramID << std::endl;
+		output << " --== VERTEX SHADER ==--" << std::endl;
+		output << "  positionsID = " << info.positionsID;
+		output << " projectionMatrixID = " << info.projectionMatrixID;
+		output << " viewMatrixID = " << info.viewMatrixID;
+		output << " modelMatrixID = " << info.modelMatrixID << std::endl;
+		output << " --== FRAGMENT SHADER ==--" << std::endl;
+		output << "  objectColorID = " << info.objectColorID;
+		output << " lightColorID = " << info.lightColorID;
 		output << "" << std::endl;
 		return output;
 	}
 
 private:
+	std::string shaderName;
 	GLuint shaderProgramID;
 
 	glm::mat4 projectionMatrix;

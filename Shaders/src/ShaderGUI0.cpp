@@ -1,16 +1,14 @@
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 
-#include "../../Shaders/inc/Shader_2.h"
+#include "../../Shaders/inc/ShaderGUI0.h"
 //
 //
 // CONSTRUCTORs / DESTRUCTORs
 //
 //
-Shaders::Shader_2::Shader_2(const char* vertexShader, const char* fragmentShader)
+Shaders::ShaderGUI0::ShaderGUI0(const char* vertexShader, const char* fragmentShader)
 {
-	std::cout << "Shader_2 constructor called! " << std::endl;
-
 	shaderProgramID = createShader(vertexShader, fragmentShader);
 	// =============
 	// VERTEX SHADER
@@ -25,30 +23,30 @@ Shaders::Shader_2::Shader_2(const char* vertexShader, const char* fragmentShader
 	modelMatrixID = glGetUniformLocation(shaderProgramID, "transformationMatrix");
 }
 
-Shaders::Shader_2::~Shader_2()
+Shaders::ShaderGUI0::~ShaderGUI0()
 {
-	std::cout << "Shader_2 destructor called!" << std::endl;
+	std::cout << "ShaderGUI0 destructor called!" << std::endl;
 }
 //
 //
 // FUNCTIONs
 // 
 //
-GLuint const Shaders::Shader_2::getShaderProgramID() const
+GLuint const Shaders::ShaderGUI0::getShaderProgramID() const
 {
 	return shaderProgramID;
 }
 //
 // [ ATTRIBs ]
 //
-GLuint const Shaders::Shader_2::getPositionsID() const
+GLuint const Shaders::ShaderGUI0::getPositionsID() const
 {
 	return positionsID;
 }
 //
 // [ UNIFORMs ]
 //
-GLuint const Shaders::Shader_2::getModelMatrixID() const
+GLuint const Shaders::ShaderGUI0::getModelMatrixID() const
 {
 	return modelMatrixID;
 }

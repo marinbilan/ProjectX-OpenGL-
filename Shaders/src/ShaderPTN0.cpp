@@ -1,14 +1,11 @@
-#include <iostream>
-#include <string>
-
-#include "../../Shaders/inc/ShaderPTN.h"
+#include "../../Shaders/inc/ShaderPTN0.h"
 //
 // CONSTRUCTORs / DESTRUCTORs
 //
-Shaders::ShaderPTN::ShaderPTN(std::string _shaderName, const char* vertexShader, const char* fragmentShader)
+Shaders::ShaderPTN0::ShaderPTN0(const char* vertexShader, const char* fragmentShader)
 {
-	std::cout << "ShaderPTN constructor called! " << std::endl;
-	shaderName = "shaderPTN1"; // Hardcoded shader name
+	//std::cout << "ShaderPTN constructor called! " << std::endl;
+	shaderName = "ShaderPTN0"; // Hardcoded shader name
     shaderProgramID = createShader(vertexShader, fragmentShader);
 	// =============
 	// VERTEX SHADER
@@ -41,21 +38,21 @@ Shaders::ShaderPTN::ShaderPTN(std::string _shaderName, const char* vertexShader,
 	glUseProgram(0);
 }
 
-Shaders::ShaderPTN::~ShaderPTN()
+Shaders::ShaderPTN0::~ShaderPTN0()
 {
-	std::cout << "ShaderPTN destructor called!" << std::endl;
+	std::cout << "ShaderPTN0 destructor called!" << std::endl;
 }
 //
 //
 // FUNCTIONs
 //
 //
-std::string Shaders::ShaderPTN::getShaderName()
+std::string Shaders::ShaderPTN0::getShaderName()
 {
 	return shaderName;
 }
 
-GLuint const Shaders::ShaderPTN::getShaderProgramID() const
+GLuint const Shaders::ShaderPTN0::getShaderProgramID() const
 {
 	return shaderProgramID;
 }
@@ -65,71 +62,71 @@ GLuint const Shaders::ShaderPTN::getShaderProgramID() const
 //
 // ATTRIBs
 //
-GLuint const Shaders::ShaderPTN::getPositionsID() const
+GLuint const Shaders::ShaderPTN0::getPositionsID() const
 {
 	return positionsID;
 }
 
-GLuint const Shaders::ShaderPTN::getTextureCoordsID() const
+GLuint const Shaders::ShaderPTN0::getTextureCoordsID() const
 {
 	return textureCoordsID;
 }
 
-GLuint const Shaders::ShaderPTN::getNormalsID() const
+GLuint const Shaders::ShaderPTN0::getNormalsID() const
 {
 	return normalsID;
 }
 //
 // UNIFORMs
 //
-GLuint const Shaders::ShaderPTN::getProjectionMatrixID() const
+GLuint const Shaders::ShaderPTN0::getProjectionMatrixID() const
 {
 	return projectionMatrixID;
 }
 
-GLuint const Shaders::ShaderPTN::getViewMatrixID() const
+GLuint const Shaders::ShaderPTN0::getViewMatrixID() const
 {
 	return viewMatrixID;
 }
 
-GLuint const Shaders::ShaderPTN::getViewMatrixInvID() const
+GLuint const Shaders::ShaderPTN0::getViewMatrixInvID() const
 {
 	return viewMatrixInvID;
 }
 
-GLuint const Shaders::ShaderPTN::getModelMatrixID() const
+GLuint const Shaders::ShaderPTN0::getModelMatrixID() const
 {
 	return modelMatrixID;
 }
 
-GLuint const Shaders::ShaderPTN::getLightID() const
+GLuint const Shaders::ShaderPTN0::getLightID() const
 {
 	return lightPositionID;
 }
 
-GLuint const Shaders::ShaderPTN::getplaneID() const
+GLuint const Shaders::ShaderPTN0::getplaneID() const
 {
 	return planeID;
 }
 //
 // FRAGMENT SHADER
 //
-GLuint const Shaders::ShaderPTN::getlightColorID() const
+GLuint const Shaders::ShaderPTN0::getlightColorID() const
 {
 	return lightColourID;
 }
 
-GLuint const Shaders::ShaderPTN::getshineDamperID() const
+GLuint const Shaders::ShaderPTN0::getshineDamperID() const
 {
 	return shineDamperID;
 }
 
-GLuint const Shaders::ShaderPTN::getreflectivityID() const
+GLuint const Shaders::ShaderPTN0::getreflectivityID() const
 {
 	return reflectivityID;
 }
 
-GLuint const Shaders::ShaderPTN::getmodelTextureID() const
+GLuint const Shaders::ShaderPTN0::getmodelTextureID() const
 {
 	return modelTextureID;
 }

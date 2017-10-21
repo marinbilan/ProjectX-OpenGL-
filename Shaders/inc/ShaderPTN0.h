@@ -1,14 +1,11 @@
-#ifndef SHADER_PNT__
-#define SHADER_PNT__
-
-#include <iostream>
-#include <string>
+#ifndef SHADERPNT0__
+#define SHADERPNT0__
 
 #include "../if/ShaderIf.h"
 
 namespace Shaders
 {
-class ShaderPTN : public ShadersIf::ShadersIf
+class ShaderPTN0 : public ShadersIf::ShadersIf
 {
 public:
 	//
@@ -16,9 +13,9 @@ public:
 	// CONSTRUCTORs / DESTRUCTORs
 	//
 	//	
-	ShaderPTN(std::string _shaderName, const char* vertexShader, const char* fragmentShader);
+	ShaderPTN0(const char* vertexShader, const char* fragmentShader);
 
-	~ShaderPTN();
+	~ShaderPTN0();
 	//
 	//
 	// FUNCTIONs
@@ -58,26 +55,27 @@ public:
 	// OPERATORs
 	//
 	//	
-	friend std::ostream& operator<<(std::ostream& output, ShaderPTN& info)
+	friend std::ostream& operator<<(std::ostream& output, ShaderPTN0& info)
 	{
 		output << "" << std::endl;
-		output << ">>>> SHADER <<<<" << std::endl;
-		output << "shaderProgramID:          " << info.shaderProgramID << std::endl;
-		output << " VERTEX SHADER" << std::endl;		
-		output << "positionsID:              " << info.positionsID << std::endl;
-		output << "textureCoordsID:          " << info.textureCoordsID << std::endl;
-		output << "normalsID:                " << info.normalsID << std::endl;
-		output << "projectionMatrixID:       " << info.projectionMatrixID << std::endl;
-		output << "viewMatrixID:             " << info.viewMatrixID << std::endl;
-		output << "viewMatrixInvID:          " << info.viewMatrixInvID << std::endl;
-		output << "modelMatrixID:            " << info.modelMatrixID << std::endl;
-		output << "lightPositionID:          " << info.lightPositionID << std::endl;
-		output << "planeID:                  " << info.planeID << std::endl;
-		output << " FRAGMENT SHADER " << std::endl;
-		output << "lightColourID:            " << info.lightColourID << std::endl;
-		output << "shineDamperID:            " << info.shineDamperID << std::endl;
-		output << "reflectivityID:           " << info.reflectivityID << std::endl;
-		output << "modelTextureID:           " << info.modelTextureID << std::endl;
+		output << "----==== SHADER ====----"<< std::endl;
+		output << "Shader Name: " << info.shaderName << std::endl;
+		output << "ShaderProgramID: " << info.shaderProgramID << std::endl;
+		output << " --== VERTEX SHADER ==--" << std::endl;		
+		output << "  positionsID = " << info.positionsID;
+		output << " textureCoordsID = " << info.textureCoordsID;
+		output << " normalsID = " << info.normalsID;
+		output << " projectionMatrixID = " << info.projectionMatrixID;
+		output << " viewMatrixID = " << info.viewMatrixID;
+		output << " viewMatrixInvID = " << info.viewMatrixInvID;
+		output << " modelMatrixID = " << info.modelMatrixID;
+		output << " lightPositionID = " << info.lightPositionID;
+		output << " planeID = " << info.planeID << std::endl;
+		output << " --== FRAGMENT SHADER ==--" << std::endl;
+		output << "  lightColourID = " << info.lightColourID;
+		output << " shineDamperID = " << info.shineDamperID;
+		output << " reflectivityID = " << info.reflectivityID;
+		output << " modelTextureID = " << info.modelTextureID;
 		output << "" << std::endl;
 		return output;
 	}

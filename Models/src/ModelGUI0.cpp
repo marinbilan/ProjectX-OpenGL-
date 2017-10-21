@@ -1,7 +1,7 @@
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 
-#include "../../Models/inc/Model_GUI.h"
+#include "../../Models/inc/ModelGUI0.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 //
@@ -9,7 +9,7 @@
 // CONSTRUCTORs / DESTRUCTOR(s)
 //
 //
-Models::Model_GUI::Model_GUI(char* _fileName, 
+Models::ModelGUI0::ModelGUI0(char* _fileName,
 	                         Shaders::ShadersIf::ShadersIf* _shader, 
 	                         GLuint _textureID,
 	                         glm::vec3 _position, 
@@ -83,23 +83,23 @@ Models::Model_GUI::Model_GUI(char* _fileName,
 	VertexAttribPointers();
 }
 
-Models::Model_GUI::~Model_GUI()
+Models::ModelGUI0::~ModelGUI0()
 {
-	std::cout << "Model_GUI destructor called!" << std::endl;
+	std::cout << "ModelGUI0 destructor called!" << std::endl;
 }
 //
 //
 // FUNCTION(s)
 // 
 //
-void Models::Model_GUI::VertexAttribPointers()
+void Models::ModelGUI0::VertexAttribPointers()
 {
 	glUseProgram(shader->getShaderProgramID());
 	glVertexAttribPointer(shader->getPositionsID(), 2, GL_FLOAT, GL_FALSE, 0, 0);
 	glUseProgram(0);
 }
 
-void Models::Model_GUI::renderModel()
+void Models::ModelGUI0::renderModel()
 {
 	//
 	// Bind VAO and Activate SHADER(s)

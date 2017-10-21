@@ -1,14 +1,14 @@
-#ifndef SHADER_3__
-#define SHADER_3__
+#ifndef SHADERSKYBOX0__
+#define SHADERSKYBOX0__
 
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 
 #include "../if/ShaderIf.h"
 
 namespace Shaders
 {
-class Shader_3 : public ShadersIf::ShadersIf
+class ShaderSkyBox0 : public ShadersIf::ShadersIf
 {
 public:
 	//
@@ -16,9 +16,9 @@ public:
 	// CONSTRUCTORs / DESTRUCTORs
 	//
 	//	
-	Shader_3(const char* vertexShader, const char* fragmentShader);
+	ShaderSkyBox0(const char* vertexShader, const char* fragmentShader);
 
-	~Shader_3();
+	~ShaderSkyBox0();
 	//
 	//
 	// FUNCTIONs
@@ -41,7 +41,7 @@ public:
 	// OPERATORs
 	//
 	//	
-	friend std::ostream& operator<<(std::ostream& output, Shader_3& info)
+	friend std::ostream& operator<<(std::ostream& output, ShaderSkyBox0& info)
 	{
 		output << "" << std::endl;
 		output << "shaderProgramID:          " << info.shaderProgramID << std::endl;

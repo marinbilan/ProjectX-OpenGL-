@@ -1,14 +1,14 @@
-#ifndef SHADER_Water_Tile__
-#define SHADER_Water_Tile__
-
-#include <iostream>
-#include <string>
+#ifndef SHADERWATERTILE0__
+#define SHADERWATERTILE0__
+//
+//#include <iostream>
+//#include <string>
 
 #include "../if/ShaderIf.h"
 
 namespace Shaders
 {
-	class Shader_Water_Tile : public ShadersIf::ShadersIf
+	class ShaderWaterTile0 : public ShadersIf::ShadersIf
 	{
 	public:
 		//
@@ -16,9 +16,9 @@ namespace Shaders
 		// CONSTRUCTORs / DESTRUCTORs
 		//
 		//	
-		Shader_Water_Tile(const char* vertexShader, const char* fragmentShader);
+		ShaderWaterTile0(const char* vertexShader, const char* fragmentShader);
 
-		~Shader_Water_Tile();
+		~ShaderWaterTile0();
 		//
 		//
 		// FUNCTIONs
@@ -58,7 +58,7 @@ namespace Shaders
 		// OPERATORs
 		//
 		//	
-		friend std::ostream& operator<<(std::ostream& output, Shader_Water_Tile& info)
+		friend std::ostream& operator<<(std::ostream& output, ShaderWaterTile0& info)
 		{
 			output << "" << std::endl;
 			output << "shaderProgramID:    " << info.shaderProgramID << std::endl;
