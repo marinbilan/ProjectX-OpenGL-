@@ -1,7 +1,7 @@
 #include "../../Models/inc/ModelPTN0.h"
 
 // CONSTRUCTOR / DESTRUCTOR
-Models::ModelPTN0::ModelPTN0(CommonFunctions* _CF, std::string _modelFolder) :
+Models::ModelPTN0::ModelPTN0(CommonFunctions* _CF, std::string _modelFolder, std::vector<Shaders::ShadersIf::ShadersIf*> _vectorOfShaders) :
 	                         modelFolder(_modelFolder)
 {
 	CF = _CF;
@@ -21,12 +21,28 @@ Models::ModelPTN0::ModelPTN0(CommonFunctions* _CF, std::string _modelFolder) :
 	// Vector of Meshes
 	vectorOfMeshes.resize(modelPTNLoader->getVectorOfMeshes().size());
 
+	std::vector<Shaders::ShadersIf::ShadersIf*>::iterator it;
+	std::string meshTempShaderName;
 	for (unsigned int i = 0; i < modelPTNLoader->getVectorOfMeshes().size(); i++)
 	{
+		// MODEL LOADER
 		vectorOfMeshes[i].VBO = modelPTNLoader->getVectorOfMeshes()[i].VBO;
 		vectorOfMeshes[i].IBO = modelPTNLoader->getVectorOfMeshes()[i].IBO;
 		vectorOfMeshes[i].numIndices = modelPTNLoader->getVectorOfMeshes()[i].numIndices;
-
+		// ----== GIVE ME SHADERS FOR EACH MESH ==----
+		// Get shader name from DataBase.txt, find shader in _vectorOfShaders and set shader pointer in mesh 
+		CommonFunctions::getFromDB(modelFolder, "meshShader" + std::to_string(i), meshTempShaderName);
+		for (it = _vectorOfShaders.begin(); it != _vectorOfShaders.end(); it++)
+		{
+			if (!(*it)->getShaderName().compare(meshTempShaderName))
+			{
+				std::cout << "FOUND MESH SHADER NAME: " << meshTempShaderName << std::endl;
+				vectorOfMeshes[i].meshShaderName = (*it)->getShaderName();
+				vectorOfMeshes[i].meshShaderPtr = *it;
+			}
+		}
+		// ----====----
+		// TEXTURE LOADER
 		vectorOfMeshes[i].texture0ID = textureLoader->getVectorOfMeshes()[i].texture0ID;
 	}
 

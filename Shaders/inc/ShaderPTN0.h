@@ -80,6 +80,8 @@ public:
 		return output;
 	}
 
+	void printINFO();
+
 private:
 	std::string shaderName;
 	GLuint shaderProgramID;

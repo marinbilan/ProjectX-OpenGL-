@@ -91,7 +91,11 @@ public:
 	virtual GLuint const getObjectColorID()        const { return 0; }
 	virtual GLuint const getLightColorID()         const { return 0; }
 	virtual GLuint const getmvpMatrixID()          const { return 0; }
-	// OPERATORs		
+	// OPERATORs
+	virtual void printINFO() 
+	{
+		std::cout << "Print from virtual!" << std::endl;
+	};
 private:
 	std::string dummyString;
 };

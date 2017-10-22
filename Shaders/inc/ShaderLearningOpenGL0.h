@@ -1,8 +1,8 @@
 #ifndef SHADERLEARNINGOPENGL0__
 #define SHADERLEARNINGOPENGL0__
 
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 
 #include "../if/ShaderIf.h"
 

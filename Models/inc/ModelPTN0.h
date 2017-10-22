@@ -9,7 +9,7 @@ class ModelPTN0 : public ModelsIf::ModelsIf
 {
 public:
 	// CONSTRUCTORs / DESTRUCTORs
-	ModelPTN0(CommonFunctions* _CF, std::string _modelFolder);
+	ModelPTN0(CommonFunctions* _CF, std::string _modelFolder, std::vector<Shaders::ShadersIf::ShadersIf*> _vectorOfShaders);
 	~ModelPTN0();
 	// FUNCTIONs
 	// GET

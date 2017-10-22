@@ -1,5 +1,5 @@
-#include <iostream>
-#include <string>
+#/*include <iostream>
+#include <string>*/
 
 #include "../../Shaders/inc/ShaderLearningOpenGL0.h"
 //
@@ -8,7 +8,7 @@
 Shaders::ShaderLearningOpenGL0::ShaderLearningOpenGL0(const char* vertexShader, const char* fragmentShader)
 {
 	//std::cout << "ShaderPTN constructor called! " << std::endl;
-	shaderName = "LearningOpenGL0"; // Hardcoded shader name
+	shaderName = "ShaderLearningOpenGL0"; // Hardcoded shader name
 
     shaderProgramID = createShader(vertexShader, fragmentShader);
 	// =============

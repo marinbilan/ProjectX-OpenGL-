@@ -34,10 +34,7 @@ public:
 		                        Shaders::ShadersIf::ShadersIf* _shader) {}
 	virtual void renderDepthMap(Models::ModelPTN0* _modelPTN, Shaders::ShadersIf::ShadersIf* _shader) {}
 	// NEW
-	virtual void renderStaticModel(glm::vec4 _planeModelPTN,
-		                           Camera::CameraIf::CameraIf* _camera,
-		                           Models::ModelsIf::ModelsIf* _staticModel,
-		                           Shaders::ShadersIf::ShadersIf* _shader) {}
+	virtual void renderStaticModel(Models::ModelsIf::ModelsIf* _staticModel, Camera::CameraIf::CameraIf* _camera) {}
 	// OPERATORs	
 };
 }

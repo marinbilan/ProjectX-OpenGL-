@@ -65,7 +65,7 @@
 // Shaders [ Projection ]
 Shaders::ShaderSkyBox0*         shaderSkyBox00;            // SKYBOX
 Shaders::ShaderWaterTile0*      shaderWaterTile00;         // WATER
-Shaders::ShaderLearningOpenGL0* shaderOpenLearningOpenGL00;
+Shaders::ShaderLearningOpenGL0* shaderLearningOpenGL00;
 Shaders::ShaderPTN0*            shaderPTN00;               
 Shaders::ShaderGUI0*            shaderGUI00;               // GUI
 
@@ -79,7 +79,6 @@ FBOs::WaterFBO* waterFBO2;
 // Models [ Model ]
 Models::ModelSkyBox0*     modelSkyBox00;
 Models::ModelWaterTile0*  modelWaterTile00;
-// Models::ModelLearnOpenGL* modelLearnOpenGL1;
 Models::ModelPTN0*        modelTest1;
 Models::ModelPTN0*        modelTest2;
 Models::ModelGUI0*        modelGUI00;
@@ -97,7 +96,6 @@ GLfloat lastFrame = 0.0f; // Time of last frame
 
 #include "Controls\Contorls.h"
 // GLfloat planeModelPTN[] = { 0.0f, -1.0f, 0.0f, 100000.0f };    // HACK (glDisable doesn't work!)
-
 
 void RenderScene(GLfloat deltaTime)
 {	
@@ -148,8 +146,8 @@ void RenderScene(GLfloat deltaTime)
 	glDisable(GL_CLIP_DISTANCE0);
 
 	renderer->renderSkyBox(camera, modelSkyBox00);
-	renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest1, shaderOpenLearningOpenGL00);
-    renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest2, shaderOpenLearningOpenGL00);
+	renderer->renderStaticModel(modelTest1, camera);
+    renderer->renderStaticModel(modelTest2, camera);
 	// =============================================
 	// ----==== STOP RENDER IN MAIN SCREEN ====----
 	// =============================================
@@ -216,6 +214,7 @@ int main(int argc, char** argv)
 	std::cout << "+---------------------------------+" << std::endl;
 	std::cout << "|  Starting GLFW context, OpenGL  |" << std::endl;
 	std::cout << "+---------------------------------+" << std::endl;
+
 	// Init GLFW
 	glfwInit();
 
@@ -249,12 +248,25 @@ int main(int argc, char** argv)
 	//
 	shaderSkyBox00 = new Shaders::ShaderSkyBox0(VS3, FS3);
 	shaderWaterTile00 = new Shaders::ShaderWaterTile0(VS_Water_Tile, FS_Water_Tile);
-	shaderOpenLearningOpenGL00 = new Shaders::ShaderLearningOpenGL0(VSLearningOpenGL0, FSLearningOpenGL0);
+	shaderLearningOpenGL00 = new Shaders::ShaderLearningOpenGL0(VSLearningOpenGL0, FSLearningOpenGL0);
 	shaderPTN00 = new Shaders::ShaderPTN0(VSPTN, FSPTN);
 	shaderGUI00 = new Shaders::ShaderGUI0(VS2, FS2);
+	// Shader Container
+	std::vector<Shaders::ShadersIf::ShadersIf*> vectorOfShaders;
+	std::vector<Shaders::ShadersIf::ShadersIf*>::iterator it;
+
+	vectorOfShaders.push_back(shaderLearningOpenGL00);
+	vectorOfShaders.push_back(shaderPTN00);
+
+	//for (it = vectorOfShaders.begin(); it != vectorOfShaders.end(); it++)
+	//{
+	//	std::cout << (*it)->getShaderName().compare("ShaderPTN0") << std::endl;
+	//	(*it)->printINFO();
+	//}
+
 	// Shaders INFO
-	std::cout << *shaderOpenLearningOpenGL00;
-	std::cout << *shaderPTN00;
+	// std::cout << *shaderLearningOpenGL00;
+	std::cout << "SHADER ADDRESS: " << shaderPTN00;
 	//
 	// ----==== CAMERAs [ ViewMatrix ] ====----
 	//
@@ -268,8 +280,8 @@ int main(int argc, char** argv)
 	// ----==== MODELs [ ModelMatrix ] ====----	
 	//
 	modelSkyBox00 = new Models::ModelSkyBox0(shaderSkyBox00, camera);
-	modelTest1 = new Models::ModelPTN0(CF, "_src/_models/_vanquish/");	
-	modelTest2 = new Models::ModelPTN0(CF, "_src/_models/_dagger/");
+	modelTest1 = new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders);
+	modelTest2 = new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders);
 	modelWaterTile00 = new Models::ModelWaterTile0("_src/water/waterDUDV.png", shaderWaterTile00, camera, 8, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(14.0f));
 	modelGUI00 = new Models::ModelGUI0("sword.png", shaderGUI00, 10, glm::vec3(-0.7f, 0.5f, 0.f), glm::vec3(0.5f));
 	modelGUI01 = new Models::ModelGUI0("socuwan.png", shaderGUI00, 9, glm::vec3(0.7f, 0.5f, 0.0f), glm::vec3(0.3));
@@ -287,6 +299,39 @@ int main(int argc, char** argv)
 	glCullFace(GL_BACK);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
+
+	std::string commandLineString;
+	std::smatch match;
+	do 
+	{
+		std::cout << "> ";
+		std::getline(std::cin, commandLineString);
+
+		std::regex helpCmd("help");
+		std::regex shadersCmd("Shaders");
+
+		if (std::regex_search(commandLineString, match, helpCmd))
+		{
+			std::cout << "" << std::endl;
+			std::cout << " ----==== HELP ====---- " << std::endl;
+			std::cout << "" << std::endl;
+			std::cout << " Cameras   Info about cameras In scene " << std::endl;
+			std::cout << " Controls  Info about controls (Keys)" << std::endl;
+			std::cout << " FBOs      Info about generated Frame Buffer Objects" << std::endl;
+			std::cout << " Models    Info about Models, Meshes and Textures in scene" << std::endl;
+			std::cout << " Shaders   Info about Shaders and Shader Parameters" << std::endl;
+			std::cout << " logread   Show log" << std::endl;
+			std::cout << "" << std::endl;
+			std::cout << " ---------------------" << std::endl;
+		}
+		if (std::regex_search(commandLineString, match, shadersCmd))
+		{
+			for (it = vectorOfShaders.begin(); it != vectorOfShaders.end(); it++)
+			{
+				(*it)->printINFO();
+			}
+		}
+	} while (commandLineString != "exit");
 	//
 	//
 	// GAME LOOP
@@ -321,10 +366,11 @@ int main(int argc, char** argv)
 
 void RenderSceneMaster(GLfloat deltaTime)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_CLIP_DISTANCE0);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	// glEnable(GL_CLIP_DISTANCE0);
 
 	renderer->renderSkyBox(camera, modelSkyBox00);
-	renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest1, shaderOpenLearningOpenGL00);
-	renderer->renderStaticModel(glm::vec4(0.0f, -1.0f, 0.0f, 100000.0f), camera, modelTest2, shaderOpenLearningOpenGL00);
+	renderer->renderStaticModel(modelTest1, camera);
+	renderer->renderStaticModel(modelTest2, camera);
 }

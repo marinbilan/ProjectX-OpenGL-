@@ -130,3 +130,10 @@ GLuint const Shaders::ShaderPTN0::getmodelTextureID() const
 {
 	return modelTextureID;
 }
+
+void Shaders::ShaderPTN0::printINFO()
+{
+	std::cout << "Print from child!" << std::endl;
+	std::cout << *this;
+	// return modelTextureID;
+}
