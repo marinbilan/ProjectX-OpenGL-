@@ -1,63 +1,53 @@
-//#include <iostream>
-//#include <string>
-
 #include "../../Shaders/inc/ShaderSkyBox0.h"
-//
-//
+
 // CONSTRUCTORs / DESTRUCTORs
-//
-//
-Shaders::ShaderSkyBox0::ShaderSkyBox0(const char* vertexShader, const char* fragmentShader)
+Shaders::ShaderSkyBox0::ShaderSkyBox0(GLfloat projMatrixWidth, GLfloat projMatrixHeight)
 {
-	//std::cout << "Shader_3 constructor called! " << std::endl;
+	shaderName = "ShaderSkyBox0";
 
 	shaderProgramID = createShader(vertexShader, fragmentShader);
-	// =============
-	// VERTEX SHADER
-	// =============
-	//
-	// [ ATTRIBs ]
-	//
+	// [ VERTEX SHADER ]
+	//   ATTRIBUTEs
 	positionsID = glGetAttribLocation(shaderProgramID, "position");
-	// 
-	// [ UNIFORMs ]
-	//
+	//   UNIFORMs
 	projectionMatrixID = glGetUniformLocation(shaderProgramID, "projectionMatrix");
 	viewMatrixID = glGetUniformLocation(shaderProgramID, "viewMatrix");
-	//
-	// Set Projection Matrix
-	//
-	projectionMatrix = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.1f, 1000.f);
 
+	// Set Projection Matrix
+	projectionMatrix = glm::perspective(glm::radians(60.0f), projMatrixWidth / projMatrixHeight, 0.1f, 1000.f);
 	glUseProgram(shaderProgramID);
 	glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &projectionMatrix[0][0]);
 	glUseProgram(0);
+
+	std::cout << "ShaderSkyBox0 object created!" << std::endl;
 }
 
 Shaders::ShaderSkyBox0::~ShaderSkyBox0()
 {
 	std::cout << "ShaderSkyBox0 destructor called!" << std::endl;
 }
-//
-//
 // FUNCTIONs
-// 
-//
+std::string Shaders::ShaderSkyBox0::getShaderName()
+{
+	return shaderName;
+}
+
 GLuint const Shaders::ShaderSkyBox0::getShaderProgramID() const
 {
 	return shaderProgramID;
 }
-//
-// [ ATTRIBs ] 
-//
+
 GLuint const Shaders::ShaderSkyBox0::getPositionsID() const
 {
 	return positionsID;
 }
-//
-// [ UNIFORMs ]
-//
+
 GLuint const Shaders::ShaderSkyBox0::getViewMatrixID() const
 {
 	return viewMatrixID;
+}
+// OPERATORs
+void Shaders::ShaderSkyBox0::printINFO()
+{
+	std::cout << *this;
 }

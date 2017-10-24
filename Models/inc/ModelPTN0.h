@@ -13,6 +13,7 @@ public:
 	~ModelPTN0();
 	// FUNCTIONs
 	// GET
+	std::string getModelName();
 	virtual GLuint getModelVAO();
 	std::vector<Models::Mesh> getVectorOfMeshes();
 

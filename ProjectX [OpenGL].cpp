@@ -1,7 +1,44 @@
 // GAMEDEV Framework Marin Bilan @2017
 // cd "D:\Marin\__Programming\Projects\Programing\ProjectX [OpenGL]\ProjectX [OpenGL]"
+// SHADERS DB
+#include "..\..\Db\ShadersDb\shadersDB.h"
 
-#include "Db\IncludesDb\includesDb.h"
+// SHADERS [ Projection ]
+#include "Shaders\if\ShaderIf.h"
+
+#include "Shaders\inc\ShaderSkyBox0.h"
+#include "Shaders\inc\ShaderWaterTile0.h"
+#include "Shaders\inc\ShaderLearningOpenGL0.h"
+#include "Shaders\inc\ShaderPTN0.h"
+#include "Shaders\inc\ShaderGUI0.h"
+// CAMERA [ View ]
+#include "Camera\if\CameraIf.h"
+
+#include "Camera\inc\Camera.h"
+// MODELs [ Model ]
+#include "Models\if\ModelIf.h"
+
+#include "Models\inc\ModelSkyBox0.h"
+#include "Models\inc\ModelWaterTile0.h"
+#include "Models\inc\ModelLearnOpenGL0.h"
+#include "Models\inc\ModelPTN0.h"
+#include "Models\inc\ModelGUI0.h"
+// LOADER
+#include "Loader\if\LoaderIf.h"
+
+#include "Loader\inc\TextureLoader.h"
+#include "Loader\inc\ModelLoader.h"
+#include "Loader\inc\ModelLoaderLearningOpenGL.h"
+#include "FBOs\inc\WaterFBO.h"
+// RENDERER
+#include "Renderer\inc\Renderer.h"
+// COMMAND PROMPT
+#include "CommonFunctions/CommandPrompt.h"
+// FBO
+#include "FBOs\if\FBOIf.h"
+
+#include "FBOs\inc\FBOShaddowMapping.h"
+// CONTROLS
 // +--------------------------+
 // | APPLICATION ARCHITECTURE |
 // +--------------------------+
@@ -58,45 +95,32 @@
 //                                           #include "Models\inc\ModelPTN.h"                               |                     |
 //									         // RENDERER                                                    |                     |
 //							                 #include "Renderer\inc\Renderer.h"                             |                     |
+//							                 #include "#include "CommonFunctions/CommandPrompt.h"           |                     |
 //                                           +------------------+                                           |                     |
 //                                           | ProjectX [OpenGL]| <-----------------------------------------+---------------------+
 //						                     +------------------+
 //
 // Shaders [ Projection ]
-Shaders::ShaderSkyBox0*         shaderSkyBox00;            // SKYBOX
-Shaders::ShaderWaterTile0*      shaderWaterTile00;         // WATER
-Shaders::ShaderLearningOpenGL0* shaderLearningOpenGL00;
-Shaders::ShaderPTN0*            shaderPTN00;               
-Shaders::ShaderGUI0*            shaderGUI00;               // GUI
-
+Shaders::ShaderSkyBox0*         shaderSkyBox00;    // SKYBOX
+Shaders::ShaderWaterTile0*      shaderWaterTile00; // WATER    
+Shaders::ShaderGUI0*            shaderGUI00;       // GUI
 // Camera [ View ]
 Camera::Camera* camera;
-
 // FBOs
 FBOs::WaterFBO* waterFBO1;
 FBOs::WaterFBO* waterFBO2;
-
 // Models [ Model ]
 Models::ModelSkyBox0*     modelSkyBox00;
 Models::ModelWaterTile0*  modelWaterTile00;
-Models::ModelPTN0*        modelTest1;
-Models::ModelPTN0*        modelTest2;
 Models::ModelGUI0*        modelGUI00;
 Models::ModelGUI0*        modelGUI01;
 
-// Renderers
 Renderer::Renderer* renderer;
-
-// Variables and Constants
 GLuint WIDTH;
 GLuint HEIGHT;
-
-GLfloat deltaTime = 0.0f; // Time between current frame and last frame
-GLfloat lastFrame = 0.0f; // Time of last frame
-
+GLfloat deltaTime = 0.0f; 
+GLfloat lastFrame = 0.0f; 
 #include "Controls\Contorls.h"
-// GLfloat planeModelPTN[] = { 0.0f, -1.0f, 0.0f, 100000.0f };    // HACK (glDisable doesn't work!)
-
 void RenderScene(GLfloat deltaTime)
 {	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -146,8 +170,8 @@ void RenderScene(GLfloat deltaTime)
 	glDisable(GL_CLIP_DISTANCE0);
 
 	renderer->renderSkyBox(camera, modelSkyBox00);
-	renderer->renderStaticModel(modelTest1, camera);
-    renderer->renderStaticModel(modelTest2, camera);
+	//renderer->renderStaticModel(modelTest1, camera);
+ //   renderer->renderStaticModel(modelTest2, camera);
 	// =============================================
 	// ----==== STOP RENDER IN MAIN SCREEN ====----
 	// =============================================
@@ -200,20 +224,16 @@ void characterModCallback(GLFWwindow* window, unsigned int keyCode, int modifier
 	}
 }
 
-void RenderSceneMaster(GLfloat deltaTime);
+void RenderSceneMaster(std::vector<Models::ModelsIf::ModelsIf*> _vectorOfModels, GLfloat deltaTime);
 
 int main(int argc, char** argv)
 {
 	system("Color 2"); // Set CMD color green
-    // ---- SETUP LOG FILE ----
 	std::ofstream logFile("___Log/logFile.txt");
+	//
 	// ---- CREATE COMMON FUNCTIONs OBJECT ----
+	//
 	CommonFunctions* CF = new CommonFunctions(logFile);
-	CF->LOGFILE(LOG "My First msg from MAIN");
-
-	std::cout << "+---------------------------------+" << std::endl;
-	std::cout << "|  Starting GLFW context, OpenGL  |" << std::endl;
-	std::cout << "+---------------------------------+" << std::endl;
 
 	// Init GLFW
 	glfwInit();
@@ -243,30 +263,27 @@ int main(int argc, char** argv)
 	{
 		std::cout << "Failed to initialize GLEW" << std::endl;
 	}
+	// IMPORTANT: OpenGL version after initialisation!
+	std::cout << "|==================================================" << std::endl;
+	std::cout << "||  Starting GLFW context, OpenGL" << std::endl;
+	std::cout << "||  Graphics vendor   : " << glGetString(GL_VENDOR) << std::endl;
+	std::cout << "||  Renderer          : " << glGetString(GL_RENDERER) << std::endl;
+	std::cout << "||  OpenGL version    : " << glGetString(GL_VERSION) << std::endl;
+	std::cout << "||  GLEW version      : " << glewGetString(GLEW_VERSION) << std::endl;
+	std::cout << "||  GLFW version      : " << glfwGetVersionString() << std::endl;
+	std::cout << "||  Screen Resolution : " << WIDTH << " x " << HEIGHT << std::endl;
+	std::cout << "|==================================================" << std::endl;
 	//
 	// ----==== SHADERs [ ProjectionMatrix ] Initialization (only once) ====----
 	//
-	shaderSkyBox00 = new Shaders::ShaderSkyBox0(VS3, FS3);
-	shaderWaterTile00 = new Shaders::ShaderWaterTile0(VS_Water_Tile, FS_Water_Tile);
-	shaderLearningOpenGL00 = new Shaders::ShaderLearningOpenGL0(VSLearningOpenGL0, FSLearningOpenGL0);
-	shaderPTN00 = new Shaders::ShaderPTN0(VSPTN, FSPTN);
-	shaderGUI00 = new Shaders::ShaderGUI0(VS2, FS2);
-	// Shader Container
 	std::vector<Shaders::ShadersIf::ShadersIf*> vectorOfShaders;
-	std::vector<Shaders::ShadersIf::ShadersIf*>::iterator it;
 
-	vectorOfShaders.push_back(shaderLearningOpenGL00);
-	vectorOfShaders.push_back(shaderPTN00);
-
-	//for (it = vectorOfShaders.begin(); it != vectorOfShaders.end(); it++)
-	//{
-	//	std::cout << (*it)->getShaderName().compare("ShaderPTN0") << std::endl;
-	//	(*it)->printINFO();
-	//}
-
-	// Shaders INFO
-	// std::cout << *shaderLearningOpenGL00;
-	std::cout << "SHADER ADDRESS: " << shaderPTN00;
+	vectorOfShaders.push_back(new Shaders::ShaderLearningOpenGL0(WIDTH, HEIGHT)); // DONE
+	vectorOfShaders.push_back(new Shaders::ShaderPTN0(WIDTH, HEIGHT));            // DONE
+	vectorOfShaders.push_back(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT));         // DONE
+	// TODO
+	shaderWaterTile00 = new Shaders::ShaderWaterTile0(VS_Water_Tile, FS_Water_Tile);
+	shaderGUI00 = new Shaders::ShaderGUI0(VS2, FS2);
 	//
 	// ----==== CAMERAs [ ViewMatrix ] ====----
 	//
@@ -279,62 +296,38 @@ int main(int argc, char** argv)
 	//
 	// ----==== MODELs [ ModelMatrix ] ====----	
 	//
-	modelSkyBox00 = new Models::ModelSkyBox0(shaderSkyBox00, camera);
-	modelTest1 = new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders);
-	modelTest2 = new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders);
+	std::vector<Models::ModelsIf::ModelsIf*> vectorOfModels;
+
+	vectorOfModels.push_back(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders));
+	vectorOfModels.push_back(new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders));
+	// TODO
+	modelSkyBox00 = new Models::ModelSkyBox0(vectorOfShaders[2], camera);
 	modelWaterTile00 = new Models::ModelWaterTile0("_src/water/waterDUDV.png", shaderWaterTile00, camera, 8, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(14.0f));
 	modelGUI00 = new Models::ModelGUI0("sword.png", shaderGUI00, 10, glm::vec3(-0.7f, 0.5f, 0.f), glm::vec3(0.5f));
 	modelGUI01 = new Models::ModelGUI0("socuwan.png", shaderGUI00, 9, glm::vec3(0.7f, 0.5f, 0.0f), glm::vec3(0.3));
-	// Models INFO
-	std::cout << *modelTest1;
-	std::cout << *modelTest2;
 	//
 	// ----==== RENDERERs ====----	
 	//
 	renderer = new Renderer::Renderer();
-
+	//
+	// ----==== CMD ====----
+	//
+	CommandPrompt::CommandPrompt* CP = new CommandPrompt::CommandPrompt(vectorOfShaders, vectorOfModels);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
-
-	std::string commandLineString;
-	std::smatch match;
-	do 
-	{
-		std::cout << "> ";
-		std::getline(std::cin, commandLineString);
-
-		std::regex helpCmd("help");
-		std::regex shadersCmd("Shaders");
-
-		if (std::regex_search(commandLineString, match, helpCmd))
-		{
-			std::cout << "" << std::endl;
-			std::cout << " ----==== HELP ====---- " << std::endl;
-			std::cout << "" << std::endl;
-			std::cout << " Cameras   Info about cameras In scene " << std::endl;
-			std::cout << " Controls  Info about controls (Keys)" << std::endl;
-			std::cout << " FBOs      Info about generated Frame Buffer Objects" << std::endl;
-			std::cout << " Models    Info about Models, Meshes and Textures in scene" << std::endl;
-			std::cout << " Shaders   Info about Shaders and Shader Parameters" << std::endl;
-			std::cout << " logread   Show log" << std::endl;
-			std::cout << "" << std::endl;
-			std::cout << " ---------------------" << std::endl;
-		}
-		if (std::regex_search(commandLineString, match, shadersCmd))
-		{
-			for (it = vectorOfShaders.begin(); it != vectorOfShaders.end(); it++)
-			{
-				(*it)->printINFO();
-			}
-		}
-	} while (commandLineString != "exit");
 	//
 	//
-	// GAME LOOP
+	// TODO: [ THRED I ] COMMAND PROMPT
+	//
+	//
+	CP->cmd();
+	//
+	//
+	// TODO: [ THRED II ] GAME LOOP
 	//
 	//
 	while (!glfwWindowShouldClose(window))
@@ -353,7 +346,7 @@ int main(int argc, char** argv)
 		// RENDER SCENE
 		//
 		// RenderScene(deltaTime);
-		RenderSceneMaster(deltaTime);
+		RenderSceneMaster(vectorOfModels, deltaTime);
 		//
 		//
 		//
@@ -364,13 +357,13 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-void RenderSceneMaster(GLfloat deltaTime)
+void RenderSceneMaster(std::vector<Models::ModelsIf::ModelsIf*> _vectorOfModels, GLfloat deltaTime)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	// glEnable(GL_CLIP_DISTANCE0);
 
 	renderer->renderSkyBox(camera, modelSkyBox00);
-	renderer->renderStaticModel(modelTest1, camera);
-	renderer->renderStaticModel(modelTest2, camera);
+	renderer->renderStaticModel(_vectorOfModels[0], camera);
+	renderer->renderStaticModel(_vectorOfModels[1], camera);
 }

@@ -30,6 +30,7 @@ public:
 
 	~ModelLoaderLearningOpenGL();
 	// FUNCTIONs
+	void loadModelPTN();
 	void initScene(const aiScene* _pScene);
 	void initMesh(GLuint _index, const aiMesh* _paiMesh);
 	// GET

@@ -14,7 +14,9 @@ Models::ModelPTN0::ModelPTN0(CommonFunctions* _CF, std::string _modelFolder, std
 
 	// MODEL and TEXTUREs
 	modelPTNLoader = new Loader::ModelLoaderLearningOpenGL(CF, const_cast<char *>((modelFolder + modelName + ".3ds").c_str()));
+	modelPTNLoader->loadModelPTN();
 	textureLoader = new Loader::TextureLoader(CF, const_cast<char *>(modelFolder.c_str()), modelPTNLoader->getVectorOfMeshes().size());
+	textureLoader->loadTModelPTNTextures();
 
 	// GET VAO
 	VAO = modelPTNLoader->getModelVAO();
@@ -59,6 +61,11 @@ Models::ModelPTN0::~ModelPTN0()
 }
 // FUNCTIONs
 // GET
+std::string Models::ModelPTN0::getModelName()
+{
+	return modelName;
+}
+
 GLuint Models::ModelPTN0::getModelVAO()
 {
 	return VAO;

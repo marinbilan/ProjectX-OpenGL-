@@ -122,6 +122,5 @@ public:
 
 private:
 	std::ofstream& logFile;
-
 };
 #endif

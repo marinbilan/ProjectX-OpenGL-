@@ -17,9 +17,7 @@ public:
 	{
 		std::cout << "ShadersIf destructor called!" << std::endl;
 	}
-	//
 	// FUNCTIONs
-	//
 	virtual GLuint createShader(const char* vertexShader, const char* fragmentShader)
 	{
 		//
@@ -92,10 +90,7 @@ public:
 	virtual GLuint const getLightColorID()         const { return 0; }
 	virtual GLuint const getmvpMatrixID()          const { return 0; }
 	// OPERATORs
-	virtual void printINFO() 
-	{
-		std::cout << "Print from virtual!" << std::endl;
-	};
+	virtual void printINFO() {};
 private:
 	std::string dummyString;
 };

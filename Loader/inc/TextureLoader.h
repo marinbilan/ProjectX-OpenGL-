@@ -13,6 +13,7 @@ public:
 	~TextureLoader();
 
 	// FUNCTIONs
+	void loadTModelPTNTextures();
 	virtual GLuint createSingleTexture(std::string& _textureName);
 	// GET
 	std::vector<Loader::Mesh> getVectorOfMeshes();

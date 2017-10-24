@@ -1,0 +1,19 @@
+___Log
+__libs/
+_src/
+
+Db/ModelsDb/
+Db/ShadersDb/oldShaderDb/
+Debug/
+Models/inc/ogldev_lib/
+Models/inc/oldModels/
+Models/src/oldModels/
+Shaders/inc/oldShaders/
+Shaders/src/odlShaders/
+		
+ProjectX [OpenGL].vcxproj
+
+sword.png
+socuwan.png
+cubeuvLayout.png
+phoenix.png

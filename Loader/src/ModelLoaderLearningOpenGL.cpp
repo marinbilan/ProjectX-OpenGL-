@@ -1,14 +1,22 @@
 #include "../../Loader/inc/ModelLoaderLearningOpenGL.h"
 
 // CONSTRUCTORs / DESTRUCTORs
-Loader::ModelLoaderLearningOpenGL::ModelLoaderLearningOpenGL(CommonFunctions* _CF, char* _modelName) : modelName(_modelName)
+Loader::ModelLoaderLearningOpenGL::ModelLoaderLearningOpenGL(CommonFunctions* _CF, char* _modelName) :
+	                               modelName(_modelName)
 {
+	// COMMON FUNCTIONS
 	CF = _CF;
+}
+
+Loader::ModelLoaderLearningOpenGL::~ModelLoaderLearningOpenGL()
+{
+	std::cout << "ModelLoader destructor called!" << std::endl;
+}
+
+void Loader::ModelLoaderLearningOpenGL::loadModelPTN()
+{
 	// CREATE MODEL
 	Assimp::Importer Importer;
-	// std::string model = "model.3ds";
-	// STRING FROM DB
-	// std::string model0 = "_src/_models/_vanquish/model.3ds";
 
 	pScene = Importer.ReadFile(modelName, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 	// Start LOGGing
@@ -25,13 +33,8 @@ Loader::ModelLoaderLearningOpenGL::ModelLoaderLearningOpenGL(CommonFunctions* _C
 		std::cout << modelName << " " << Importer.GetErrorString() << std::endl;
 	}
 	// Stop LOGGing
-	CommonFunctions::INFOCMD(LOG ("<--- MODEL " + modelName + " construction over."));
+	CommonFunctions::INFOCMD(LOG("<--- MODEL " + modelName + " construction over."));
 	CF->LOGFILE(LOG("<--- MODEL " + modelName + " construction over."));
-}
-
-Loader::ModelLoaderLearningOpenGL::~ModelLoaderLearningOpenGL()
-{
-	std::cout << "ModelLoader destructor called!" << std::endl;
 }
 
 void Loader::ModelLoaderLearningOpenGL::initScene(const aiScene* _pScene)

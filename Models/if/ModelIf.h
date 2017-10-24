@@ -49,7 +49,8 @@ public:
 	}
 	// FUNCTIONs
 	// GET
-	virtual GLuint getModelVAO() { return 0; };
+	virtual std::string getModelName() { return std::string(); };
+	virtual GLuint getModelVAO()       { return 0; };
 	virtual std::vector<Models::Mesh> getVectorOfMeshes() { return std::vector<Models::Mesh>(); };
 
 	virtual glm::mat4 getModelMatrix()   { return glm::mat4(1.0f); }

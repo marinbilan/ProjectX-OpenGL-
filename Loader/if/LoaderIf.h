@@ -35,6 +35,7 @@ public:
 	}
 	// FUNCTIONs
 	// MODEL
+	virtual void loadModelPTN()                                   {};
 	virtual void initScene(const aiScene* _pScene)                {};
 	virtual void initMesh(GLuint _index, const aiMesh* _paiMesh)  {};
 	// GET
@@ -42,6 +43,7 @@ public:
 	virtual std::vector<Loader::Mesh> getVectorOfMeshes()         { return std::vector<Loader::Mesh>(); };
 	// SET
 	// TEXTUREs
+	virtual void loadTModelPTNTextures() {};
 	virtual GLuint createSingleTexture(std::string& _textureName) { return 0; };
 	// GET
 	// SET

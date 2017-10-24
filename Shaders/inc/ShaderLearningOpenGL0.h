@@ -1,70 +1,74 @@
 #ifndef SHADERLEARNINGOPENGL0__
 #define SHADERLEARNINGOPENGL0__
 
-//#include <iostream>
-//#include <string>
-
 #include "../if/ShaderIf.h"
 
 namespace Shaders
 {
 class ShaderLearningOpenGL0 : public ShadersIf::ShadersIf
 {
+	const char* vertexShader =
+		"	#version 330 \r\n"
+		""
+		"	in vec3 position;"
+		""
+		"	uniform mat4 projection;"
+		"	uniform mat4 view;"
+		"	uniform mat4 model;"
+		""
+		"	void main()"
+		"	{"
+		"		gl_Position = projection * view * model * vec4(position, 1.0f);"
+		"}";
+
+	const char* fragmentShader =
+		"#version 330 \r\n"
+		""
+		"	out vec4 color;"
+		""
+		"	uniform vec3 objectColor;"
+		"	uniform vec3 lightColor;"
+		""
+		"	void main()"
+		"	{"
+		"		color = vec4(lightColor * objectColor, 1.0f);"
+		"	}";
 public:
-	//
-	//
 	// CONSTRUCTORs / DESTRUCTORs
-	//
-	//	
-	ShaderLearningOpenGL0(const char* vertexShader, const char* fragmentShader);
+	ShaderLearningOpenGL0(GLfloat projMatrixWidth, GLfloat projMatrixHeight);
 
 	~ShaderLearningOpenGL0();
-	//
-	//
 	// FUNCTIONs
-	// 
-	//
-	virtual GLuint const getShaderProgramID() const;
-	// =============
-	// VERTEX SHADER
-	// =============
-	//
-	// [ ATTRIBs ]
-	//
 	virtual std::string getShaderName();
+	virtual GLuint const getShaderProgramID() const;
+	// [ VERTEX SHADER ]
+	//   ATTRIBUTEs
 	virtual GLuint const getPositionsID() const;
-	// 
-	// [ UNIFORMs ]
-	//
+	//   UNIFORMs
 	virtual GLuint const getProjectionMatrixID() const;
 	virtual GLuint const getViewMatrixID() const;
 	virtual GLuint const getModelMatrixID() const;
-	// ===============
-	// FRAGMENT SHADER
-	// ===============
-	// 
-	// [ UNIFORMs ]
-	//
+	// [ FRAGMENT SHADER ]
+	//   UNIFORMs
 	virtual GLuint const getObjectColorID() const;
 	virtual GLuint const getLightColorID() const;
-	//
+
 	// OPERATORs
-	//
-	//	
+	void printINFO();
 	friend std::ostream& operator<<(std::ostream& output, ShaderLearningOpenGL0& info)
 	{
 		output << "" << std::endl;
-		output << "----==== SHADER ====----" << std::endl;
-		output << "Shader Name: " << info.shaderName << std::endl;
-		output << "ShaderProgramID: " << info.shaderProgramID << std::endl;
-		output << " --== VERTEX SHADER ==--" << std::endl;
-		output << "  positionsID = " << info.positionsID;
-		output << " projectionMatrixID = " << info.projectionMatrixID;
-		output << " viewMatrixID = " << info.viewMatrixID;
-		output << " modelMatrixID = " << info.modelMatrixID << std::endl;
-		output << " --== FRAGMENT SHADER ==--" << std::endl;
-		output << "  objectColorID = " << info.objectColorID;
-		output << " lightColorID = " << info.lightColorID;
+		output << "[ SHADER ]" << std::endl;
+		output << " Shader Name:              " << info.shaderName << std::endl;
+		output << " ShaderProgramID:          " << info.shaderProgramID << std::endl;
+		output << "  [ VERTEX SHADER ]" << std::endl;
+		output << "     positionsID         = " << info.positionsID << std::endl;
+		output << "      projectionMatrixID = " << info.projectionMatrixID << std::endl;
+		output << "      viewMatrixID       = " << info.viewMatrixID << std::endl;
+		output << "      modelMatrixID      = " << info.modelMatrixID << std::endl;
+		output << "  [ FRAGMENT SHADER ]" << std::endl;
+		output << "      objectColorID      = " << info.objectColorID << std::endl;
+		output << "      lightColorID       = " << info.lightColorID << std::endl;
 		output << "" << std::endl;
 		return output;
 	}
@@ -74,25 +78,14 @@ private:
 	GLuint shaderProgramID;
 
 	glm::mat4 projectionMatrix;
-	// =============
 	// VERTEX SHADER
-	// =============
-	//
-	// [ ATTRIBs ]
-	//
 	GLuint positionsID;
-	// 
-	// [ UNIFORMs ]
-	//
+
 	GLuint projectionMatrixID;
 	GLuint viewMatrixID;
 	GLuint modelMatrixID;
-	// ===============
+
 	// FRAGMENT SHADER
-	// ===============
-	//
-	// [ UNIFORMs ]
-	//
 	GLuint objectColorID;
 	GLuint lightColorID;
 };

@@ -1,27 +1,11 @@
 #include "../../Loader/inc/TextureLoader.h"
 
 // CONSTRUCTORs / DESTRUCTORs
-Loader::TextureLoader::TextureLoader(CommonFunctions* _CF, char* _texturesFolderPath, GLuint _numberOfTextures)
+Loader::TextureLoader::TextureLoader(CommonFunctions* _CF, char* _texturesFolderPath, GLuint _numberOfTextures) :
+	texturesFolderPath(_texturesFolderPath), numberOfTextures(_numberOfTextures)
 {
+	// COMMON FUNCTIONS
 	CF = _CF;
-
-	texturesFolderPath = _texturesFolderPath;
-	numberOfTextures = _numberOfTextures; // Should be equal to number od meshes
-	// PATH
-	textures = "textures/";
-	textureName = "texture";
-	textureNameExt = ".png";
-
-	// Init vectorOfMeshes
-	vectorOfMeshes.resize(_numberOfTextures);
-	// Start LOGGing
-	CommonFunctions::INFOCMD(LOG "---> TEXTURES from " + std::string(_texturesFolderPath) + " construction start. Number of textures = " + std::to_string(numberOfTextures)) ;
-	CF->LOGFILE(LOG"---> TEXTURES from " + std::string(_texturesFolderPath) + " construction start. Number of textures = " + std::to_string(numberOfTextures));
-	
-	setTextureForEachMesh();
-	
-	CommonFunctions::INFOCMD(LOG "<--- TEXTURES from " + std::string(_texturesFolderPath) + " construction over.");
-	CF->LOGFILE(LOG("<--- TEXTURES from " + std::string(_texturesFolderPath) + " construction over."));
 }
 
 Loader::TextureLoader::~TextureLoader()
@@ -29,6 +13,24 @@ Loader::TextureLoader::~TextureLoader()
 	std::cout << "TextureLoaderX destructor called!" << std::endl;
 }
 
+void Loader::TextureLoader::loadTModelPTNTextures()
+{
+    // PATH
+	textures = "textures/";
+	textureName = "texture";
+	textureNameExt = ".png";
+
+	// Init vectorOfMeshes
+	vectorOfMeshes.resize(numberOfTextures);
+	// Start LOGGing
+	CommonFunctions::INFOCMD(LOG "---> TEXTURES from " + std::string(texturesFolderPath) + " construction start. Number of textures = " + std::to_string(numberOfTextures));
+	CF->LOGFILE(LOG"---> TEXTURES from " + std::string(texturesFolderPath) + " construction start. Number of textures = " + std::to_string(numberOfTextures));
+
+	setTextureForEachMesh();
+
+	CommonFunctions::INFOCMD(LOG "<--- TEXTURES from " + std::string(texturesFolderPath) + " construction over.");
+	CF->LOGFILE(LOG("<--- TEXTURES from " + std::string(texturesFolderPath) + " construction over."));
+}
 GLuint Loader::TextureLoader::createSingleTexture(std::string& _textureName)
 {
 	width = 0;
