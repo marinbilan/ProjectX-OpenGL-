@@ -1,7 +1,8 @@
 #ifndef COMMANDPROMPT__
 #define COMMANDPROMPT__
 
-#include "..\..\Shaders\if\ShaderIf.h"
+//#include "..\..\Shaders\if\ShaderIf.h"
+//#include "..\..\Models\if\ModelIf.h"
 
 namespace CommandPrompt
 {
@@ -39,10 +40,13 @@ class CommandPrompt
 			// ----==============----
 			// ----==== SAHDERS ====----
 			// shaders
-			std::regex shadersCmd0("shaders");
+			std::regex shadersCmd0("(\\w+)");
 			if (std::regex_search(commandLineString, match, shadersCmd0))
 			{
-				std::cout << " shaders <names | < shader name > | all>" << std::endl;
+				if (!match.str(0).compare("shaders"))
+				{
+					std::cout << " shaders <names | <shader name> | all>" << std::endl;
+				}
 			}
 			// shaders names
 			std::regex shadersCmd1("shaders\\s+names");
@@ -57,6 +61,37 @@ class CommandPrompt
 				cmdShadersAll();
 			}
 			// ----=================----
+
+			// ----==============----
+			// ----==== MODELS ====----
+			// models
+			std::regex modlelsCmd0("(\\w+)");
+			if (std::regex_search(commandLineString, match, modlelsCmd0))
+			{
+				if (!match.str(0).compare("models"))
+				{
+					std::cout << " models <names | <model name> | all>" << std::endl;
+				}
+			}
+			// models names
+			std::regex modlelsCmd1("models\\s+names");
+			if (std::regex_search(commandLineString, match, modlelsCmd1))
+			{
+				cmdModelsNames();
+			}
+			// model name
+			std::regex modlelsCmd2("models\\s+(\\w+)");
+			if (std::regex_search(commandLineString, match, modlelsCmd2))
+			{
+				cmdModelName(match.str(1));
+			}
+			// models all
+			std::regex modlelsCmd3("models\\s+all");
+			if (std::regex_search(commandLineString, match, modlelsCmd3))
+			{
+				cmdModelsAll();
+			}
+			// ----=================----
 		} while (commandLineString != "exit");
 	}
 
@@ -68,13 +103,13 @@ class CommandPrompt
 		std::cout << " cameras   Info about cameras In scene " << std::endl;
 		std::cout << " controls  Info about controls (Keys)" << std::endl;
 		std::cout << " fbos      Info about generated Frame Buffer Objects" << std::endl;
-		std::cout << " models    Info about Models, Meshes and Textures in scene" << std::endl;
 		std::cout << " shaders   Info about Shaders and Shader Parameters" << std::endl;
-		std::cout << " logread   Show log" << std::endl;
+		std::cout << " models    Info about Models, Meshes and Textures in scene" << std::endl;
+		std::cout << " read      Read from File" << std::endl;
 		std::cout << "" << std::endl;
 		std::cout << " ---------------------" << std::endl;
 	}
-
+	// SHADERS
 	void cmdShadersNames()
 	{
 		std::cout << std::endl << " | Shader Names: " << std::endl;
@@ -93,9 +128,10 @@ class CommandPrompt
 			(*it)->printINFO();
 		}
 	}
-
+	// MODELS
 	void cmdModelsNames()
 	{
+		std::cout << std::endl << " | Model Names: " << std::endl;
 		std::vector<Models::ModelsIf::ModelsIf*>::iterator it;
 		for (it = vectorOfModels.begin(); it != vectorOfModels.end(); it++)
 		{
@@ -103,6 +139,26 @@ class CommandPrompt
 		}
 	}
 
+	void cmdModelName(std::string str)
+	{
+		std::vector<Models::ModelsIf::ModelsIf*>::iterator it;
+		for (it = vectorOfModels.begin(); it != vectorOfModels.end(); it++)
+		{
+			if (!str.compare((*it)->getModelName()))
+			{
+				(*it)->printINFO();
+			}
+		}
+	}
+
+	void cmdModelsAll()
+	{
+		std::vector<Models::ModelsIf::ModelsIf*>::iterator it;
+		for (it = vectorOfModels.begin(); it != vectorOfModels.end(); it++)
+		{
+			(*it)->printINFO();
+		}
+	}
 private:
 	std::vector<Shaders::ShadersIf::ShadersIf*> vectorOfShaders;
 	std::vector<Models::ModelsIf::ModelsIf*> vectorOfModels;

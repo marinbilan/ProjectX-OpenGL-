@@ -34,7 +34,7 @@ struct Mesh
 		output << "    [ MESH INFO ]" << std::endl;
 		output << "       Mesh VBO           = " << info.VBO << std::endl;
 		output << "       Mesh IBO           = " << info.IBO << std::endl;
-		output << "       Shader             = " << std::endl;
+		output << "       Shader             = " << info.meshShaderName << std::endl;
 		output << "       Num Vertices       = " << info.numIndices << std::endl;;
 		output << "       Mesh Size          = " << info.meshSizeMB << " [MB]" << std::endl;
 		output << "       [ TEXTURE INFO ]" << std::endl;

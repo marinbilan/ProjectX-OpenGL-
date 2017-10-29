@@ -34,9 +34,12 @@ public:
 	{
 		output << " " << std::endl;
 		output << "[ MODEL ]" << std::endl;
-		//output << " Model Name:  " << info.modelFolder + modelName << std::endl;
+		output << " Model Name:  " << info.modelFullName << std::endl;
 		output << " Model VAO              = " << info.VAO << std::endl;
 		output << " Model Number of Meshes = " << info.vectorOfMeshes.size() << std::endl;
+		output << " Model Meshes Size      = " << info.modelMeshSizeMB << "[MB]" << std::endl;
+		output << " Model Textures Size    = " << info.modelTextureSizeMB << "[MB]" << std::endl;
+		output << " Model TOTAL SIZE       = " << info.modelTotalSizeMB << "[MB]" << std::endl;
 
 		output << "   [ MESHEs ]" << std::endl;
 		std::vector<Models::Mesh>::iterator it;
@@ -44,7 +47,6 @@ public:
 		{
 			output << *it << std::endl;
 		}
-		// output << "" << std::endl;
 		return output;
 	}
 private:
@@ -53,6 +55,10 @@ private:
 
 	std::string                        modelFolder;
 	std::string                        modelName;
+	std::string                        modelFullName;
+	GLfloat                            modelMeshSizeMB;
+	GLfloat                            modelTextureSizeMB;
+	GLfloat                            modelTotalSizeMB;
 
 	Loader::ModelLoaderLearningOpenGL* modelPTNLoader;
 	Loader::TextureLoader*             textureLoader;

@@ -12,6 +12,8 @@
 #include "Shaders\inc\ShaderPTN0.h"
 #include "Shaders\inc\ShaderGUI0.h"
 #include "Shaders\inc\ShaderTerrain0.h"
+#include "Shaders\inc\ShaderMarker0.h"
+
 // CAMERA [ View ]
 #include "Camera\if\CameraIf.h"
 
@@ -290,6 +292,7 @@ int main(int argc, char** argv)
 	vectorOfShaders.push_back(new Shaders::ShaderPTN0(WIDTH, HEIGHT));            // 1 DONE
 	vectorOfShaders.push_back(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT));         // 2 DONE
 	vectorOfShaders.push_back(new Shaders::ShaderTerrain0(WIDTH, HEIGHT));        // 3 DONE
+	vectorOfShaders.push_back(new Shaders::ShaderMarker0(WIDTH, HEIGHT));        // 4 DONE
 
 	shaderTerrain00 = new Shaders::ShaderTerrain0(WIDTH, HEIGHT);
 	// TODO
@@ -311,8 +314,8 @@ int main(int argc, char** argv)
 
 	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders));
 	// vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders));
-	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/lightBulb/", vectorOfShaders));
-	vectorOfModelsPTN[0]->printINFO();
+	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/arrow/", vectorOfShaders));
+	// vectorOfModelsPTN[0]->printINFO();
 	// TODO
 	modelSkyBox00 = new Models::ModelSkyBox0(vectorOfShaders[2], camera);
 	modelWaterTile00 = new Models::ModelWaterTile0("_src/water/waterDUDV.png", shaderWaterTile00, camera, 8, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(14.0f));
