@@ -21,18 +21,26 @@ struct Mesh
 	GLuint VBO;
 	GLuint IBO;
 	GLuint numIndices;
-	GLfloat sizeInMB;
+	GLfloat meshSizeMB;
 
 	GLuint texture0ID;
+	GLuint textureWidth;
+	GLuint textureHeight;
+	GLfloat textureSizeMB;
 
 	// OPERATORs
 	friend std::ostream& operator<<(std::ostream& output, Mesh& info)
 	{
-		output << "  Mesh VBO: " << info.VBO;
-		output << "  IBO: " << info.IBO;
-		output << "  Num Vertices = " << info.numIndices;
-		output << "  Shader: ";
-		output << "  TextureID = " << info.texture0ID;
+		output << "    [ MESH INFO ]" << std::endl;
+		output << "       Mesh VBO           = " << info.VBO << std::endl;
+		output << "       Mesh IBO           = " << info.IBO << std::endl;
+		output << "       Shader             = " << std::endl;
+		output << "       Num Vertices       = " << info.numIndices << std::endl;;
+		output << "       Mesh Size          = " << info.meshSizeMB << " [MB]" << std::endl;
+		output << "       [ TEXTURE INFO ]" << std::endl;
+		output << "         TextureID          = " << info.texture0ID << std::endl;
+		output << "         Texture Resolution = " << info.textureWidth << " x " << info.textureHeight  << std::endl;
+		output << "         Texture Size       = " << info.textureSizeMB << " [MB]";
 		return output;
 	}
 };
@@ -66,7 +74,9 @@ public:
 	// RENDER // REMOVE THIS FROM MODELIF
 	virtual void render() {};
 	virtual void renderDepth(Shaders::ShadersIf::ShadersIf* _shader) {};
-	// OPERATORs		
+	// OPERATORs
+	// OPERATORs
+	virtual void printINFO() {};
 private:
 };
 }

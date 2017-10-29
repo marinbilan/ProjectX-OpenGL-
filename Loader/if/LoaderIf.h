@@ -19,8 +19,12 @@ struct Mesh
 	GLuint VBO;
 	GLuint IBO;
 	GLuint numIndices; // = number of vertices
+	GLfloat meshSizeMB;
 
 	GLuint texture0ID;
+	GLuint textureWidth;
+	GLuint textureHeight;
+	GLfloat textureSizeMB;
 };
 
 namespace LoaderIf
@@ -44,7 +48,7 @@ public:
 	// SET
 	// TEXTUREs
 	virtual void loadTModelPTNTextures() {};
-	virtual GLuint createSingleTexture(std::string& _textureName) { return 0; };
+	virtual GLuint createSingleTexture(GLuint& _textureWidth, GLuint& _textureHeight, GLfloat& _textureSize, std::string& _textureName) { return 0; };
 	// GET
 	// SET
 	virtual void setTextureForEachMesh()                          {};

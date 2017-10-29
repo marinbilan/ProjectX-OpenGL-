@@ -7,6 +7,7 @@ namespace Shaders
 {
 class ShaderLearningOpenGL0 : public ShadersIf::ShadersIf
 {
+	// BASIC COLOR
 	const char* vertexShader =
 		"	#version 330 \r\n"
 		""
@@ -33,6 +34,54 @@ class ShaderLearningOpenGL0 : public ShadersIf::ShadersIf
 		"	{"
 		"		color = vec4(lightColor * objectColor, 1.0f);"
 		"	}";
+	// AMBIENT + DIFFUSE
+	const char* vertexShader1 =
+		"	#version 330 \r\n"
+		""
+		"	in vec3 aPos;"
+		"	in vec3 aNormal;"
+		""
+		"	uniform mat4 projection;"
+		"	uniform mat4 view;"
+		"	uniform mat4 model;"
+		""
+		"	out vec3 FragPos;"
+		"	out vec3 Normal;"
+		""
+		"	void main()"
+		"	{"
+		"		FragPos = vec3(model * vec4(aPos, 1.0));"
+		"		Normal = aNormal;"
+		""
+		"		gl_Position = projection * view * vec4(FragPos, 1.0);"
+		"}";
+
+	const char* fragmentShader1 =
+		"#version 330 \r\n"
+		""
+		"	out vec4 FragColor;"
+		""
+		"	in vec3 Normal;"
+		"	in vec3 FragPos;"
+		""
+		"	uniform vec3 lightPos;"
+		"	uniform vec3 lightColor;"
+		"	uniform vec3 objectColor;"
+		""
+		"	void main()"
+		"	{"
+		// AMBIENT
+		"		float ambientStrength = 0.1;"
+		"		vec3 ambient = ambientStrength * lightColor;"
+		// DIFFUSE
+		"		vec3 norm = normalize(Normal);"
+		"		vec3 lightDir = normalize(lightPos - FragPos);"
+		"		float diff = max(dot(norm, lightDir), 0.0);"
+		"		vec3 diffuse = diff * lightColor;"
+		""
+		"		vec3 result = (ambient + diffuse) * objectColor;"
+		"		FragColor = vec4(result, 1.0);"
+		"	}";
 public:
 	// CONSTRUCTORs / DESTRUCTORs
 	ShaderLearningOpenGL0(GLfloat projMatrixWidth, GLfloat projMatrixHeight);
@@ -50,8 +99,9 @@ public:
 	virtual GLuint const getModelMatrixID() const;
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
-	virtual GLuint const getObjectColorID() const;
+	GLuint const getLightPositionID() const;
 	virtual GLuint const getLightColorID() const;
+	virtual GLuint const getObjectColorID() const;
 
 	// OPERATORs
 	void printINFO();
@@ -63,16 +113,17 @@ public:
 		output << " ShaderProgramID:          " << info.shaderProgramID << std::endl;
 		output << "  [ VERTEX SHADER ]" << std::endl;
 		output << "     positionsID         = " << info.positionsID << std::endl;
+		output << "     normalsID           = " << info.normalsID << std::endl;
 		output << "      projectionMatrixID = " << info.projectionMatrixID << std::endl;
 		output << "      viewMatrixID       = " << info.viewMatrixID << std::endl;
 		output << "      modelMatrixID      = " << info.modelMatrixID << std::endl;
 		output << "  [ FRAGMENT SHADER ]" << std::endl;
-		output << "      objectColorID      = " << info.objectColorID << std::endl;
+		output << "      lightPositionID    = " << info.lightPositionID << std::endl;
 		output << "      lightColorID       = " << info.lightColorID << std::endl;
+		output << "      objectColorID      = " << info.objectColorID << std::endl;
 		output << "" << std::endl;
 		return output;
 	}
-
 private:
 	std::string shaderName;
 	GLuint shaderProgramID;
@@ -80,14 +131,16 @@ private:
 	glm::mat4 projectionMatrix;
 	// VERTEX SHADER
 	GLuint positionsID;
+	GLuint normalsID;
 
 	GLuint projectionMatrixID;
 	GLuint viewMatrixID;
 	GLuint modelMatrixID;
 
 	// FRAGMENT SHADER
-	GLuint objectColorID;
+	GLuint lightPositionID;
 	GLuint lightColorID;
+	GLuint objectColorID;
 };
 }
 

@@ -106,6 +106,12 @@ void Loader::ModelLoaderLearningOpenGL::initMesh(GLuint _index, const aiMesh* _p
 	CF->LOGFILE(LOG "--> Model " + modelName + " IBO = " + std::to_string(vectorOfMeshes[_index].IBO) + " created.");
 
 	vectorOfMeshes[_index].numIndices = indices.size(); // For each mesh! Important for rendering!
+
+	//Calculate size for each Mesh
+	GLfloat bitsInMB = 8388608; // 1048576 * 8
+	//                                   <------------ verts + textureCoords + normals ------------------------------ indices ---------------------------->
+	vectorOfMeshes[_index].meshSizeMB = ( _paiMesh->mNumVertices*(3*sizeof(GLuint)+2*sizeof(GLuint)+3*sizeof(GLuint))+_paiMesh->mNumVertices*sizeof(GLuint)) / bitsInMB;
+
 }
 // GET
 GLuint Loader::ModelLoaderLearningOpenGL::getModelVAO()

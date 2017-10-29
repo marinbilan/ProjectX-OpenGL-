@@ -11,6 +11,7 @@
 #include "Shaders\inc\ShaderLearningOpenGL0.h"
 #include "Shaders\inc\ShaderPTN0.h"
 #include "Shaders\inc\ShaderGUI0.h"
+#include "Shaders\inc\ShaderTerrain0.h"
 // CAMERA [ View ]
 #include "Camera\if\CameraIf.h"
 
@@ -19,6 +20,7 @@
 #include "Models\if\ModelIf.h"
 
 #include "Models\inc\ModelSkyBox0.h"
+#include "Models\inc\ModelTerrain0.h"
 #include "Models\inc\ModelWaterTile0.h"
 #include "Models\inc\ModelLearnOpenGL0.h"
 #include "Models\inc\ModelPTN0.h"
@@ -38,6 +40,10 @@
 #include "FBOs\if\FBOIf.h"
 
 #include "FBOs\inc\FBOShaddowMapping.h"
+
+// #include <utility>
+#include <memory>
+// using std::unique_ptr;
 // CONTROLS
 // +--------------------------+
 // | APPLICATION ARCHITECTURE |
@@ -104,6 +110,7 @@
 Shaders::ShaderSkyBox0*         shaderSkyBox00;    // SKYBOX
 Shaders::ShaderWaterTile0*      shaderWaterTile00; // WATER    
 Shaders::ShaderGUI0*            shaderGUI00;       // GUI
+Shaders::ShaderTerrain0*        shaderTerrain00;
 // Camera [ View ]
 Camera::Camera* camera;
 // FBOs
@@ -114,6 +121,7 @@ Models::ModelSkyBox0*     modelSkyBox00;
 Models::ModelWaterTile0*  modelWaterTile00;
 Models::ModelGUI0*        modelGUI00;
 Models::ModelGUI0*        modelGUI01;
+Models::ModelTerrain0*    modelTerrain00;
 
 Renderer::Renderer* renderer;
 GLuint WIDTH;
@@ -264,7 +272,7 @@ int main(int argc, char** argv)
 		std::cout << "Failed to initialize GLEW" << std::endl;
 	}
 	// IMPORTANT: OpenGL version after initialisation!
-	std::cout << "|==================================================" << std::endl;
+	std::cout << "|-------------------------------------------------" << std::endl;
 	std::cout << "||  Starting GLFW context, OpenGL" << std::endl;
 	std::cout << "||  Graphics vendor   : " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "||  Renderer          : " << glGetString(GL_RENDERER) << std::endl;
@@ -272,15 +280,18 @@ int main(int argc, char** argv)
 	std::cout << "||  GLEW version      : " << glewGetString(GLEW_VERSION) << std::endl;
 	std::cout << "||  GLFW version      : " << glfwGetVersionString() << std::endl;
 	std::cout << "||  Screen Resolution : " << WIDTH << " x " << HEIGHT << std::endl;
-	std::cout << "|==================================================" << std::endl;
+	std::cout << "|-------------------------------------------------" << std::endl;
 	//
 	// ----==== SHADERs [ ProjectionMatrix ] Initialization (only once) ====----
 	//
 	std::vector<Shaders::ShadersIf::ShadersIf*> vectorOfShaders;
 
-	vectorOfShaders.push_back(new Shaders::ShaderLearningOpenGL0(WIDTH, HEIGHT)); // DONE
-	vectorOfShaders.push_back(new Shaders::ShaderPTN0(WIDTH, HEIGHT));            // DONE
-	vectorOfShaders.push_back(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT));         // DONE
+	vectorOfShaders.push_back(new Shaders::ShaderLearningOpenGL0(WIDTH, HEIGHT)); // 0 DONE
+	vectorOfShaders.push_back(new Shaders::ShaderPTN0(WIDTH, HEIGHT));            // 1 DONE
+	vectorOfShaders.push_back(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT));         // 2 DONE
+	vectorOfShaders.push_back(new Shaders::ShaderTerrain0(WIDTH, HEIGHT));        // 3 DONE
+
+	shaderTerrain00 = new Shaders::ShaderTerrain0(WIDTH, HEIGHT);
 	// TODO
 	shaderWaterTile00 = new Shaders::ShaderWaterTile0(VS_Water_Tile, FS_Water_Tile);
 	shaderGUI00 = new Shaders::ShaderGUI0(VS2, FS2);
@@ -296,15 +307,26 @@ int main(int argc, char** argv)
 	//
 	// ----==== MODELs [ ModelMatrix ] ====----	
 	//
-	std::vector<Models::ModelsIf::ModelsIf*> vectorOfModels;
+	std::vector<Models::ModelsIf::ModelsIf*> vectorOfModelsPTN;
 
-	vectorOfModels.push_back(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders));
-	vectorOfModels.push_back(new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders));
+	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders));
+	// vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders));
+	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/lightBulb/", vectorOfShaders));
+	vectorOfModelsPTN[0]->printINFO();
 	// TODO
 	modelSkyBox00 = new Models::ModelSkyBox0(vectorOfShaders[2], camera);
 	modelWaterTile00 = new Models::ModelWaterTile0("_src/water/waterDUDV.png", shaderWaterTile00, camera, 8, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(14.0f));
 	modelGUI00 = new Models::ModelGUI0("sword.png", shaderGUI00, 10, glm::vec3(-0.7f, 0.5f, 0.f), glm::vec3(0.5f));
 	modelGUI01 = new Models::ModelGUI0("socuwan.png", shaderGUI00, 9, glm::vec3(0.7f, 0.5f, 0.0f), glm::vec3(0.3));
+	modelTerrain00 = new Models::ModelTerrain0(CF, "_src/_models/_vanquish/", vectorOfShaders);
+	// USING SMART PTRs
+	//std::vector<std::unique_ptr<Models::ModelsIf::ModelsIf>> vectorOfmartPtrModels;
+	//vectorOfmartPtrModels.push_back(std::unique_ptr<Models::ModelsIf::ModelsIf>(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders)));
+	//vectorOfmartPtrModels.push_back(std::unique_ptr<Models::ModelsIf::ModelsIf>(new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders)));
+	//for (auto& it : vectorOfmartPtrModels) 
+	//{
+	//	std::cout << it->getModelName() << std::endl;
+	//}
 	//
 	// ----==== RENDERERs ====----	
 	//
@@ -312,7 +334,7 @@ int main(int argc, char** argv)
 	//
 	// ----==== CMD ====----
 	//
-	CommandPrompt::CommandPrompt* CP = new CommandPrompt::CommandPrompt(vectorOfShaders, vectorOfModels);
+	CommandPrompt::CommandPrompt* CP = new CommandPrompt::CommandPrompt(vectorOfShaders, vectorOfModelsPTN);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	glEnable(GL_CULL_FACE);
@@ -346,7 +368,7 @@ int main(int argc, char** argv)
 		// RENDER SCENE
 		//
 		// RenderScene(deltaTime);
-		RenderSceneMaster(vectorOfModels, deltaTime);
+		RenderSceneMaster(vectorOfModelsPTN, deltaTime);
 		//
 		//
 		//
@@ -357,13 +379,21 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-void RenderSceneMaster(std::vector<Models::ModelsIf::ModelsIf*> _vectorOfModels, GLfloat deltaTime)
+void RenderSceneMaster(std::vector<Models::ModelsIf::ModelsIf*> _vectorOfModelsPTN, GLfloat deltaTime)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	// glEnable(GL_CLIP_DISTANCE0);
 
+	// RENDER SKY BOX
 	renderer->renderSkyBox(camera, modelSkyBox00);
-	renderer->renderStaticModel(_vectorOfModels[0], camera);
-	renderer->renderStaticModel(_vectorOfModels[1], camera);
+	// RENDER TERRAIN
+	renderer->renderTerrain(shaderTerrain00, modelTerrain00, camera);
+	// RENDER MODELSPTN
+	//	renderer->renderStaticModel(_vectorOfModelsPTN[0], camera);
+	std::vector<Models::ModelsIf::ModelsIf*>::iterator itModelsPTN;
+	for (itModelsPTN = _vectorOfModelsPTN.begin(); itModelsPTN != _vectorOfModelsPTN.end(); itModelsPTN++)
+	{
+		renderer->renderStaticModel((*itModelsPTN), camera);
+	}
 }

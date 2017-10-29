@@ -1,6 +1,3 @@
-//#include <iostream>
-//#include <string>
-
 #include "../../Shaders/inc/ShaderWaterTile0.h"
 //
 //

@@ -56,7 +56,8 @@ public:
 	virtual GLuint const getViewMatrixInvID()      const { return 0; }
 	virtual GLuint const getModelMatrixID()        const { return 0; }
 	virtual GLuint const getLightID()              const { return 0; } // LIGHT POSITION
-	virtual GLuint const getlightPositionID()      const { return 0; } // REMOVE
+	virtual GLuint const getlightPositionID()      const { return 0; }
+	virtual GLuint const getLightPositionID()      const { return 0; }
 	virtual GLuint const getplaneID()              const { return 0; }
 	//
 	virtual GLuint const getModelMatrixInvID()     const { return 0; }
@@ -89,6 +90,13 @@ public:
 	virtual GLuint const getObjectColorID()        const { return 0; }
 	virtual GLuint const getLightColorID()         const { return 0; }
 	virtual GLuint const getmvpMatrixID()          const { return 0; }
+	// TERRAIN
+	virtual GLuint const getTextureSamplerID()     const { return 0; }
+	virtual GLuint const getBackgroundTextureID()  const { return 0; }
+	virtual GLuint const getRTextureID()           const { return 0; }
+	virtual GLuint const getGTextureID()           const { return 0; }
+	virtual GLuint const getBTextureID()           const { return 0; }
+	virtual GLuint const getBlendMapID()           const { return 0; }
 	// OPERATORs
 	virtual void printINFO() {};
 private:

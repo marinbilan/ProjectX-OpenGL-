@@ -14,7 +14,7 @@ public:
 
 	// FUNCTIONs
 	void loadTModelPTNTextures();
-	virtual GLuint createSingleTexture(std::string& _textureName);
+	virtual GLuint createSingleTexture(GLuint& _textureWidth, GLuint& _textureHeight, GLfloat& _textureSize, std::string& _textureName);
 	// GET
 	std::vector<Loader::Mesh> getVectorOfMeshes();
 	// SET

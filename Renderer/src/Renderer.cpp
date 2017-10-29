@@ -69,6 +69,62 @@ void Renderer::Renderer::renderDepthMap(Models::ModelPTN0* _modelPTN, Shaders::S
 }
 
 // NEW
+void Renderer::Renderer::renderTerrain(Shaders::ShadersIf::ShadersIf* _shader, Models::ModelTerrain0* _staticModel, Camera::CameraIf::CameraIf* _camera)
+{
+	glUseProgram(_shader->getShaderProgramID());
+
+	glBindVertexArray(_staticModel->getModelVAO());
+
+	glEnableVertexAttribArray(0); // VERTEXs
+	glEnableVertexAttribArray(1); // TEXTURECOORDs
+	glEnableVertexAttribArray(2); // NORMALs
+
+	glUniformMatrix4fv(_shader->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
+	_camera->invertCameraMatrix();
+	glUniformMatrix4fv(_shader->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
+	glUniformMatrix4fv(_shader->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
+	
+	glm::vec3 lightPositionTerrain(55.0f, 550.0f, 52.0f);
+	glUniform3f(_shader->getLightPositionID(), lightPositionTerrain[0], lightPositionTerrain[1], lightPositionTerrain[2]);
+	// FRAGMENT SHADER
+	// TEXTUREs
+	glUniform1i(_shader->getBackgroundTextureID(), 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _staticModel->backgroundTextureID);
+	
+	glUniform1i(_shader->getRTextureID(), 1);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, _staticModel->rTextureID);
+	
+	glUniform1i(_shader->getGTextureID(), 2);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, _staticModel->gTextureID);
+	
+	glUniform1i(_shader->getBTextureID(), 3);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, _staticModel->bTextureID);
+	
+	glUniform1i(_shader->getBlendMapID(), 4);
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, _staticModel->blendMapID);
+
+	glm::vec3 lightColorTerrain(1.0f, 1.0f, 1.0f);
+	glUniform3f(_shader->getlightColorID(), lightColorTerrain[0], lightColorTerrain[1], lightColorTerrain[2]);
+	glUniform1f(_shader->getshineDamperID(), 30.0f);
+	glUniform1f(_shader->getreflectivityID(), 0.1f);
+
+	// std::cout << _staticModel->numInd << std::endl;
+
+	glDrawElements(GL_TRIANGLES, _staticModel->numInd, GL_UNSIGNED_INT, 0);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+
+	glBindVertexArray(0); // Unbind VAO
+	glUseProgram(0);
+}
+
 void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticModel, Camera::CameraIf::CameraIf* _camera)
 {
 	glBindVertexArray(_staticModel->getModelVAO());
@@ -76,14 +132,6 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 	for (unsigned int i = 0; i < _staticModel->getVectorOfMeshes().size(); i++) {
 		glBindBuffer(GL_ARRAY_BUFFER, _staticModel->getVectorOfMeshes()[i].VBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _staticModel->getVectorOfMeshes()[i].IBO);
-
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), 0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
-
-		glEnableVertexAttribArray(0); // VERTEXs
-		glEnableVertexAttribArray(1); // TEXTURECOORDs
-		glEnableVertexAttribArray(2); // NORMALs
 		//
 		// GET SHADER FOR EACH MESH IN MODEL
 		//
@@ -92,6 +140,13 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 		glUseProgram(mesh.meshShaderPtr->getShaderProgramID());
 		if (!mesh.meshShaderPtr->getShaderName().compare("ShaderPTN0"))
 		{
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), 0);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
+			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
+
+			glEnableVertexAttribArray(0); // VERTEXs
+			glEnableVertexAttribArray(1); // TEXTURECOORDs
+			glEnableVertexAttribArray(2); // NORMALs
 			// VERTEX SHADER UNIFORMS
 			// Projection matrix updated in shader constructor (Only once)
 			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
@@ -119,16 +174,23 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 		}
 		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderLearningOpenGL0"))
 		{
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), 0);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
+
+			glEnableVertexAttribArray(0); // VERTEXs
+			glEnableVertexAttribArray(1); // NORMALs
 			// VERTEX SHADER UNIFORMS
 			// Projection matrix updated in shader constructor (Only once)
 			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 
-			GLfloat objectColor1[] = { 1.0f, 0.0f, 0.0f };
+			GLfloat lightPosition1[] = { 0.0f, 0.25f, 0.0f };
 			GLfloat lightColor1[] = { 1.0f, 1.0f, 1.0f };
+			GLfloat objectColor1[] = { 1.0f, 0.0f, 0.0f };
 
-			glUniform3f(mesh.meshShaderPtr->getObjectColorID(), objectColor1[0], objectColor1[1], objectColor1[2]);
+			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPosition1[0], lightPosition1[1], lightPosition1[2]);
 			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColor1[0], lightColor1[1], lightColor1[2]);
+			glUniform3f(mesh.meshShaderPtr->getObjectColorID(), objectColor1[0], objectColor1[1], objectColor1[2]);
 			glDrawElements(GL_TRIANGLES, _staticModel->getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
 			glUseProgram(0);
 		}

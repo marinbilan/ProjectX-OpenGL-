@@ -10,6 +10,7 @@
 #include "..\..\Models\inc\ModelWaterTile0.h"
 #include "..\..\Models\inc\ModelPTN0.h"
 #include "..\..\Models\inc\ModelLearnOpenGL0.h"
+#include "..\..\Models\inc\ModelTerrain0.h"
 
 namespace Renderer
 {

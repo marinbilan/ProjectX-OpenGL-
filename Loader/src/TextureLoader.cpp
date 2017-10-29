@@ -31,7 +31,7 @@ void Loader::TextureLoader::loadTModelPTNTextures()
 	CommonFunctions::INFOCMD(LOG "<--- TEXTURES from " + std::string(texturesFolderPath) + " construction over.");
 	CF->LOGFILE(LOG("<--- TEXTURES from " + std::string(texturesFolderPath) + " construction over."));
 }
-GLuint Loader::TextureLoader::createSingleTexture(std::string& _textureName)
+GLuint Loader::TextureLoader::createSingleTexture(GLuint& _textureWidth, GLuint& _textureHeight, GLfloat& _textureSize, std::string& _textureName)
 {
 	width = 0;
 	height = 0;
@@ -48,6 +48,9 @@ GLuint Loader::TextureLoader::createSingleTexture(std::string& _textureName)
 	bits = FreeImage_GetBits(dib);
 	width = FreeImage_GetWidth(dib);
 	height = FreeImage_GetHeight(dib);
+	_textureWidth = width;
+	_textureHeight = height;
+	_textureSize = FreeImage_GetMemorySize(dib);
 
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
@@ -79,10 +82,19 @@ void Loader::TextureLoader::setTextureForEachMesh()
 	for (GLuint i = 0; i < numberOfTextures; i++) {
 		std::string textureFile = texturesFolderPath + textures + textureName + std::to_string(i) + textureNameExt;
 
-		int texID = createSingleTexture(textureFile);
+		GLuint textureWidth;
+		GLuint textureHeight;
+		GLfloat textureSize;
+		GLfloat bitsInMB = 8388608; // 1048576 * 8
+
+		int texID = createSingleTexture(textureWidth, textureHeight, textureSize, textureFile);
+
 		CommonFunctions::INFOCMD(LOG "--> Texture " + std::to_string(i) + ": " + textureFile + " created.");
 		CF->LOGFILE(LOG "--> Texture " + std::to_string(i) + ": " + textureFile + " created.");
 
 		vectorOfMeshes[i].texture0ID = texID;
+		vectorOfMeshes[i].textureWidth = textureWidth;
+		vectorOfMeshes[i].textureHeight = textureHeight;
+		vectorOfMeshes[i].textureSizeMB = textureSize / bitsInMB;
 	}
 }

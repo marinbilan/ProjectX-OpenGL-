@@ -17,7 +17,6 @@ _src/_models/_vanquish/	modelScale              1 1 1
 _src/_models/_vanquish/	modelRotateAround 1 0 0
 _src/_models/_vanquish/	angle                        0.1
 
-
 // ----==== Model Dagger ====----
 _src/_models/_dagger/	modelName	model
 
@@ -27,3 +26,13 @@ _src/_models/_dagger/	modelPosition	0 0.25 0.0
 _src/_models/_dagger/          modelScale              1 1      1
 _src/_models/_dagger/          modelRotateAround 1 0      0
 _src/_models/_dagger/          angle                        0.8457
+
+// ----==== Model LightBulb ====----
+_src/_models/lightBulb/	modelName	LightBulb
+
+_src/_models/lightBulb/	meshShader0       	ShaderLearningOpenGL0
+
+_src/_models/lightBulb/	modelPosition	0 0.25 0.0
+_src/_models/lightBulb/          modelScale              10 10     10
+_src/_models/lightBulb/          modelRotateAround 1 0      0
+_src/_models/lightBulb/          angle                        0.8457

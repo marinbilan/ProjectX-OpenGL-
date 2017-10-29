@@ -5,18 +5,20 @@ Shaders::ShaderLearningOpenGL0::ShaderLearningOpenGL0(GLfloat projMatrixWidth, G
 {
 	shaderName = "ShaderLearningOpenGL0";
 
-    shaderProgramID = createShader(vertexShader, fragmentShader);
+    shaderProgramID = createShader(vertexShader1, fragmentShader1);
 	// [ VERTEX SHADER ]
 	//   ATTRIBUTEs
-	positionsID = glGetAttribLocation(shaderProgramID, "position");
+	positionsID = glGetAttribLocation(shaderProgramID, "aPos");
+	normalsID = glGetAttribLocation(shaderProgramID, "aNormal");
 	//   UNIFORMs
 	projectionMatrixID = glGetUniformLocation(shaderProgramID, "projection");      
 	viewMatrixID = glGetUniformLocation(shaderProgramID, "view");
 	modelMatrixID = glGetUniformLocation(shaderProgramID, "model");
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
-	objectColorID = glGetUniformLocation(shaderProgramID, "objectColor");
+	lightPositionID = glGetUniformLocation(shaderProgramID, "lightPos");
 	lightColorID = glGetUniformLocation(shaderProgramID, "lightColor");
+	objectColorID = glGetUniformLocation(shaderProgramID, "objectColor");
 
 	// Set Projection Matrix
 	projectionMatrix = glm::perspective(glm::radians(60.0f), projMatrixWidth / projMatrixHeight, 0.1f, 1000.f);
@@ -62,15 +64,21 @@ GLuint const Shaders::ShaderLearningOpenGL0::getModelMatrixID() const
 	return modelMatrixID;
 }
 // FRAGMENT SHADER
-GLuint const Shaders::ShaderLearningOpenGL0::getObjectColorID() const
+GLuint const Shaders::ShaderLearningOpenGL0::getLightPositionID() const
 {
-	return objectColorID;
+	return lightPositionID;
 }
 
 GLuint const Shaders::ShaderLearningOpenGL0::getLightColorID() const
 {
 	return lightColorID;
 }
+
+GLuint const Shaders::ShaderLearningOpenGL0::getObjectColorID() const
+{
+	return objectColorID;
+}
+
 // OPERATORs
 void Shaders::ShaderLearningOpenGL0::printINFO()
 {

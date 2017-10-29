@@ -1,16 +1,16 @@
-#ifndef MODELPTN0__
-#define MODELPTN0__
+#ifndef MODELTERRAIN0__
+#define MODELTERRAIN0__
 
 #include "../if/ModelIf.h"
 
 namespace Models
 {
-class ModelPTN0 : public ModelsIf::ModelsIf
+class ModelTerrain0 : public ModelsIf::ModelsIf
 {
 public:
 	// CONSTRUCTORs / DESTRUCTORs
-	ModelPTN0(CommonFunctions* _CF, std::string _modelFolder, std::vector<Shaders::ShadersIf::ShadersIf*> _vectorOfShaders);
-	~ModelPTN0();
+	ModelTerrain0(CommonFunctions* _CF, std::string _modelFolder, std::vector<Shaders::ShadersIf::ShadersIf*> _vectorOfShaders);
+	~ModelTerrain0();
 	// FUNCTIONs
 	// GET
 	std::string getModelName();
@@ -26,27 +26,40 @@ public:
 	virtual void setModelPosition(glm::vec3 _modelPosition);
 	virtual void setModelScale(glm::vec3 _modelScale);
 	virtual void setModelRotation(glm::vec3 _modelRotateAround, GLfloat _angle);
+	GLuint Models::ModelTerrain0::loadTexturePNG(const char* filename);
 	// Add setModelAngle
 
 	// OPERATORs
-	void printINFO();
-	friend std::ostream& operator<<(std::ostream& output, ModelPTN0& info)
+	friend std::ostream& operator<<(std::ostream& output, ModelTerrain0& info)
 	{
 		output << " " << std::endl;
-		output << "[ MODEL ]" << std::endl;
-		//output << " Model Name:  " << info.modelFolder + modelName << std::endl;
-		output << " Model VAO              = " << info.VAO << std::endl;
-		output << " Model Number of Meshes = " << info.vectorOfMeshes.size() << std::endl;
+		output << "----==== MODEL ====---- " << std::endl;
+		output << "Model Name:  " << info.modelFolder << std::endl;
+		output << " Model Number of Meshes : " << info.vectorOfMeshes.size() << std::endl;
+		output << " Model VAO              : " << info.VAO << std::endl;
 
-		output << "   [ MESHEs ]" << std::endl;
+		output << " ----==== MESHEs ====---- " << std::endl;
 		std::vector<Models::Mesh>::iterator it;
 		for (it = info.vectorOfMeshes.begin(); it != info.vectorOfMeshes.end(); ++it)
 		{
 			output << *it << std::endl;
 		}
-		// output << "" << std::endl;
+		output << "----========------ " << std::endl;
 		return output;
 	}
+	// TEXTUREs ID
+	GLuint backgroundTextureID;
+	GLuint rTextureID;
+	GLuint gTextureID;
+	GLuint bTextureID;
+	GLuint blendMapID;
+	GLuint vboID1;
+	GLuint vboID2;
+	GLuint vboID3;
+	GLuint indexBufferID;
+	GLuint numInd;
+
+
 private:
 	// CONSTRUCTOR params
 	CommonFunctions* CF;
