@@ -239,12 +239,6 @@ void RenderSceneMaster(std::vector<Models::ModelsIf::ModelsIf*> _vectorOfModels,
 int main(int argc, char** argv)
 {
 	system("Color 2"); // Set CMD color green
-	std::ofstream logFile("___Log/logFile.txt");
-	//
-	// ---- CREATE COMMON FUNCTIONs OBJECT ----
-	//
-	CommonFunctions* CF = new CommonFunctions(logFile);
-
 	// Init GLFW
 	glfwInit();
 
@@ -283,6 +277,12 @@ int main(int argc, char** argv)
 	std::cout << "||  GLFW version      : " << glfwGetVersionString() << std::endl;
 	std::cout << "||  Screen Resolution : " << WIDTH << " x " << HEIGHT << std::endl;
 	std::cout << "|-------------------------------------------------" << std::endl;
+	std::cout << std::endl;
+	std::ofstream logFile("___Log/logFile.txt");
+	//
+	// ---- CREATE COMMON FUNCTIONs OBJECT ----
+	//
+	CommonFunctions* CF = new CommonFunctions(logFile);
 	//
 	// ----==== SHADERs [ ProjectionMatrix ] Initialization (only once) ====----
 	//
@@ -291,17 +291,17 @@ int main(int argc, char** argv)
 	vectorOfShaders.push_back(new Shaders::ShaderLearningOpenGL0(WIDTH, HEIGHT)); // 0 DONE
 	vectorOfShaders.push_back(new Shaders::ShaderPTN0(WIDTH, HEIGHT));            // 1 DONE
 	vectorOfShaders.push_back(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT));         // 2 DONE
-	vectorOfShaders.push_back(new Shaders::ShaderTerrain0(WIDTH, HEIGHT));        // 3 DONE
-	vectorOfShaders.push_back(new Shaders::ShaderMarker0(WIDTH, HEIGHT));        // 4 DONE
+	// vectorOfShaders.push_back(new Shaders::ShaderTerrain0(WIDTH, HEIGHT));     // 3 DONE
+	vectorOfShaders.push_back(new Shaders::ShaderMarker0(WIDTH, HEIGHT));         // 4 DONE
 
-	shaderTerrain00 = new Shaders::ShaderTerrain0(WIDTH, HEIGHT);
+	shaderTerrain00 = new Shaders::ShaderTerrain0(WIDTH, HEIGHT); // TODO
 	// TODO
 	shaderWaterTile00 = new Shaders::ShaderWaterTile0(VS_Water_Tile, FS_Water_Tile);
 	shaderGUI00 = new Shaders::ShaderGUI0(VS2, FS2);
 	//
 	// ----==== CAMERAs [ ViewMatrix ] ====----
 	//
-	camera = new Camera::Camera(glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // Current Light position
+	camera = new Camera::Camera(glm::vec3(375, 25, 420), glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // Current Light position
 	//
 	// ----==== FBOs ====----	
 	//
@@ -312,9 +312,10 @@ int main(int argc, char** argv)
 	//
 	std::vector<Models::ModelsIf::ModelsIf*> vectorOfModelsPTN;
 
-	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders));
-	// vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders));
+	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders));
+	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders));
 	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/arrow/", vectorOfShaders));
+	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfShaders));
 	// vectorOfModelsPTN[0]->printINFO();
 	// TODO
 	modelSkyBox00 = new Models::ModelSkyBox0(vectorOfShaders[2], camera);
@@ -349,6 +350,8 @@ int main(int argc, char** argv)
 	// TODO: [ THRED I ] COMMAND PROMPT
 	//
 	//
+	std::cout << std::endl;
+	std::cout << " |> Type help to start <|" << std::endl;
 	CP->cmd();
 	//
 	//
@@ -399,4 +402,10 @@ void RenderSceneMaster(std::vector<Models::ModelsIf::ModelsIf*> _vectorOfModelsP
 	{
 		renderer->renderStaticModel((*itModelsPTN), camera);
 	}
+	// TEST: Render another light in scene
+	// Set new position
+	_vectorOfModelsPTN[0]->setModelPosition(glm::vec3(385, 0, 385));
+	renderer->renderStaticModel(_vectorOfModelsPTN[0], camera);
+	// Reset on original position
+	_vectorOfModelsPTN[0]->setModelPosition(glm::vec3(380, 0, 380));
 }

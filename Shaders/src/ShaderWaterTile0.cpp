@@ -49,6 +49,8 @@ Shaders::ShaderWaterTile0::ShaderWaterTile0(const char* vertexShader, const char
 	glUseProgram(shaderProgramID);
 	glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &projectionMatrix[0][0]);
 	glUseProgram(0);
+
+	std::cout << "ShaderWaterTile created!" << std::endl;
 }
 
 Shaders::ShaderWaterTile0::~ShaderWaterTile0()

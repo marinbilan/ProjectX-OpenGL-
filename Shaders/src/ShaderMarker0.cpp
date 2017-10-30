@@ -24,7 +24,7 @@ Shaders::ShaderMarker0::ShaderMarker0(GLfloat projMatrixWidth, GLfloat projMatri
 	glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &projectionMatrix[0][0]);
 	glUseProgram(0);
 
-	std::cout << "ShaderMarker0 object created!" << std::endl;
+	std::cout << "ShaderMarker0 created!" << std::endl;
 }
 
 Shaders::ShaderMarker0::~ShaderMarker0()

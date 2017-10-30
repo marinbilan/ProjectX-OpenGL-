@@ -19,7 +19,7 @@ Shaders::ShaderSkyBox0::ShaderSkyBox0(GLfloat projMatrixWidth, GLfloat projMatri
 	glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &projectionMatrix[0][0]);
 	glUseProgram(0);
 
-	std::cout << "ShaderSkyBox0 object created!" << std::endl;
+	std::cout << "ShaderSkyBox0 created!" << std::endl;
 }
 
 Shaders::ShaderSkyBox0::~ShaderSkyBox0()

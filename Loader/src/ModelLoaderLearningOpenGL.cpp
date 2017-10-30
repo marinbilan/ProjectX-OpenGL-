@@ -20,7 +20,7 @@ void Loader::ModelLoaderLearningOpenGL::loadModelPTN()
 
 	pScene = Importer.ReadFile(modelName, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 	// Start LOGGing
-	CommonFunctions::INFOCMD(LOG("---> MODEL " + modelName + " construction start. Number of MESHEs = " + std::to_string(pScene->mNumMeshes)));
+	// CommonFunctions::INFOCMD(LOG("---> MODEL " + modelName + " construction start. Number of MESHEs = " + std::to_string(pScene->mNumMeshes)));
 	CF->LOGFILE(LOG("---> MODEL " + modelName + " construction start. Number of MESHEs = " + std::to_string(pScene->mNumMeshes)));
 
 	if (pScene)
@@ -33,7 +33,7 @@ void Loader::ModelLoaderLearningOpenGL::loadModelPTN()
 		std::cout << modelName << " " << Importer.GetErrorString() << std::endl;
 	}
 	// Stop LOGGing
-	CommonFunctions::INFOCMD(LOG("<--- MODEL " + modelName + " construction over."));
+	// CommonFunctions::INFOCMD(LOG("<--- MODEL " + modelName + " construction over."));
 	CF->LOGFILE(LOG("<--- MODEL " + modelName + " construction over."));
 }
 
@@ -45,7 +45,7 @@ void Loader::ModelLoaderLearningOpenGL::initScene(const aiScene* _pScene)
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
-	CommonFunctions::INFOCMD(LOG "--> Model " + modelName + " VAO = " + std::to_string(VAO) + " created.");
+	// CommonFunctions::INFOCMD(LOG "--> Model " + modelName + " VAO = " + std::to_string(VAO) + " created.");
 	CF->LOGFILE(LOG "--> Model " + modelName + " VAO = " + std::to_string(VAO) + " created.");
 
 	// Create VBO and IBO for each Mesh in Model
@@ -96,13 +96,13 @@ void Loader::ModelLoaderLearningOpenGL::initMesh(GLuint _index, const aiMesh* _p
 	glGenBuffers(1, &vectorOfMeshes[_index].VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, vectorOfMeshes[_index].VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vert) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
-	CommonFunctions::INFOCMD(LOG "--> Model " + modelName + " VBO = " + std::to_string(vectorOfMeshes[_index].VBO) + " created.");
+	// CommonFunctions::INFOCMD(LOG "--> Model " + modelName + " VBO = " + std::to_string(vectorOfMeshes[_index].VBO) + " created.");
 	CF->LOGFILE(LOG "--> Model " + modelName + " VBO = " + std::to_string(vectorOfMeshes[_index].VBO) + " created.");
 
 	glGenBuffers(1, &vectorOfMeshes[_index].IBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vectorOfMeshes[_index].IBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
-	CommonFunctions::INFOCMD(LOG "--> Model " + modelName + " IBO = " + std::to_string(vectorOfMeshes[_index].IBO) + " created.");
+	// CommonFunctions::INFOCMD(LOG "--> Model " + modelName + " IBO = " + std::to_string(vectorOfMeshes[_index].IBO) + " created.");
 	CF->LOGFILE(LOG "--> Model " + modelName + " IBO = " + std::to_string(vectorOfMeshes[_index].IBO) + " created.");
 
 	vectorOfMeshes[_index].numIndices = indices.size(); // For each mesh! Important for rendering!

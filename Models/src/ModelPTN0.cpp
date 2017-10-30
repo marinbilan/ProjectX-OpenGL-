@@ -66,6 +66,8 @@ Models::ModelPTN0::ModelPTN0(CommonFunctions* _CF, std::string _modelFolder, std
 	modelMatrix = glm::translate(glm::mat4(1.0f), modelPosition);
 	modelMatrix = glm::rotate(modelMatrix, angle, modelRotateAround);
 	modelMatrix = glm::scale(modelMatrix, modelScale);
+
+	std::cout << "ModelPTN " << modelFullName << " created!" << std::endl;
 }
 
 Models::ModelPTN0::~ModelPTN0()
@@ -116,9 +118,15 @@ std::vector<Models::Mesh>  Models::ModelPTN0::getVectorOfMeshes()
 // SET
 void Models::ModelPTN0::setModelPosition(glm::vec3 _modelPosition)
 {
+	//modelMatrix = glm::mat4(1.0f);
+	//modelPosition = _modelPosition;
+	//modelMatrix = glm::translate(glm::mat4(1.0f), modelPosition);
+
+
 	modelMatrix = glm::mat4(1.0f);
-	modelPosition = _modelPosition;
-	modelMatrix = glm::translate(glm::mat4(1.0f), modelPosition);
+	modelMatrix = glm::translate(glm::mat4(1.0f), _modelPosition);
+	modelMatrix = glm::rotate(modelMatrix, angle, modelRotateAround);
+	modelMatrix = glm::scale(modelMatrix, modelScale);
 }
 
 void Models::ModelPTN0::setModelScale(glm::vec3 _modelScale)

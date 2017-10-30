@@ -23,12 +23,12 @@ void Loader::TextureLoader::loadTModelPTNTextures()
 	// Init vectorOfMeshes
 	vectorOfMeshes.resize(numberOfTextures);
 	// Start LOGGing
-	CommonFunctions::INFOCMD(LOG "---> TEXTURES from " + std::string(texturesFolderPath) + " construction start. Number of textures = " + std::to_string(numberOfTextures));
+	// CommonFunctions::INFOCMD(LOG "---> TEXTURES from " + std::string(texturesFolderPath) + " construction start. Number of textures = " + std::to_string(numberOfTextures));
 	CF->LOGFILE(LOG"---> TEXTURES from " + std::string(texturesFolderPath) + " construction start. Number of textures = " + std::to_string(numberOfTextures));
 
 	setTextureForEachMesh();
 
-	CommonFunctions::INFOCMD(LOG "<--- TEXTURES from " + std::string(texturesFolderPath) + " construction over.");
+	// CommonFunctions::INFOCMD(LOG "<--- TEXTURES from " + std::string(texturesFolderPath) + " construction over.");
 	CF->LOGFILE(LOG("<--- TEXTURES from " + std::string(texturesFolderPath) + " construction over."));
 }
 GLuint Loader::TextureLoader::createSingleTexture(GLuint& _textureWidth, GLuint& _textureHeight, GLfloat& _textureSize, std::string& _textureName)
@@ -89,7 +89,7 @@ void Loader::TextureLoader::setTextureForEachMesh()
 
 		int texID = createSingleTexture(textureWidth, textureHeight, textureSize, textureFile);
 
-		CommonFunctions::INFOCMD(LOG "--> Texture " + std::to_string(i) + ": " + textureFile + " created.");
+		// CommonFunctions::INFOCMD(LOG "--> Texture " + std::to_string(i) + ": " + textureFile + " created.");
 		CF->LOGFILE(LOG "--> Texture " + std::to_string(i) + ": " + textureFile + " created.");
 
 		vectorOfMeshes[i].texture0ID = texID;

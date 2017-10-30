@@ -36,7 +36,7 @@ Shaders::ShaderTerrain0::ShaderTerrain0(GLfloat projMatrixWidth, GLfloat projMat
 	glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &projectionMatrix[0][0]);
 	glUseProgram(0);
 
-	std::cout << "ShaderTerrain0 object created!" << std::endl;
+	std::cout << "ShaderTerrain0 created!" << std::endl;
 }
 
 Shaders::ShaderTerrain0::~ShaderTerrain0()

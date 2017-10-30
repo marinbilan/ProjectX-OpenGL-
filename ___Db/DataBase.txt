@@ -1,39 +1,45 @@
 //
 // Models Database with parameters
 //
-
+// ----======================----
 // ----==== Model Vanquish ====----
-_src/_models/_vanquish/	modelName	vanquish
+// ----======================----
+_src/_models/_vanquish/ modelName vanquish
 
-_src/_models/_vanquish/	meshShader0       	ShaderPTN0
-_src/_models/_vanquish/	meshShader1       	ShaderLearningOpenGL0
-_src/_models/_vanquish/	meshShader2       	ShaderPTN0
-_src/_models/_vanquish/	meshShader3       	ShaderPTN0
-_src/_models/_vanquish/	meshShader4       	ShaderPTN0
-_src/_models/_vanquish/	meshShader5       	ShaderPTN0
+_src/_models/_vanquish/    meshShader0    ShaderPTN0
+_src/_models/_vanquish/    meshShader1    ShaderPTN0
+_src/_models/_vanquish/    meshShader2    ShaderPTN0
+_src/_models/_vanquish/    meshShader3    ShaderPTN0
+_src/_models/_vanquish/    meshShader4    ShaderPTN0
+_src/_models/_vanquish/    meshShader5    ShaderPTN0
 
-_src/_models/_vanquish/	modelPosition	15 0 15
+_src/_models/_vanquish/	modelPosition           400 0 400
 _src/_models/_vanquish/	modelScale              10 10 10
 _src/_models/_vanquish/	modelRotateAround 1 0 0
 _src/_models/_vanquish/	angle                        -1.57
+// ----====================----
 
+// ----====================----
 // ----==== Model Dagger ====----
+// ----====================----
 _src/_models/_dagger/	modelName	model
 
-_src/_models/_dagger/	meshShader0       	ShaderLearningOpenGL0
+_src/_models/_dagger/	meshShader0       	ShaderPTN0
 
-_src/_models/_dagger/	modelPosition	0 0.25 0.0
+_src/_models/_dagger/	modelPosition	385 0.5 385
 _src/_models/_dagger/          modelScale              1 1      1
 _src/_models/_dagger/          modelRotateAround 1 0      0
-_src/_models/_dagger/          angle                        0.8457
+_src/_models/_dagger/          angle                        0
+// ----====================----
 
+// ----====================----
 // ----==== Model LightBulb ====----
 _src/_models/lightBulb/	modelName	LightBulb
 
 _src/_models/lightBulb/	meshShader0       	ShaderMarker0
 _src/_models/lightBulb/	meshShader1       	ShaderMarker0
 
-_src/_models/lightBulb/	modelPosition	1 19 1
+_src/_models/lightBulb/	modelPosition	380 19 1
 _src/_models/lightBulb/          modelScale              10 10     10
 _src/_models/lightBulb/          modelRotateAround 1 0      0
 _src/_models/lightBulb/          angle                        0.8457
@@ -44,7 +50,20 @@ _src/_models/arrow/	modelName	Arrow
 _src/_models/arrow/	meshShader0       	ShaderMarker0
 _src/_models/arrow/	meshShader1       	ShaderMarker0
 
-_src/_models/arrow/	modelPosition	10 0 10
+_src/_models/arrow/	modelPosition	380 0 380
 _src/_models/arrow/              modelScale                  5 5    5
 _src/_models/arrow/              modelRotateAround     1 0      0
 _src/_models/arrow/              angle                            -1.57
+
+// ----========================----
+// ----==== Model Light Marker ====----
+// ----========================----
+_src/_models/lightMarker/    modelName    lightMarker
+
+_src/_models/lightMarker/    meshShader0    ShaderMarker0
+
+_src/_models/lightMarker/    modelPosition           380 7 380
+_src/_models/lightMarker/    modelScale              0.5 0.5 0.5
+_src/_models/lightMarker/    modelRotateAround 1 0 0
+_src/_models/lightMarker/    angle                        -1.57
+// ----========================----

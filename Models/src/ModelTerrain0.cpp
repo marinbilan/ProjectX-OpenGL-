@@ -47,8 +47,6 @@ Models::ModelTerrain0::ModelTerrain0(CommonFunctions* _CF, std::string _modelFol
 	//}
 
 	GLuint count = VERTEX_COUNT * VERTEX_COUNT;
-	std::cout << "VERTEX_COUNT: " << VERTEX_COUNT << std::endl;
-	// std::cout << H[5][5] << std::endl;
 
 	GLfloat* vertices;
 	GLfloat* normals;
@@ -141,19 +139,12 @@ Models::ModelTerrain0::ModelTerrain0(CommonFunctions* _CF, std::string _modelFol
 	modelMatrix = glm::scale(modelMatrix, modelScale);
 
 	backgroundTextureID = loadTexturePNG("_src/_models/terrain/textures/grass.png");
-	std::cout << "backgroundTextureID = " << backgroundTextureID << std::endl;
-
 	rTextureID = loadTexturePNG("_src/_models/terrain/textures/dirt.png");
-	std::cout << "rTextureID = " << rTextureID << std::endl;
-
 	gTextureID = loadTexturePNG("_src/_models/terrain/textures/sand.png");
-	std::cout << "gTextureID = " << gTextureID << std::endl;
+	bTextureID = loadTexturePNG("_src/_models/terrain/textures/hardwood.png");
+	blendMapID = loadTexturePNG("_src/_models/terrain/textures/blendMap2.png");
 
-	bTextureID = loadTexturePNG("_src/_models/terrain/textures/path.png");
-	std::cout << "bTextureID = " << bTextureID << std::endl;
-
-	blendMapID = loadTexturePNG("_src/_models/terrain/textures/blendMap.png");
-	std::cout << "blendMapID = " << blendMapID << std::endl;
+	std::cout << "ModelTerrain0 created!" << std::endl;
 }
 
 Models::ModelTerrain0::~ModelTerrain0()
@@ -234,9 +225,7 @@ GLuint Models::ModelTerrain0::loadTexturePNG(const char* filename) {
 	unsigned int width(0), height(0);    //OpenGL's image ID to map to
 	GLuint gl_texID;
 
-	//check the file signature and deduce its format
 	fif = FreeImage_GetFileType(filename, 0);
-	//if still unknown, try to guess the file format from the file extension
 	if (fif == FIF_UNKNOWN)
 		fif = FreeImage_GetFIFFromFilename(filename);
 
@@ -253,10 +242,7 @@ GLuint Models::ModelTerrain0::loadTexturePNG(const char* filename) {
 	// Novo
 	RGBQUAD color;
 	FreeImage_GetPixelColor(dib, 20, 20, &color);
-	std::cout << "Color: " << float(color.rgbGreen) << std::endl;
 	int heightImag = FreeImage_GetHeight(dib);
-	std::cout << "Image width : " << width << " Image height : " << height << std::endl;
-	//
 
 	//generate an OpenGL texture ID for this texture
 	glGenTextures(1, &gl_texID);

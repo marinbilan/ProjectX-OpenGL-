@@ -1,9 +1,6 @@
 #ifndef COMMANDPROMPT__
 #define COMMANDPROMPT__
 
-//#include "..\..\Shaders\if\ShaderIf.h"
-//#include "..\..\Models\if\ModelIf.h"
-
 namespace CommandPrompt
 {
 class CommandPrompt
@@ -15,6 +12,8 @@ class CommandPrompt
 	{
 		vectorOfShaders = _vectorOfShaders;
 		vectorOfModels = _vectorOfModels;
+
+		std::cout << "CommandPrompt created!" << std::endl;
 	}
 	~CommandPrompt()
 	{
@@ -92,6 +91,31 @@ class CommandPrompt
 				cmdModelsAll();
 			}
 			// ----=================----
+
+			// ----==============----
+			// ----==== READ ====----
+			// read
+			std::regex readCmd0("(\\w+)");
+			if (std::regex_search(commandLineString, match, readCmd0))
+			{
+				if (!match.str(0).compare("read"))
+				{
+					std::cout << " read <log | dataBase>" << std::endl;
+				}
+			}
+			// read log
+			std::regex readCmd1("read\\s+log");
+			if (std::regex_search(commandLineString, match, readCmd1))
+			{
+				cmdReadLog();
+			}
+			// read database
+			std::regex readCmd2("read\\s+dataBase");
+			if (std::regex_search(commandLineString, match, readCmd2))
+			{
+				cmdReadDB();
+			}
+			// ----=================----
 		} while (commandLineString != "exit");
 	}
 
@@ -157,6 +181,26 @@ class CommandPrompt
 		for (it = vectorOfModels.begin(); it != vectorOfModels.end(); it++)
 		{
 			(*it)->printINFO();
+		}
+	}
+	// READ
+	void cmdReadLog()
+	{
+		std::ifstream logFile("___Log/logFile.txt");
+		std::string logLine;
+		while (std::getline(logFile, logLine))
+		{
+			std::cout << logLine << std::endl;
+		}
+	}
+
+	void cmdReadDB()
+	{
+		std::ifstream dBFile("___Db/DataBase.txt");
+		std::string dBLine;
+		while (std::getline(dBFile, dBLine))
+		{
+			std::cout << dBLine << std::endl;
 		}
 	}
 private:

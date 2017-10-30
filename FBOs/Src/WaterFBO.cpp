@@ -12,6 +12,7 @@ FBOs::WaterFBO::WaterFBO()
 	initialiseReflectionFrameBuffer();
 	initialiseRefractionFrameBuffer();
 	// initShaddowMapFBO();
+	std::cout << "WaterFBO created!" << std::endl;
 }
 
 FBOs::WaterFBO::~WaterFBO()

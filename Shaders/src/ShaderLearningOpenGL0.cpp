@@ -26,7 +26,7 @@ Shaders::ShaderLearningOpenGL0::ShaderLearningOpenGL0(GLfloat projMatrixWidth, G
 	glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &projectionMatrix[0][0]);
 	glUseProgram(0);
 
-	std::cout << "ShaderLearningOpenGL0 object created!" << std::endl;
+	std::cout << "ShaderLearningOpenGL0 created!" << std::endl;
 }
 
 Shaders::ShaderLearningOpenGL0::~ShaderLearningOpenGL0()

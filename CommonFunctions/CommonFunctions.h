@@ -1,11 +1,9 @@
 #ifndef COMMONFUNCTIONS__
 #define COMMONFUNCTIONS__
 
-// #include <windows.h>
 #include <string>
 #include <iostream>
 #include <fstream>
-//#include <sstream>
 #include <regex>
 #include <vector>
 // GLEW
@@ -32,13 +30,11 @@ class CommonFunctions
 public:
 	CommonFunctions(std::ofstream& _logFile) : logFile(_logFile)
 	{
+		std::cout << " CommonFunction and Log File created" << std::endl;
 	};
 
 	static void setFontColor(int color)
 	{
-		// HANDLE hConsole;
-		// hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-		// SetConsoleTextAttribute(hConsole, color);
 	}
 
 	void LOGFILE(const char* date, const char* time, const char* file, int line, std::string msg)

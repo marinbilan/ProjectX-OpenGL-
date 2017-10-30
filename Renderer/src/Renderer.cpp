@@ -17,7 +17,10 @@
 // 5 ] Disable everything
 
 // CONSTRUCTORs / DESTRUCTORs
-Renderer::Renderer::Renderer() {};
+Renderer::Renderer::Renderer() 
+{
+	std::cout << "Renderer created!" << std::endl;
+};
 
 void Renderer::Renderer::renderSkyBox(Camera::CameraIf::CameraIf* _camera,
 	                                  Models::ModelSkyBox0* _skyBox)
@@ -83,7 +86,7 @@ void Renderer::Renderer::renderTerrain(Shaders::ShadersIf::ShadersIf* _shader, M
 	glUniformMatrix4fv(_shader->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
 	glUniformMatrix4fv(_shader->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 	
-	glm::vec3 lightPositionTerrain(55.0f, 550.0f, 52.0f);
+	glm::vec3 lightPositionTerrain(380.0f, 7.0f, 380.0f);
 	glUniform3f(_shader->getLightPositionID(), lightPositionTerrain[0], lightPositionTerrain[1], lightPositionTerrain[2]);
 	// FRAGMENT SHADER
 	// TEXTUREs
@@ -147,9 +150,9 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 
-			GLfloat lightPosition1[] = { 0.0f, 0.25f, 0.0f };
+			GLfloat lightPosition1[] = { 380.0f, 7.0f, 380.0f };
 			GLfloat lightColor1[] = { 1.0f, 1.0f, 1.0f };
-			GLfloat objectColor1[] = { 1.0f, 0.0f, 0.0f };
+			GLfloat objectColor1[] = { 1.0f, 1.0f, 1.0f };
 
 			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColor1[0], lightColor1[1], lightColor1[2]);
 			glUniform3f(mesh.meshShaderPtr->getObjectColorID(), objectColor1[0], objectColor1[1], objectColor1[2]);
@@ -168,7 +171,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 
-			GLfloat lightPosition1[] = { 0.0f, 0.25f, 0.0f };
+			GLfloat lightPosition1[] = { 380.0f, 7.0f, 380.0f };
 			GLfloat lightColor1[] = { 1.0f, 1.0f, 1.0f };
 			GLfloat objectColor1[] = { 1.0f, 0.0f, 0.0f };
 
@@ -194,7 +197,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 			// TODO: Remove from here
-			glm::vec3 lightPositionModelPTN(25.0f, 25.0f, 25.0f);
+			glm::vec3 lightPositionModelPTN(380.0f, 7.0f, 380.0f);
 			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
 			glUniform3f(mesh.meshShaderPtr->getLightID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
 			glm::vec4 planeModelPTN(0.0f, -1.0f, 0.0f, 100000.0f);

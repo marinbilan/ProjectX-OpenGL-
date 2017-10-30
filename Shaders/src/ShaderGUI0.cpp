@@ -21,6 +21,8 @@ Shaders::ShaderGUI0::ShaderGUI0(const char* vertexShader, const char* fragmentSh
 	// [ UNIFORMs ]
 	//
 	modelMatrixID = glGetUniformLocation(shaderProgramID, "transformationMatrix");
+
+	std::cout << "ShaderGUI0 created!" << std::endl;
 }
 
 Shaders::ShaderGUI0::~ShaderGUI0()

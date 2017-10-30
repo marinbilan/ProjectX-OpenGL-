@@ -81,6 +81,8 @@ Models::ModelGUI0::ModelGUI0(char* _fileName,
 	// VERTEX ATTRIBUTE POINTER(s)
 	//
 	VertexAttribPointers();
+
+	std::cout << "ModelGUI0 created!" << std::endl;
 }
 
 Models::ModelGUI0::~ModelGUI0()

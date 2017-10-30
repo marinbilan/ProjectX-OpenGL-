@@ -119,6 +119,8 @@ Models::ModelSkyBox0::ModelSkyBox0(Shaders::ShadersIf::ShadersIf* _shader, Camer
 	// VERTEX ATTRIBUTE POINTER(s)
 	//
 	VertexAttribPointers();
+
+	std::cout << "ModelSkyBox0 created!" << std::endl;
 }
 
 Models::ModelSkyBox0::~ModelSkyBox0()

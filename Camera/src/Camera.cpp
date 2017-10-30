@@ -11,6 +11,8 @@ Camera::Camera::Camera(glm::vec3 _cameraPos, glm::vec3 _cameraFront, glm::vec3 _
 	// cameraPos =   glm::vec3(0.0f, 0.0f, 15.0f);
 	// cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	// cameraUp =    glm::vec3(0.0f, 1.0f, 0.0f);
+
+	std::cout << "Camera created!" << std::endl;
 }
 
 Camera::Camera::~Camera()

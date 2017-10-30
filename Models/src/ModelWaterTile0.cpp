@@ -116,6 +116,8 @@ Models::ModelWaterTile0::ModelWaterTile0(char* _fileName,
 	// VERTEX ATTRIBUTE POINTER(s)
 	//
 	VertexAttribPointers();
+
+	std::cout << "ModelWarerTile0 created!" << std::endl;
 }
 
 Models::ModelWaterTile0::~ModelWaterTile0()

@@ -32,7 +32,7 @@ Shaders::ShaderPTN0::ShaderPTN0(GLfloat projMatrixWidth, GLfloat projMatrixHeigh
 	glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &projectionMatrix[0][0]);
 	glUseProgram(0);
 
-	std::cout << "ShaderPTN0 object created! " << std::endl;
+	std::cout << "ShaderPTN0 created!" << std::endl;
 }
 
 Shaders::ShaderPTN0::~ShaderPTN0()
