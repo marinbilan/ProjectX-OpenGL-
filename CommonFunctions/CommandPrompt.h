@@ -135,7 +135,7 @@ class CommandPrompt
 		std::vector<Models::ModelsIf::ModelsIf*>::iterator it;
 		for (it = vectorOfModels.begin(); it != vectorOfModels.end(); it++)
 		{
-			std::cout << (*it)->getModelName() << std::endl;
+			std::cout << "    " << (*it)->getModelName() << std::endl;
 		}
 	}
 
