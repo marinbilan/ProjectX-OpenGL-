@@ -86,7 +86,7 @@ void Renderer::Renderer::renderTerrain(Shaders::ShadersIf::ShadersIf* _shader, M
 	glUniformMatrix4fv(_shader->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
 	glUniformMatrix4fv(_shader->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 	
-	glm::vec3 lightPositionTerrain(380.0f, 7.0f, 380.0f);
+	glm::vec3 lightPositionTerrain(380.0f, 37.0f, 380.0f);
 	glUniform3f(_shader->getLightPositionID(), lightPositionTerrain[0], lightPositionTerrain[1], lightPositionTerrain[2]);
 	// FRAGMENT SHADER
 	// TEXTUREs
@@ -161,8 +161,8 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 		}
 		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderLearningOpenGL0"))
 		{
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), 0);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), 0);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
 
 			glEnableVertexAttribArray(0); // VERTEXs
 			glEnableVertexAttribArray(1); // NORMALs
@@ -170,10 +170,12 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 			// Projection matrix updated in shader constructor (Only once)
 			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
+			glm::mat4 modelInv = glm::inverse(_staticModel->getModelMatrix());
+			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixInvID(), 1, GL_FALSE, &modelInv[0][0]);
 
-			GLfloat lightPosition1[] = { 380.0f, 7.0f, 380.0f };
+			GLfloat lightPosition1[] = { 385.0f, 77.0f, 485.0f };
 			GLfloat lightColor1[] = { 1.0f, 1.0f, 1.0f };
-			GLfloat objectColor1[] = { 1.0f, 0.0f, 0.0f };
+			GLfloat objectColor1[] = { 1.0f, 1.0f, 1.0f };
 
 			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPosition1[0], lightPosition1[1], lightPosition1[2]);
 			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColor1[0], lightColor1[1], lightColor1[2]);
@@ -183,9 +185,9 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 		}
 		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderPTN0"))
 		{
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), 0);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), 0);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
+			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
 
 			glEnableVertexAttribArray(0); // VERTEXs
 			glEnableVertexAttribArray(1); // TEXTURECOORDs
@@ -197,7 +199,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 			// TODO: Remove from here
-			glm::vec3 lightPositionModelPTN(380.0f, 7.0f, 380.0f);
+			glm::vec3 lightPositionModelPTN(385.0f, 77.0f, 485.0f);
 			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
 			glUniform3f(mesh.meshShaderPtr->getLightID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
 			glm::vec4 planeModelPTN(0.0f, -1.0f, 0.0f, 100000.0f);

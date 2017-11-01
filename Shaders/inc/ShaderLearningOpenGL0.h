@@ -44,6 +44,7 @@ class ShaderLearningOpenGL0 : public ShadersIf::ShadersIf
 		"	uniform mat4 projection;"
 		"	uniform mat4 view;"
 		"	uniform mat4 model;"
+		"	uniform mat4 modelInv;"
 		""
 		"	out vec3 FragPos;"
 		"	out vec3 Normal;"
@@ -51,7 +52,8 @@ class ShaderLearningOpenGL0 : public ShadersIf::ShadersIf
 		"	void main()"
 		"	{"
 		"		FragPos = vec3(model * vec4(aPos, 1.0));"
-		"		Normal = aNormal;"
+		//"		Normal = aNormal;"
+		"           Normal = mat3(transpose(modelInv)) * aNormal;"
 		""
 		"		gl_Position = projection * view * vec4(FragPos, 1.0);"
 		"}";
@@ -97,6 +99,7 @@ public:
 	virtual GLuint const getProjectionMatrixID() const;
 	virtual GLuint const getViewMatrixID() const;
 	virtual GLuint const getModelMatrixID() const;
+	virtual GLuint const getModelMatrixInvID() const;
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
 	GLuint const getLightPositionID() const;
@@ -136,6 +139,7 @@ private:
 	GLuint projectionMatrixID;
 	GLuint viewMatrixID;
 	GLuint modelMatrixID;
+	GLuint modelMatrixInvID;
 
 	// FRAGMENT SHADER
 	GLuint lightPositionID;

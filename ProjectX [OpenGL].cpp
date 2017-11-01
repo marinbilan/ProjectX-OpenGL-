@@ -301,7 +301,7 @@ int main(int argc, char** argv)
 	//
 	// ----==== CAMERAs [ ViewMatrix ] ====----
 	//
-	camera = new Camera::Camera(glm::vec3(375, 25, 420), glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // Current Light position
+	camera = new Camera::Camera(glm::vec3(375, 25, 420), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // Current Light position
 	//
 	// ----==== FBOs ====----	
 	//
@@ -312,7 +312,7 @@ int main(int argc, char** argv)
 	//
 	std::vector<Models::ModelsIf::ModelsIf*> vectorOfModelsPTN;
 
-	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders));
+	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_raptor/", vectorOfShaders));
 	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders));
 	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/arrow/", vectorOfShaders));
 	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfShaders));
@@ -351,8 +351,8 @@ int main(int argc, char** argv)
 	//
 	//
 	std::cout << std::endl;
-	std::cout << " |> Type help to start <|" << std::endl;
-	CP->cmd();
+	std::cout << " [ Type help to start ]" << std::endl;
+	// CP->cmd();
 	//
 	//
 	// TODO: [ THRED II ] GAME LOOP
@@ -404,8 +404,8 @@ void RenderSceneMaster(std::vector<Models::ModelsIf::ModelsIf*> _vectorOfModelsP
 	}
 	// TEST: Render another light in scene
 	// Set new position
-	_vectorOfModelsPTN[0]->setModelPosition(glm::vec3(385, 0, 385));
-	renderer->renderStaticModel(_vectorOfModelsPTN[0], camera);
+	_vectorOfModelsPTN[2]->setModelPosition(glm::vec3(385, 77, 485)); // PTN LIGHT
+	renderer->renderStaticModel(_vectorOfModelsPTN[2], camera);
 	// Reset on original position
-	_vectorOfModelsPTN[0]->setModelPosition(glm::vec3(380, 0, 380));
+	_vectorOfModelsPTN[2]->setModelPosition(glm::vec3(380, 37, 380));
 }

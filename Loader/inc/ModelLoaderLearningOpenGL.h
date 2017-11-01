@@ -20,6 +20,12 @@ struct Vert
 		TexCoords = _textureCoord;
 		Normal    = _normal;
 	}
+
+	Vert(glm::vec3& _position, glm::vec3& _normal)
+	{
+		Position = _position;
+		Normal = _normal;
+	}
 };
 
 class ModelLoaderLearningOpenGL : public LoaderIf::LoaderIf

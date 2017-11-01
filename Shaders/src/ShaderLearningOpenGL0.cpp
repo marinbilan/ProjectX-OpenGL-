@@ -14,6 +14,7 @@ Shaders::ShaderLearningOpenGL0::ShaderLearningOpenGL0(GLfloat projMatrixWidth, G
 	projectionMatrixID = glGetUniformLocation(shaderProgramID, "projection");      
 	viewMatrixID = glGetUniformLocation(shaderProgramID, "view");
 	modelMatrixID = glGetUniformLocation(shaderProgramID, "model");
+	modelMatrixInvID = glGetUniformLocation(shaderProgramID, "modelInv");
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
 	lightPositionID = glGetUniformLocation(shaderProgramID, "lightPos");
@@ -62,6 +63,11 @@ GLuint const Shaders::ShaderLearningOpenGL0::getViewMatrixID() const
 GLuint const Shaders::ShaderLearningOpenGL0::getModelMatrixID() const
 {
 	return modelMatrixID;
+}
+
+GLuint const Shaders::ShaderLearningOpenGL0::getModelMatrixInvID() const
+{
+	return modelMatrixInvID;
 }
 // FRAGMENT SHADER
 GLuint const Shaders::ShaderLearningOpenGL0::getLightPositionID() const

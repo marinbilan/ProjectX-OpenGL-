@@ -61,8 +61,8 @@ void Loader::ModelLoaderLearningOpenGL::initMesh(GLuint _index, const aiMesh* _p
 	std::vector<unsigned int> indices;  // PER MESH
 
 	glm::vec3* positionCoord = new glm::vec3(0.0f);
-	glm::vec3* normalCoord   = new glm::vec3(0.0f);
 	glm::vec3* textureCoord  = new glm::vec3(0.0f);
+	glm::vec3* normalCoord   = new glm::vec3(0.0f);
 
 	for (unsigned int i = 0; i < _paiMesh->mNumVertices; i++) {
 		// Positions
@@ -113,6 +113,7 @@ void Loader::ModelLoaderLearningOpenGL::initMesh(GLuint _index, const aiMesh* _p
 	vectorOfMeshes[_index].meshSizeMB = ( _paiMesh->mNumVertices*(3*sizeof(GLuint)+2*sizeof(GLuint)+3*sizeof(GLuint))+_paiMesh->mNumVertices*sizeof(GLuint)) / bitsInMB;
 
 }
+
 // GET
 GLuint Loader::ModelLoaderLearningOpenGL::getModelVAO()
 {
