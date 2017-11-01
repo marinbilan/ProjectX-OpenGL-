@@ -24,6 +24,7 @@ struct Mesh
 	GLfloat meshSizeMB;
 
 	GLuint texture0ID;
+	GLuint textureNormalMap0ID;
 	GLuint textureWidth;
 	GLuint textureHeight;
 	GLfloat textureSizeMB;

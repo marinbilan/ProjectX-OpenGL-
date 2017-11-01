@@ -13,6 +13,9 @@ public:
 	~ModelPTN0();
 	// FUNCTIONs
 	// GET
+	void initPTNModel();
+	void initNormalMapPTNTModel();
+
 	std::string getModelName();
 	virtual GLuint getModelVAO();
 	std::vector<Models::Mesh> getVectorOfMeshes();
@@ -52,6 +55,7 @@ public:
 private:
 	// CONSTRUCTOR params
 	CommonFunctions* CF;
+	std::vector<Shaders::ShadersIf::ShadersIf*> vectorOfShaders;
 
 	std::string                        modelFolder;
 	std::string                        modelName;

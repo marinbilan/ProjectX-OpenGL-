@@ -10,6 +10,7 @@
 #include "Shaders\inc\ShaderWaterTile0.h"
 #include "Shaders\inc\ShaderLearningOpenGL0.h"
 #include "Shaders\inc\ShaderPTN0.h"
+#include "Shaders\inc\ShaderNormalMapPTNT0.h"
 #include "Shaders\inc\ShaderGUI0.h"
 #include "Shaders\inc\ShaderTerrain0.h"
 #include "Shaders\inc\ShaderMarker0.h"
@@ -291,6 +292,7 @@ int main(int argc, char** argv)
 	vectorOfShaders.push_back(new Shaders::ShaderLearningOpenGL0(WIDTH, HEIGHT)); // 0 DONE
 	vectorOfShaders.push_back(new Shaders::ShaderPTN0(WIDTH, HEIGHT));            // 1 DONE
 	vectorOfShaders.push_back(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT));         // 2 DONE
+	vectorOfShaders.push_back(new Shaders::ShaderNormalMapPTNT0(WIDTH, HEIGHT));  // 1 DONE
 	// vectorOfShaders.push_back(new Shaders::ShaderTerrain0(WIDTH, HEIGHT));     // 3 DONE
 	vectorOfShaders.push_back(new Shaders::ShaderMarker0(WIDTH, HEIGHT));         // 4 DONE
 
@@ -312,10 +314,10 @@ int main(int argc, char** argv)
 	//
 	std::vector<Models::ModelsIf::ModelsIf*> vectorOfModelsPTN;
 
-	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_raptor/", vectorOfShaders));
+	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/barrelNM/", vectorOfShaders));
 	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders));
-	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/arrow/", vectorOfShaders));
-	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfShaders));
+	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/arrow/", vectorOfShaders));
+	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfShaders));
 	// vectorOfModelsPTN[0]->printINFO();
 	// TODO
 	modelSkyBox00 = new Models::ModelSkyBox0(vectorOfShaders[2], camera);
@@ -352,7 +354,7 @@ int main(int argc, char** argv)
 	//
 	std::cout << std::endl;
 	std::cout << " [ Type help to start ]" << std::endl;
-	// CP->cmd();
+	CP->cmd();
 	//
 	//
 	// TODO: [ THRED II ] GAME LOOP
@@ -404,8 +406,8 @@ void RenderSceneMaster(std::vector<Models::ModelsIf::ModelsIf*> _vectorOfModelsP
 	}
 	// TEST: Render another light in scene
 	// Set new position
-	_vectorOfModelsPTN[2]->setModelPosition(glm::vec3(385, 77, 485)); // PTN LIGHT
-	renderer->renderStaticModel(_vectorOfModelsPTN[2], camera);
+	//_vectorOfModelsPTN[2]->setModelPosition(glm::vec3(385, 50, 435)); // PTN LIGHT
+	//renderer->renderStaticModel(_vectorOfModelsPTN[2], camera);
 	// Reset on original position
-	_vectorOfModelsPTN[2]->setModelPosition(glm::vec3(380, 37, 380));
+	//_vectorOfModelsPTN[2]->setModelPosition(glm::vec3(380, 10, 380)); // TERRAIN LIGHT
 }

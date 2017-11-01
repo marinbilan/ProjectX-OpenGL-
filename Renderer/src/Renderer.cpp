@@ -86,7 +86,7 @@ void Renderer::Renderer::renderTerrain(Shaders::ShadersIf::ShadersIf* _shader, M
 	glUniformMatrix4fv(_shader->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
 	glUniformMatrix4fv(_shader->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 	
-	glm::vec3 lightPositionTerrain(380.0f, 37.0f, 380.0f);
+	glm::vec3 lightPositionTerrain(380.0f, 10.0f, 380.0f);
 	glUniform3f(_shader->getLightPositionID(), lightPositionTerrain[0], lightPositionTerrain[1], lightPositionTerrain[2]);
 	// FRAGMENT SHADER
 	// TEXTUREs
@@ -142,7 +142,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 		glUseProgram(mesh.meshShaderPtr->getShaderProgramID());
 		if (!mesh.meshShaderPtr->getShaderName().compare("ShaderMarker0"))
 		{
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vertex), 0); // VERTs
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, 0); // VERTs
 
 			glEnableVertexAttribArray(0); // VERTs
 			// VERTEX SHADER UNIFORMS
@@ -150,7 +150,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 
-			GLfloat lightPosition1[] = { 380.0f, 7.0f, 380.0f };
+			GLfloat lightPosition1[] = { 380.0f, 10.0f, 380.0f };
 			GLfloat lightColor1[] = { 1.0f, 1.0f, 1.0f };
 			GLfloat objectColor1[] = { 1.0f, 1.0f, 1.0f };
 
@@ -185,9 +185,10 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 		}
 		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderPTN0"))
 		{
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), 0);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, 0);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
+			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
+
 
 			glEnableVertexAttribArray(0); // VERTEXs
 			glEnableVertexAttribArray(1); // TEXTURECOORDs
@@ -199,7 +200,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 			// TODO: Remove from here
-			glm::vec3 lightPositionModelPTN(385.0f, 77.0f, 485.0f);
+			glm::vec3 lightPositionModelPTN(385.0f, 50.0f, 435.0f);
 			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
 			glUniform3f(mesh.meshShaderPtr->getLightID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
 			glm::vec4 planeModelPTN(0.0f, -1.0f, 0.0f, 100000.0f);
@@ -217,10 +218,55 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 			//
 			glUseProgram(0);
 		}
+		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderNormalMapPTNT0"))
+		{
+			std::cout << "RENDER " << sizeof(Loader::VertNormalMap) <<  std::endl;
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::VertNormalMap), 0);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Loader::VertNormalMap), (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
+			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::VertNormalMap), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
+			glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::VertNormalMap), (const GLvoid*)32); // Tangent
+
+			glEnableVertexAttribArray(0); // VERTEXs
+			glEnableVertexAttribArray(1); // TEXTURECOORDs
+			glEnableVertexAttribArray(2); // NORMALs
+			glEnableVertexAttribArray(3); // TANGENTs
+			//
+			// VERTEX SHADER UNIFORMs
+			//
+            // Projection matrix updated in shader constructor (Only once)
+			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
+			// _camera->invertCameraMatrix();
+			// glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
+			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
+			// TODO: Remove from here
+			glm::vec3 lightPositionEyeSpace(385.0f, 10.0f, 435.0f);
+			glUniform3f(mesh.meshShaderPtr->getLightPositionEyeSpaceID(), lightPositionEyeSpace[0], lightPositionEyeSpace[1], lightPositionEyeSpace[2]);
+			//
+			// FRAGMENT SHADER UNIFORMs
+			//
+			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
+			glUniform3f(mesh.meshShaderPtr->getlightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
+			glUniform1f(mesh.meshShaderPtr->getshineDamperID(), 22.0f);
+			glUniform1f(mesh.meshShaderPtr->getreflectivityID(), 0.6f);
+
+			glUniform1i(mesh.meshShaderPtr->getmodelTextureID(), 0);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, _staticModel->getVectorOfMeshes()[i].texture0ID);
+
+			glUniform1i(mesh.meshShaderPtr->getNormalMapID(), 1);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, 8);
+			// RENDER MESH
+			glDrawElements(GL_TRIANGLES, _staticModel->getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
+			//
+			glUseProgram(0);
+		}
+
 	}
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
+	glDisableVertexAttribArray(3);
 
 	glBindVertexArray(0); // Unbind VAO
 }

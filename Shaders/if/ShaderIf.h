@@ -57,6 +57,7 @@ public:
 	virtual GLuint const getModelMatrixID()        const { return 0; }
 	virtual GLuint const getLightID()              const { return 0; } // LIGHT POSITION
 	virtual GLuint const getlightPositionID()      const { return 0; }
+	virtual GLuint const getLightPositionEyeSpaceID()      const { return 0; }
 	virtual GLuint const getLightPositionID()      const { return 0; }
 	virtual GLuint const getplaneID()              const { return 0; }
 	//
@@ -78,6 +79,7 @@ public:
 	//
 	virtual GLuint const gettextureSamplerID()     const { return 0; }
 	virtual GLuint const getnormalMapID()          const { return 0; }
+	virtual GLuint const getNormalMapID()          const { return 0; }
 	virtual GLuint const getreflectionTextureID()  const { return 0; }
 	virtual GLuint const getrefractionTextureID()  const { return 0; }
 	virtual GLuint const getdudvMapID()            const { return 0; }

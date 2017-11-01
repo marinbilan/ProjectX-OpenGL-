@@ -10,8 +10,6 @@ struct Vert
 	glm::vec3 Position;
 	glm::vec2 TexCoords;
 	glm::vec3 Normal;
-	//glm::vec3 Tangent;   // TODO
-	//glm::vec3 Bitangent; // TODO
 
 	// CONSTRUCTORs / DESTRUCTORs
 	Vert(glm::vec3& _position, glm::vec2& _textureCoord, glm::vec3& _normal)
@@ -20,11 +18,22 @@ struct Vert
 		TexCoords = _textureCoord;
 		Normal    = _normal;
 	}
+};
 
-	Vert(glm::vec3& _position, glm::vec3& _normal)
+struct VertNormalMap
+{
+	glm::vec3 Position;
+	glm::vec2 TexCoords;
+	glm::vec3 Normal;
+	glm::vec3 Tangent;
+
+	// CONSTRUCTORs / DESTRUCTORs
+	VertNormalMap(glm::vec3& _position, glm::vec2& _textureCoord, glm::vec3& _normal, glm::vec3& _tangent)
 	{
 		Position = _position;
+		TexCoords = _textureCoord;
 		Normal = _normal;
+		Tangent = _tangent;
 	}
 };
 
@@ -39,6 +48,10 @@ public:
 	void loadModelPTN();
 	void initScene(const aiScene* _pScene);
 	void initMesh(GLuint _index, const aiMesh* _paiMesh);
+
+	void loadModelNormalMapPTNT();
+	void initNormalMapScene(const aiScene* _pScene);
+	void initNormalMapMesh(GLuint _index, const aiMesh* _paiMesh);
 	// GET
 	GLuint getModelVAO();
 	std::vector<Loader::Mesh> getVectorOfMeshes();

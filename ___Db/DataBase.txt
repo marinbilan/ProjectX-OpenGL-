@@ -20,6 +20,19 @@ _src/_models/_vanquish/	angle                        -1.57
 // ----====================----
 
 // ----======================----
+// ----==== Model BarrelNM ====----
+// ----======================----
+_src/_models/barrelNM/ modelName model
+
+_src/_models/barrelNM/    meshShader0    ShaderNormalMapPTNT0
+
+_src/_models/barrelNM/	modelPosition           400 6 400
+_src/_models/barrelNM/	modelScale              1 1 1
+_src/_models/barrelNM/	modelRotateAround 1 0 0
+_src/_models/barrelNM/	angle                        -1.57
+// ----====================----
+
+// ----======================----
 // ----==== Model Raptor ====----
 // ----======================----
 _src/_models/_raptor/ modelName model
