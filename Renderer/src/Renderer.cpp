@@ -220,7 +220,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 		}
 		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderNormalMapPTNT0"))
 		{
-			std::cout << "RENDER " << sizeof(Loader::VertNormalMap) <<  std::endl;
+			//std::cout << "RENDER " << sizeof(Loader::VertNormalMap) <<  std::endl;
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::VertNormalMap), 0);
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Loader::VertNormalMap), (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
 			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::VertNormalMap), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)

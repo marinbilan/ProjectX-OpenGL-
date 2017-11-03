@@ -13,14 +13,7 @@ Models::ModelPTN0::ModelPTN0(CommonFunctions* _CF, std::string _modelFolder, std
 	CommonFunctions::getFromDB(modelFolder, "modelRotateAround", modelRotateAround);
 	CommonFunctions::getFromDB(modelFolder, "angle", angle);
 
-	if (0)
-	{
-	    initPTNModel();
-	}
-	else
-	{
-		initNormalMapPTNTModel();
-	}
+	initPTNModel();
 }
 
 Models::ModelPTN0::~ModelPTN0()
@@ -31,7 +24,7 @@ Models::ModelPTN0::~ModelPTN0()
 void Models::ModelPTN0::initPTNModel()
 {
 	// MODEL and TEXTUREs
-	modelPTNLoader = new Loader::ModelLoaderLearningOpenGL(CF, const_cast<char *>((modelFolder + modelName + ".3ds").c_str()));
+	modelPTNLoader = new Loader::ModelLoaderLearningOpenGL(CF, const_cast<char *>((modelFolder).c_str()));
 	modelPTNLoader->loadModelPTN();
 	textureLoader = new Loader::TextureLoader(CF, const_cast<char *>(modelFolder.c_str()), modelPTNLoader->getVectorOfMeshes().size());
 	textureLoader->loadTModelPTNTextures();
@@ -45,6 +38,7 @@ void Models::ModelPTN0::initPTNModel()
 	modelTextureSizeMB = 0;
 	std::vector<Shaders::ShadersIf::ShadersIf*>::iterator it;
 	std::string meshTempShaderName;
+	// FILL DATA for each MESH
 	for (unsigned int i = 0; i < modelPTNLoader->getVectorOfMeshes().size(); i++)
 	{
 		// MODEL LOADER
@@ -54,76 +48,14 @@ void Models::ModelPTN0::initPTNModel()
 		vectorOfMeshes[i].meshSizeMB = modelPTNLoader->getVectorOfMeshes()[i].meshSizeMB;
 		modelMeshSizeMB += vectorOfMeshes[i].meshSizeMB;
 		// ----== GIVE ME SHADERS FOR EACH MESH ==----
-		// Get shader name from DataBase.txt, find shader in _vectorOfShaders and set shader pointer in mesh 
+		// Get shader name from DataBase.txt, find shader in vectorOfShaders and set shader pointer in mesh 
 		CommonFunctions::getFromDB(modelFolder, "meshShader" + std::to_string(i), meshTempShaderName);
 		for (it = vectorOfShaders.begin(); it != vectorOfShaders.end(); it++)
 		{
 			if (!(*it)->getShaderName().compare(meshTempShaderName))
 			{
-				std::cout << "FOUND MESH SHADER NAME: " << meshTempShaderName << std::endl;
 				vectorOfMeshes[i].meshShaderName = (*it)->getShaderName();
 				vectorOfMeshes[i].meshShaderPtr = *it;
-				// Add mesh shader name
-				vectorOfMeshes[i].meshShaderName = (*it)->getShaderName();
-			}
-		}
-		// ----====----
-		// TEXTURE LOADER
-		vectorOfMeshes[i].texture0ID = textureLoader->getVectorOfMeshes()[i].texture0ID;
-		vectorOfMeshes[i].textureWidth = textureLoader->getVectorOfMeshes()[i].textureWidth;
-		vectorOfMeshes[i].textureHeight = textureLoader->getVectorOfMeshes()[i].textureHeight;
-		vectorOfMeshes[i].textureSizeMB = textureLoader->getVectorOfMeshes()[i].textureSizeMB;
-
-		modelTextureSizeMB += vectorOfMeshes[i].textureSizeMB;
-	}
-	modelTotalSizeMB = modelMeshSizeMB + modelTextureSizeMB;
-
-	// MODEL VARIABLES
-	modelMatrix = glm::mat4(1.0f);
-	modelMatrix = glm::translate(glm::mat4(1.0f), modelPosition);
-	modelMatrix = glm::rotate(modelMatrix, angle, modelRotateAround);
-	modelMatrix = glm::scale(modelMatrix, modelScale);
-
-	std::cout << "ModelPTN " << modelFullName << " created!" << std::endl;
-}
-
-void Models::ModelPTN0::initNormalMapPTNTModel()
-{
-	// MODEL and TEXTUREs
-	modelPTNLoader = new Loader::ModelLoaderLearningOpenGL(CF, const_cast<char *>((modelFolder + modelName + ".3ds").c_str()));
-	modelPTNLoader->loadModelNormalMapPTNT();
-	textureLoader = new Loader::TextureLoader(CF, const_cast<char *>(modelFolder.c_str()), modelPTNLoader->getVectorOfMeshes().size());
-	textureLoader->loadTModelPTNTextures();
-
-	// GET VAO
-	VAO = modelPTNLoader->getModelVAO();
-	// Vector of Meshes
-	vectorOfMeshes.resize(modelPTNLoader->getVectorOfMeshes().size());
-
-	modelMeshSizeMB = 0;
-	modelTextureSizeMB = 0;
-	std::vector<Shaders::ShadersIf::ShadersIf*>::iterator it;
-	std::string meshTempShaderName;
-	for (unsigned int i = 0; i < modelPTNLoader->getVectorOfMeshes().size(); i++)
-	{
-		// MODEL LOADER
-		vectorOfMeshes[i].VBO = modelPTNLoader->getVectorOfMeshes()[i].VBO;
-		vectorOfMeshes[i].IBO = modelPTNLoader->getVectorOfMeshes()[i].IBO;
-		vectorOfMeshes[i].numIndices = modelPTNLoader->getVectorOfMeshes()[i].numIndices;
-		vectorOfMeshes[i].meshSizeMB = modelPTNLoader->getVectorOfMeshes()[i].meshSizeMB;
-		modelMeshSizeMB += vectorOfMeshes[i].meshSizeMB;
-		// ----== GIVE ME SHADERS FOR EACH MESH ==----
-		// Get shader name from DataBase.txt, find shader in _vectorOfShaders and set shader pointer in mesh 
-		CommonFunctions::getFromDB(modelFolder, "meshShader" + std::to_string(i), meshTempShaderName);
-		for (it = vectorOfShaders.begin(); it != vectorOfShaders.end(); it++)
-		{
-			if (!(*it)->getShaderName().compare(meshTempShaderName))
-			{
-				std::cout << "FOUND MESH SHADER NAME: " << meshTempShaderName << std::endl;
-				vectorOfMeshes[i].meshShaderName = (*it)->getShaderName();
-				vectorOfMeshes[i].meshShaderPtr = *it;
-				// Add mesh shader name
-				vectorOfMeshes[i].meshShaderName = (*it)->getShaderName();
 			}
 		}
 		// ----====----
@@ -132,6 +64,8 @@ void Models::ModelPTN0::initNormalMapPTNTModel()
 		std::string str("_src/_models/barrelNM/texture1.png");
 		GLuint texNMID = textureLoader->createSingleTexture(str);
 		std::cout << " xxx TEXTURE: " << texNMID << std::endl;
+
+		vectorOfMeshes[i].texture0ID = textureLoader->getVectorOfMeshes()[i].texture0ID;
 		vectorOfMeshes[i].textureWidth = textureLoader->getVectorOfMeshes()[i].textureWidth;
 		vectorOfMeshes[i].textureHeight = textureLoader->getVectorOfMeshes()[i].textureHeight;
 		vectorOfMeshes[i].textureSizeMB = textureLoader->getVectorOfMeshes()[i].textureSizeMB;
@@ -147,7 +81,11 @@ void Models::ModelPTN0::initNormalMapPTNTModel()
 	modelMatrix = glm::scale(modelMatrix, modelScale);
 
 	std::cout << "ModelPTN " << modelFullName << " created!" << std::endl;
+
+	// DELETE MODEL LOADER object and TEXTURE LOADER OBJECT
+	// ...
 }
+
 // GET
 std::string Models::ModelPTN0::getModelName()
 {

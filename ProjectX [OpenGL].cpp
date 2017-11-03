@@ -314,7 +314,7 @@ int main(int argc, char** argv)
 	//
 	std::vector<Models::ModelsIf::ModelsIf*> vectorOfModelsPTN;
 
-	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/barrelNM/", vectorOfShaders));
+	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_raptor/", vectorOfShaders));
 	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders));
 	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/arrow/", vectorOfShaders));
 	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfShaders));

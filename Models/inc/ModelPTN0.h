@@ -14,7 +14,6 @@ public:
 	// FUNCTIONs
 	// GET
 	void initPTNModel();
-	void initNormalMapPTNTModel();
 
 	std::string getModelName();
 	virtual GLuint getModelVAO();

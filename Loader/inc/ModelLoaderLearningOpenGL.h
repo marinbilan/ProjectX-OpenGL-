@@ -41,7 +41,7 @@ class ModelLoaderLearningOpenGL : public LoaderIf::LoaderIf
 {
 public:
 	// CONSTRUCTORs / DESTRUCTORs
-	ModelLoaderLearningOpenGL(CommonFunctions* _CF, char* _modelName);
+	ModelLoaderLearningOpenGL(CommonFunctions* _CF, char* _modelFolder);
 
 	~ModelLoaderLearningOpenGL();
 	// FUNCTIONs
@@ -49,8 +49,6 @@ public:
 	void initScene(const aiScene* _pScene);
 	void initMesh(GLuint _index, const aiMesh* _paiMesh);
 
-	void loadModelNormalMapPTNT();
-	void initNormalMapScene(const aiScene* _pScene);
 	void initNormalMapMesh(GLuint _index, const aiMesh* _paiMesh);
 	// GET
 	GLuint getModelVAO();
@@ -64,6 +62,7 @@ public:
 private:
 	CommonFunctions* CF;
 
+	std::string modelFolder;
 	std::string modelName;
 	GLuint VAO;	
 

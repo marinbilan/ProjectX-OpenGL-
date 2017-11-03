@@ -21,9 +21,11 @@ struct Mesh
 	GLuint numIndices; // = number of vertices
 	GLfloat meshSizeMB;
 
-	GLuint texture0ID;
-	GLuint textureWidth;
-	GLuint textureHeight;
+	GLuint  texture0ID;
+	GLuint textureNormalMap0ID;
+	// Texture params
+	GLuint  textureWidth;
+	GLuint  textureHeight;
 	GLfloat textureSizeMB;
 };
 

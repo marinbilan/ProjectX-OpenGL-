@@ -14,10 +14,11 @@ namespace Models
 {
 struct Mesh
 {
-	std::string meshName;
+	std::string meshName;       // TODO
 	std::string meshShaderName;
 	Shaders::ShadersIf::ShadersIf* meshShaderPtr;
 
+	// Loader::Mesh
 	GLuint VBO;
 	GLuint IBO;
 	GLuint numIndices;
@@ -25,6 +26,7 @@ struct Mesh
 
 	GLuint texture0ID;
 	GLuint textureNormalMap0ID;
+	// Texture params
 	GLuint textureWidth;
 	GLuint textureHeight;
 	GLfloat textureSizeMB;
