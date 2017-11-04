@@ -314,7 +314,8 @@ int main(int argc, char** argv)
 	//
 	std::vector<Models::ModelsIf::ModelsIf*> vectorOfModelsPTN;
 
-	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_raptor/", vectorOfShaders));
+	// vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_raptor/", vectorOfShaders));
+	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/barrelNM/", vectorOfShaders));
 	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders));
 	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/arrow/", vectorOfShaders));
 	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfShaders));
@@ -399,10 +400,13 @@ void RenderSceneMaster(std::vector<Models::ModelsIf::ModelsIf*> _vectorOfModelsP
 	renderer->renderTerrain(shaderTerrain00, modelTerrain00, camera);
 	// RENDER MODELSPTN
 	//	renderer->renderStaticModel(_vectorOfModelsPTN[0], camera);
-	std::vector<Models::ModelsIf::ModelsIf*>::iterator itModelsPTN;
-	for (itModelsPTN = _vectorOfModelsPTN.begin(); itModelsPTN != _vectorOfModelsPTN.end(); itModelsPTN++)
-	{
-		renderer->renderStaticModel((*itModelsPTN), camera);
+	//std::vector<Models::ModelsIf::ModelsIf*>::iterator itModelsPTN;
+	//for (itModelsPTN = _vectorOfModelsPTN.begin(); itModelsPTN != _vectorOfModelsPTN.end(); itModelsPTN++)
+	//{
+	//	renderer->renderStaticModel((*itModelsPTN), camera);
+	//}
+	for (auto& it : _vectorOfModelsPTN) {
+		renderer->renderStaticModel(it, camera);
 	}
 	// TEST: Render another light in scene
 	// Set new position

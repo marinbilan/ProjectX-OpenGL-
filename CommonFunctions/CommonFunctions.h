@@ -1,5 +1,4 @@
-#ifndef COMMONFUNCTIONS__
-#define COMMONFUNCTIONS__
+#pragma once
 
 #include <string>
 #include <iostream>
@@ -119,4 +118,4 @@ public:
 private:
 	std::ofstream& logFile;
 };
-#endif
+// #endif

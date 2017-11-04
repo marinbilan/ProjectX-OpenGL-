@@ -1,5 +1,4 @@
-#ifndef MODELPTN0__
-#define MODELPTN0__
+#pragma once
 
 #include "../if/ModelIf.h"
 
@@ -9,25 +8,27 @@ class ModelPTN0 : public ModelsIf::ModelsIf
 {
 public:
 	// CONSTRUCTORs / DESTRUCTORs
-	ModelPTN0(CommonFunctions* _CF, std::string _modelFolder, std::vector<Shaders::ShadersIf::ShadersIf*> _vectorOfShaders);
+	ModelPTN0(CommonFunctions* _CF, 
+		      std::string _modelFolder, 
+		      std::vector<Shaders::ShadersIf::ShadersIf*> _vectorOfShaders);
 	~ModelPTN0();
 	// FUNCTIONs
-	// GET
 	void initPTNModel();
 
+	// GET
 	std::string getModelName();
-	virtual GLuint getModelVAO();
+	GLuint getModelVAO();
 	std::vector<Models::Mesh> getVectorOfMeshes();
 
-	virtual glm::mat4 getModelMatrix();
-	virtual glm::vec3 getModelPosition();
-	virtual glm::vec3 getModelScale();
-	virtual glm::vec3 getModelRotation();
-	virtual GLfloat   getModelAngle();
+	glm::mat4 getModelMatrix();
+	glm::vec3 getModelPosition();
+	glm::vec3 getModelScale();
+	glm::vec3 getModelRotation();
+	GLfloat   getModelAngle();
 	// SET
-	virtual void setModelPosition(glm::vec3 _modelPosition);
-	virtual void setModelScale(glm::vec3 _modelScale);
-	virtual void setModelRotation(glm::vec3 _modelRotateAround, GLfloat _angle);
+	void setModelPosition(glm::vec3 _modelPosition);
+	void setModelScale(glm::vec3 _modelScale);
+	void setModelRotation(glm::vec3 _modelRotateAround, GLfloat _angle);
 	// Add setModelAngle
 
 	// OPERATORs
@@ -44,11 +45,13 @@ public:
 		output << " Model TOTAL SIZE       = " << info.modelTotalSizeMB << "[MB]" << std::endl;
 
 		output << "   [ MESHEs ]" << std::endl;
+
 		std::vector<Models::Mesh>::iterator it;
 		for (it = info.vectorOfMeshes.begin(); it != info.vectorOfMeshes.end(); ++it)
 		{
 			output << *it << std::endl;
 		}
+
 		return output;
 	}
 private:
@@ -76,4 +79,3 @@ private:
 	GLfloat                            angle;
 };
 }
-#endif

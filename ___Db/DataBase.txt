@@ -13,6 +13,15 @@ _src/_models/_vanquish/    meshShader3    ShaderPTN0
 _src/_models/_vanquish/    meshShader4    ShaderPTN0
 _src/_models/_vanquish/    meshShader5    ShaderPTN0
 
+// MESH NORMAL MAP INFO
+                                           // Mesh              // Normal Map Info
+_src/_models/_vanquish/    meshTexture0    0
+_src/_models/_vanquish/    meshTexture1    0
+_src/_models/_vanquish/    meshTexture2    0
+_src/_models/_vanquish/    meshTexture3    0
+_src/_models/_vanquish/    meshTexture4    0
+_src/_models/_vanquish/    meshTexture5    0
+
 _src/_models/_vanquish/	modelPosition           400 0 400
 _src/_models/_vanquish/	modelScale              10 10 10
 _src/_models/_vanquish/	modelRotateAround 1 0 0
@@ -25,15 +34,17 @@ _src/_models/_vanquish/	angle                        -1.57
 _src/_models/barrelNM/    modelName    model
 
 // MESH SHADERs INFO
+                                           // Mesh             // ShaderName
 _src/_models/barrelNM/    meshShader0    ShaderNormalMapPTNT0
 
 // MESH NORMAL MAP INFO
+                                           // Mesh              // Normal Map Info
 _src/_models/barrelNM/    meshTexture0    1
 
 _src/_models/barrelNM/	modelPosition           400 6 400
 _src/_models/barrelNM/	modelScale              1 1 1
 _src/_models/barrelNM/	modelRotateAround 1 0 0
-_src/_models/barrelNM/	angle                        -1.57
+_src/_models/barrelNM/        angle                        -1.57
 // ----====================----
 
 // ----======================----
@@ -58,6 +69,9 @@ _src/_models/_raptor/	angle                        -1.57
 _src/_models/_dagger/	modelName	model
 
 _src/_models/_dagger/	meshShader0       	ShaderPTN0
+// MESH NORMAL MAP INFO
+                                           // Mesh              // Normal Map Info
+_src/_models/_dagger/    meshTexture0     0
 
 _src/_models/_dagger/	modelPosition	385 0.5 385
 _src/_models/_dagger/          modelScale              1 1      1

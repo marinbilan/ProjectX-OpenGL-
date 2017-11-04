@@ -1,8 +1,12 @@
 #include "../../Loader/inc/TextureLoader.h"
 
 // CONSTRUCTORs / DESTRUCTORs
-Loader::TextureLoader::TextureLoader(CommonFunctions* _CF, char* _texturesFolderPath, GLuint _numberOfTextures) :
-	texturesFolderPath(_texturesFolderPath), numberOfTextures(_numberOfTextures)
+Loader::TextureLoader::TextureLoader(CommonFunctions* _CF, 
+	                                 char* _modelFolder,
+	                                 GLuint _numberOfTextures) 
+	                                 :
+	                                 modelFolder(_modelFolder),
+	                                 numberOfTextures(_numberOfTextures)
 {
 	// COMMON FUNCTIONS
 	CF = _CF;
@@ -18,19 +22,58 @@ void Loader::TextureLoader::loadTModelPTNTextures()
     // PATH
 	textures = "textures/";
 	textureName = "texture";
+	textureNormalMapName = "textureNM";
 	textureNameExt = ".png";
 
 	// Init vectorOfMeshes
 	vectorOfMeshes.resize(numberOfTextures);
-	// Start LOGGing
-	// CommonFunctions::INFOCMD(LOG "---> TEXTURES from " + std::string(texturesFolderPath) + " construction start. Number of textures = " + std::to_string(numberOfTextures));
-	CF->LOGFILE(LOG"---> TEXTURES from " + std::string(texturesFolderPath) + " construction start. Number of textures = " + std::to_string(numberOfTextures) );
+
+	CF->LOGFILE(LOG"---> START TEXTURES from " + std::string(modelFolder) + " construction start. Number of textures = " + std::to_string(numberOfTextures) );
 
 	setTextureForEachMesh();
 
-	// CommonFunctions::INFOCMD(LOG "<--- TEXTURES from " + std::string(texturesFolderPath) + " construction over.");
-	CF->LOGFILE(LOG("<--- TEXTURES from " + std::string(texturesFolderPath) + " construction over."));
+	CF->LOGFILE(LOG("<--- END TEXTURES from " + std::string(modelFolder) + " construction over."));
 }
+
+// SET
+void Loader::TextureLoader::setTextureForEachMesh()
+{
+	for (GLuint i = 0; i < numberOfTextures; i++) 
+	{
+		GLuint textureWidth;
+		GLuint textureHeight;
+		GLfloat textureSize;
+		GLfloat bitsInMB = 8388608; // 1048576 * 8
+
+		std::string textureFile = modelFolder + textures + textureName + std::to_string(i) + textureNameExt;
+		int texID = createSingleTexture(textureWidth, textureHeight, textureSize, textureFile);
+		CF->LOGFILE(LOG "--> Texture " + std::to_string(i) + ": " + textureFile + " created. Texture ID = " + std::to_string(texID));
+		vectorOfMeshes[i].texture0ID = texID;
+		vectorOfMeshes[i].textureWidth = textureWidth;
+		vectorOfMeshes[i].textureHeight = textureHeight;
+		vectorOfMeshes[i].textureSizeMB = textureSize / bitsInMB;
+
+		// CHECK if mesh (texture) has NormalMap - Fill struct Mesh
+		std::string isNormalMap;
+		CommonFunctions::getFromDB(modelFolder, "meshTexture" + std::to_string(i), isNormalMap);
+
+		if (std::stoi(isNormalMap))
+		{
+			GLuint textureWidth = 0;
+			GLuint textureHeight = 0;
+			GLfloat textureSize = 0;
+
+			std::string textureNormalMapFile = modelFolder + textures + textureNormalMapName + std::to_string(i) + textureNameExt;
+			int texNormalMapID = createSingleTexture(textureWidth, textureHeight, textureSize, textureNormalMapFile);
+			CF->LOGFILE(LOG "--> Texture Normal Map " + std::to_string(i) + ": " + textureNormalMapFile + " created. Normal Map Texture ID = " + std::to_string(texNormalMapID));
+			vectorOfMeshes[i].textureNormalMap0ID = texNormalMapID;
+			vectorOfMeshes[i].textureNormalMapWidth = textureWidth;
+			vectorOfMeshes[i].textureNormalMapHeight = textureHeight;
+			vectorOfMeshes[i].textureNormalMapSizeMB = textureSize / bitsInMB;
+		}
+	}
+}
+
 GLuint Loader::TextureLoader::createSingleTexture(GLuint& _textureWidth, GLuint& _textureHeight, GLfloat& _textureSize, std::string& _textureName)
 {
 	width = 0;
@@ -42,7 +85,11 @@ GLuint Loader::TextureLoader::createSingleTexture(GLuint& _textureWidth, GLuint&
 
 	fif = FreeImage_GetFileType(_textureName.c_str(), 0);
 
-	if (fif == FIF_UNKNOWN)                fif = FreeImage_GetFIFFromFilename(_textureName.c_str());
+	if (fif == FIF_UNKNOWN)
+	{
+		fif = FreeImage_GetFIFFromFilename(_textureName.c_str());
+		std::cout << "FIF UNKNOWN!!!!" << std::endl;
+	}
 	if (FreeImage_FIFSupportsReading(fif)) dib = FreeImage_Load(fif, _textureName.c_str());
 
 	bits = FreeImage_GetBits(dib);
@@ -89,7 +136,11 @@ GLuint Loader::TextureLoader::createSingleTexture(std::string& _textureName)
 
 	fif = FreeImage_GetFileType(_textureName.c_str(), 0);
 
-	if (fif == FIF_UNKNOWN)                fif = FreeImage_GetFIFFromFilename(_textureName.c_str());
+	if (fif == FIF_UNKNOWN)
+	{
+		fif = FreeImage_GetFIFFromFilename(_textureName.c_str());
+		std::cout << "FIF UNKNOWN!!!!" << std::endl;
+	}
 	if (FreeImage_FIFSupportsReading(fif)) dib = FreeImage_Load(fif, _textureName.c_str());
 
 	bits = FreeImage_GetBits(dib);
@@ -115,27 +166,4 @@ GLuint Loader::TextureLoader::createSingleTexture(std::string& _textureName)
 	FreeImage_Unload(dib);
 
 	return textureID;
-}
-
-// SET
-void Loader::TextureLoader::setTextureForEachMesh()
-{
-	for (GLuint i = 0; i < numberOfTextures; i++) {
-		std::string textureFile = texturesFolderPath + textures + textureName + std::to_string(i) + textureNameExt;
-
-		GLuint textureWidth;
-		GLuint textureHeight;
-		GLfloat textureSize;
-		GLfloat bitsInMB = 8388608; // 1048576 * 8
-
-		int texID = createSingleTexture(textureWidth, textureHeight, textureSize, textureFile);
-
-		// CommonFunctions::INFOCMD(LOG "--> Texture " + std::to_string(i) + ": " + textureFile + " created.");
-		CF->LOGFILE(LOG "--> Texture " + std::to_string(i) + ": " + textureFile + " created.");
-
-		vectorOfMeshes[i].texture0ID = texID;
-		vectorOfMeshes[i].textureWidth = textureWidth;
-		vectorOfMeshes[i].textureHeight = textureHeight;
-		vectorOfMeshes[i].textureSizeMB = textureSize / bitsInMB;
-	}
 }

@@ -1,5 +1,4 @@
-#ifndef TEXTURELOADER__
-#define TEXTURELOADER__
+#pragma once
 
 #include "../if/LoaderIf.h"
 
@@ -9,17 +8,19 @@ class TextureLoader : public LoaderIf::LoaderIf
 {
 public:
 	// CONSTRUCTORs / DESTRUCTORs
-	TextureLoader(CommonFunctions* _CF, char* _texturesFolderPath, GLuint _numberOfTextures);
+	TextureLoader(CommonFunctions* _CF, 
+		          char*  _modelFolder,
+		          GLuint _numberOfTextures);
 	~TextureLoader();
 
 	// FUNCTIONs
 	void loadTModelPTNTextures();
-	virtual GLuint createSingleTexture(GLuint& _textureWidth, GLuint& _textureHeight, GLfloat& _textureSize, std::string& _textureName);
-	virtual GLuint createSingleTexture(std::string& _textureName);
+	GLuint createSingleTexture(GLuint& _textureWidth, GLuint& _textureHeight, GLfloat& _textureSize, std::string& _textureName);
+	GLuint createSingleTexture(std::string& _textureName);
 	// GET
 	std::vector<Loader::Mesh> getVectorOfMeshes();
 	// SET
-	virtual void setTextureForEachMesh();
+	void setTextureForEachMesh();
 
 	// OPERATORs
 	friend std::ostream& operator<<(std::ostream& output, TextureLoader& info)
@@ -31,11 +32,12 @@ public:
 private:
 	CommonFunctions* CF;
 
-	char* texturesFolderPath;
+	char*  modelFolder;
 	GLuint numberOfTextures;
 
 	std::string textures;
 	std::string textureName;
+	std::string textureNormalMapName;
 	std::string textureNameExt;
 
 	GLuint textureID;
@@ -50,5 +52,3 @@ private:
 	std::vector<Mesh> vectorOfMeshes;
 };
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef MODELLOADERLEARNINGOPENGL__
-#define MODELLOADERLEARNINGOPENGL__
+#pragma once
 
 #include "../if/LoaderIf.h"
 
@@ -12,7 +11,9 @@ struct Vert
 	glm::vec3 Normal;
 
 	// CONSTRUCTORs / DESTRUCTORs
-	Vert(glm::vec3& _position, glm::vec2& _textureCoord, glm::vec3& _normal)
+	Vert(glm::vec3& _position, 
+		 glm::vec2& _textureCoord, 
+		 glm::vec3& _normal)
 	{
 		Position  = _position;
 		TexCoords = _textureCoord;
@@ -28,7 +29,10 @@ struct VertNormalMap
 	glm::vec3 Tangent;
 
 	// CONSTRUCTORs / DESTRUCTORs
-	VertNormalMap(glm::vec3& _position, glm::vec2& _textureCoord, glm::vec3& _normal, glm::vec3& _tangent)
+	VertNormalMap(glm::vec3& _position, 
+		          glm::vec2& _textureCoord, 
+		          glm::vec3& _normal, 
+		          glm::vec3& _tangent)
 	{
 		Position = _position;
 		TexCoords = _textureCoord;
@@ -41,7 +45,8 @@ class ModelLoaderLearningOpenGL : public LoaderIf::LoaderIf
 {
 public:
 	// CONSTRUCTORs / DESTRUCTORs
-	ModelLoaderLearningOpenGL(CommonFunctions* _CF, char* _modelFolder);
+	ModelLoaderLearningOpenGL(CommonFunctions* _CF, 
+		                      char* _modelFolder);
 
 	~ModelLoaderLearningOpenGL();
 	// FUNCTIONs
@@ -64,11 +69,10 @@ private:
 
 	std::string modelFolder;
 	std::string modelName;
-	GLuint VAO;	
+	GLuint      VAO;	
 
 	const aiScene* pScene;
 
 	std::vector<Mesh> vectorOfMeshes;
 };
 }
-#endif

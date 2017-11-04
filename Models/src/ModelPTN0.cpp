@@ -1,12 +1,19 @@
 #include "../../Models/inc/ModelPTN0.h"
 
 // CONSTRUCTOR / DESTRUCTOR
-Models::ModelPTN0::ModelPTN0(CommonFunctions* _CF, std::string _modelFolder, std::vector<Shaders::ShadersIf::ShadersIf*> _vectorOfShaders) :
-	                         modelFolder(_modelFolder), vectorOfShaders(_vectorOfShaders)
+Models::ModelPTN0::ModelPTN0(CommonFunctions* _CF, 
+	                         std::string _modelFolder, 
+	                         std::vector<Shaders::ShadersIf::ShadersIf*> _vectorOfShaders) 
+	                         :
+	                         modelFolder(_modelFolder), 
+	                         vectorOfShaders(_vectorOfShaders)
 {
 	CF = _CF;
+	// Get Model Name from DataBase
+	// TODO: Try get from DB
 	CommonFunctions::getFromDB(modelFolder, "modelName", modelName);
 	modelFullName = _modelFolder + modelName;
+	CF->LOGFILE(LOG "START constructing " + modelFolder + modelName + " object.");
 
 	CommonFunctions::getFromDB(modelFolder, "modelPosition", modelPosition);
 	CommonFunctions::getFromDB(modelFolder, "modelScale", modelScale);
@@ -59,18 +66,15 @@ void Models::ModelPTN0::initPTNModel()
 			}
 		}
 		// ----====----
-		// TEXTURE LOADER
-		vectorOfMeshes[i].texture0ID = textureLoader->getVectorOfMeshes()[i].texture0ID;
-		std::string str("_src/_models/barrelNM/texture1.png");
-		GLuint texNMID = textureLoader->createSingleTexture(str);
-		std::cout << " xxx TEXTURE: " << texNMID << std::endl;
-
+		// TEXTUREs from LOADER
 		vectorOfMeshes[i].texture0ID = textureLoader->getVectorOfMeshes()[i].texture0ID;
 		vectorOfMeshes[i].textureWidth = textureLoader->getVectorOfMeshes()[i].textureWidth;
 		vectorOfMeshes[i].textureHeight = textureLoader->getVectorOfMeshes()[i].textureHeight;
 		vectorOfMeshes[i].textureSizeMB = textureLoader->getVectorOfMeshes()[i].textureSizeMB;
-
 		modelTextureSizeMB += vectorOfMeshes[i].textureSizeMB;
+
+		// NORMAL MAP TEXTUREs LOADER
+		vectorOfMeshes[i].textureNormalMap0ID = textureLoader->getVectorOfMeshes()[i].textureNormalMap0ID;
 	}
 	modelTotalSizeMB = modelMeshSizeMB + modelTextureSizeMB;
 

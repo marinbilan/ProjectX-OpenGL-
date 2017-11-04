@@ -1,5 +1,4 @@
-#ifndef LOADERIF__
-#define LOADERIF__
+#pragma once
 
 #include "../../CommonFunctions/CommonFunctions.h"
 //
@@ -10,7 +9,7 @@
 //       --------------------------------------------------
 //       |                     |                          |
 //  ModelLoader     [ ModelLoaderLearningOpenGL ]    [ TextureLoader ]
-//                  [ struct Vert]
+//                  [ struct Vert ]
 
 namespace Loader
 {
@@ -21,12 +20,16 @@ struct Mesh
 	GLuint numIndices; // = number of vertices
 	GLfloat meshSizeMB;
 
-	GLuint  texture0ID;
-	GLuint textureNormalMap0ID;
 	// Texture params
+	GLuint texture0ID;
 	GLuint  textureWidth;
 	GLuint  textureHeight;
 	GLfloat textureSizeMB;
+	// Texture Normal Map params
+	GLuint textureNormalMap0ID;
+	GLuint  textureNormalMapWidth;
+	GLuint  textureNormalMapHeight;
+	GLfloat textureNormalMapSizeMB;
 };
 
 namespace LoaderIf
@@ -41,12 +44,12 @@ public:
 	}
 	// FUNCTIONs
 	// MODEL
-	virtual void loadModelPTN()                                   {};
-	virtual void initScene(const aiScene* _pScene)                {};
-	virtual void initMesh(GLuint _index, const aiMesh* _paiMesh)  {};
+	virtual void loadModelPTN()                                  {};
+	virtual void initScene(const aiScene* _pScene)               {};
+	virtual void initMesh(GLuint _index, const aiMesh* _paiMesh) {};
 	// GET
-	virtual GLuint getModelVAO()                                  { return 0; };
-	virtual std::vector<Loader::Mesh> getVectorOfMeshes()         { return std::vector<Loader::Mesh>(); };
+	virtual GLuint getModelVAO()                                 { return 0; };
+	virtual std::vector<Loader::Mesh> getVectorOfMeshes()        { return std::vector<Loader::Mesh>(); };
 	// SET
 	// TEXTUREs
 	virtual void loadTModelPTNTextures() {};
@@ -60,4 +63,3 @@ private:
 };
 }
 }
-#endif

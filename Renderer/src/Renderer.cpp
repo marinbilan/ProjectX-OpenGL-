@@ -255,7 +255,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 
 			glUniform1i(mesh.meshShaderPtr->getNormalMapID(), 1);
 			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, 8);
+			glBindTexture(GL_TEXTURE_2D, _staticModel->getVectorOfMeshes()[i].textureNormalMap0ID);
 			// RENDER MESH
 			glDrawElements(GL_TRIANGLES, _staticModel->getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
 			//

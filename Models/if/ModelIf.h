@@ -1,5 +1,4 @@
-#ifndef MODELIF__
-#define MODELIF__
+#pragma once
 
 // Loader
 #include "../../Loader/inc/ModelLoader.h"
@@ -24,12 +23,16 @@ struct Mesh
 	GLuint numIndices;
 	GLfloat meshSizeMB;
 
-	GLuint texture0ID;
-	GLuint textureNormalMap0ID;
 	// Texture params
-	GLuint textureWidth;
-	GLuint textureHeight;
+	GLuint texture0ID;
+	GLuint  textureWidth;
+	GLuint  textureHeight;
 	GLfloat textureSizeMB;
+	// Texture Normal Map params
+	GLuint textureNormalMap0ID;
+	GLuint  textureNormalMapWidth;
+	GLuint  textureNormalMapHeight;
+	GLfloat textureNormalMapSizeMB;
 
 	// OPERATORs
 	friend std::ostream& operator<<(std::ostream& output, Mesh& info)
@@ -78,10 +81,8 @@ public:
 	virtual void render() {};
 	virtual void renderDepth(Shaders::ShadersIf::ShadersIf* _shader) {};
 	// OPERATORs
-	// OPERATORs
 	virtual void printINFO() {};
 private:
 };
 }
 }
-#endif
