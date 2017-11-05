@@ -150,7 +150,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 
-			GLfloat lightPosition1[] = { 380.0f, 10.0f, 380.0f };
+			GLfloat lightPosition1[] = { 380.0f, 7.0f, 380.0f };
 			GLfloat lightColor1[] = { 1.0f, 1.0f, 1.0f };
 			GLfloat objectColor1[] = { 1.0f, 1.0f, 1.0f };
 
@@ -200,7 +200,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 			// TODO: Remove from here
-			glm::vec3 lightPositionModelPTN(385.0f, 50.0f, 435.0f);
+			glm::vec3 lightPositionModelPTN(385.0f, 7.0f, 385.0f);
 			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
 			glUniform3f(mesh.meshShaderPtr->getLightID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
 			glm::vec4 planeModelPTN(0.0f, -1.0f, 0.0f, 100000.0f);
@@ -208,7 +208,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 			// FRAGMENT SHADER UNIFORMS
 			glUniform3f(mesh.meshShaderPtr->getlightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
 			glUniform1f(mesh.meshShaderPtr->getshineDamperID(), 15.0f);
-			glUniform1f(mesh.meshShaderPtr->getreflectivityID(), 0.6f);
+			glUniform1f(mesh.meshShaderPtr->getreflectivityID(), 0.1f);
 
 			glUniform1i(mesh.meshShaderPtr->getmodelTextureID(), i);
 			glActiveTexture(GL_TEXTURE0 + i);
@@ -239,15 +239,15 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 			// glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 			// TODO: Remove from here
-			glm::vec3 lightPositionEyeSpace(385.0f, 10.0f, 435.0f);
+			glm::vec3 lightPositionEyeSpace(385.0f, 7.0f, 385.0f);
 			glUniform3f(mesh.meshShaderPtr->getLightPositionEyeSpaceID(), lightPositionEyeSpace[0], lightPositionEyeSpace[1], lightPositionEyeSpace[2]);
 			//
 			// FRAGMENT SHADER UNIFORMs
 			//
 			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
 			glUniform3f(mesh.meshShaderPtr->getlightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
-			glUniform1f(mesh.meshShaderPtr->getshineDamperID(), 22.0f);
-			glUniform1f(mesh.meshShaderPtr->getreflectivityID(), 0.6f);
+			glUniform1f(mesh.meshShaderPtr->getshineDamperID(), 15.0f);
+			glUniform1f(mesh.meshShaderPtr->getreflectivityID(), 0.2f);
 
 			glUniform1i(mesh.meshShaderPtr->getmodelTextureID(), 0);
 			glActiveTexture(GL_TEXTURE0);
