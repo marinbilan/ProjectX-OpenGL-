@@ -314,12 +314,36 @@ int main(int argc, char** argv)
 	//
 	std::vector<Models::ModelsIf::ModelsIf*> vectorOfModelsPTN;
 
-	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders));
+	// TEST getFromDb
+	//std::string modelName;
+	//CF->getFromDB("_src/_models/testis/", "modelName", modelName);
+	//std::cout << " CHECK ERROR: " << CF->checkError() << std::endl;
+
+	//bool error = false;
+
+	// for...
+
+	// Try to create object
+	Models::ModelPTN0* modelPTN = new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders);
+	// Check error
+	if (CF->checkError())
+	{
+		std::cout << "ERROR: Can't instanciate object!" << std::endl;
+		// Reset error
+		// delete object
+	}
+	else
+	{
+		vectorOfModelsPTN.push_back(modelPTN);
+	}
+	CF->clearError();
+	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfShaders));
+	// vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders));
 	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/cubeNM/", vectorOfShaders));
 	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/barrelNM/", vectorOfShaders));
 	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders));
 	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/arrow/", vectorOfShaders));
-	vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfShaders));
+	// vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfShaders));
 	// vectorOfModelsPTN[0]->printINFO();
 	// TODO
 	modelSkyBox00 = new Models::ModelSkyBox0(vectorOfShaders[2], camera);

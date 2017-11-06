@@ -5,22 +5,27 @@ Models::ModelPTN0::ModelPTN0(CommonFunctions* _CF,
 	                         std::string _modelFolder, 
 	                         std::vector<Shaders::ShadersIf::ShadersIf*> _vectorOfShaders) 
 	                         :
+	                         CF(_CF),
 	                         modelFolder(_modelFolder), 
 	                         vectorOfShaders(_vectorOfShaders)
 {
-	CF = _CF;
-	// Get Model Name from DataBase
-	// TODO: Try get from DB
-	CommonFunctions::getFromDB(modelFolder, "modelName", modelName);
+	CF->getStringFromDB(modelFolder, "modelName", modelName);
 	modelFullName = _modelFolder + modelName;
 	CF->LOGFILE(LOG "START constructing " + modelFolder + modelName + " object.");
 
-	CommonFunctions::getFromDB(modelFolder, "modelPosition", modelPosition);
-	CommonFunctions::getFromDB(modelFolder, "modelScale", modelScale);
-	CommonFunctions::getFromDB(modelFolder, "modelRotateAround", modelRotateAround);
-	CommonFunctions::getFromDB(modelFolder, "angle", angle);
+	CF->getFromDB(modelFolder, "modelPosition", modelPosition);
+	CF->getFromDB(modelFolder, "modelScale", modelScale);
+	CF->getFromDB(modelFolder, "modelRotateAround", modelRotateAround);
+	CF->getFromDB(modelFolder, "angle", angle);
 
-	initPTNModel();
+	if (CF->checkError())
+	{
+		// ERROR INFO
+	}
+	else
+	{
+    	initPTNModel();
+	}
 }
 
 Models::ModelPTN0::~ModelPTN0()
@@ -54,9 +59,9 @@ void Models::ModelPTN0::initPTNModel()
 		vectorOfMeshes[i].numIndices = modelPTNLoader->getVectorOfMeshes()[i].numIndices;
 		vectorOfMeshes[i].meshSizeMB = modelPTNLoader->getVectorOfMeshes()[i].meshSizeMB;
 		modelMeshSizeMB += vectorOfMeshes[i].meshSizeMB;
-		// ----== GIVE ME SHADERS FOR EACH MESH ==----
+		// ----== GIVE ME SHADER FOR EACH MESH ==----
 		// Get shader name from DataBase.txt, find shader in vectorOfShaders and set shader pointer in mesh 
-		CommonFunctions::getFromDB(modelFolder, "meshShader" + std::to_string(i), meshTempShaderName);
+		CF->getStringFromDB(modelFolder, "meshShader" + std::to_string(i), meshTempShaderName);
 		for (it = vectorOfShaders.begin(); it != vectorOfShaders.end(); it++)
 		{
 			if (!(*it)->getShaderName().compare(meshTempShaderName))
@@ -84,7 +89,7 @@ void Models::ModelPTN0::initPTNModel()
 	modelMatrix = glm::rotate(modelMatrix, angle, modelRotateAround);
 	modelMatrix = glm::scale(modelMatrix, modelScale);
 
-	std::cout << "ModelPTN " << modelFullName << " created!" << std::endl;
+	// std::cout << "ModelPTN " << modelFullName << " created!" << std::endl;
 
 	// DELETE MODEL LOADER object and TEXTURE LOADER OBJECT
 	// ...

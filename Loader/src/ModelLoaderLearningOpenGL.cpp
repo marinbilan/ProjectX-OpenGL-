@@ -4,12 +4,10 @@
 Loader::ModelLoaderLearningOpenGL::ModelLoaderLearningOpenGL(CommonFunctions* _CF, 
 	                                                         char* _modelFolder) 
 	                                                         :
+	                                                         CF(_CF),
 	                                                         modelFolder(_modelFolder)
 {
-	// Common Functions
-	CF = _CF;
-    // Get Model Name from DataBase
-	CommonFunctions::getFromDB(modelFolder, "modelName", modelName);
+	CF->getStringFromDB(modelFolder, "modelName", modelName);
 	modelName += ".3ds";
 }
 
@@ -55,7 +53,7 @@ void Loader::ModelLoaderLearningOpenGL::initScene(const aiScene* _pScene)
 		const aiMesh* paiMesh = _pScene->mMeshes[i];
 		// Check if mesh (texture) has NormalMap - Fill struct Mesh
 		std::string isNormalMap;
-		CommonFunctions::getFromDB(modelFolder, "meshTexture" + std::to_string(i), isNormalMap);
+		CF->getStringFromDB(modelFolder, "meshTexture" + std::to_string(i), isNormalMap);
 		
 		if (std::stoi(isNormalMap))
 		{

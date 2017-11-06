@@ -29,6 +29,7 @@ class CommonFunctions
 public:
 	CommonFunctions(std::ofstream& _logFile) : logFile(_logFile)
 	{
+		error = false;
 		std::cout << " CommonFunction and Log File created" << std::endl;
 	};
 
@@ -46,7 +47,7 @@ public:
 		std::cout << "[ " << date << " " << time << " ]" << " { FILENAME: " << file << " }" << " { LINE: " << line << " }"<< " { INFO: " << msg << " }"<< std::endl;
 	}
 
-	static void getFromDB(std::string dbEntry, std::string dbTarget, std::string& dbParam)
+	void getStringFromDB(std::string dbEntry, std::string dbTarget, std::string& dbParam)
 	{		
 		// dB File
 		std::ifstream dBFile("___Db/DataBase.txt");
@@ -62,13 +63,15 @@ public:
 			{
 				dbParam = match.str(1); // match.str(0) // Whole matched string
 			}
-			else {
-				// std::cout << "No match!" << std::endl;
-			}
-		}		
+		}
+
+		if (!dbParam.compare("")) // Raise error if no param in DB
+		{
+			error = true;
+		}
 	}
 
-	static void getFromDB(std::string dbEntry, std::string dbTarget, GLfloat& dbParam)
+	void getFromDB(std::string dbEntry, std::string dbTarget, GLfloat& dbParam)
 	{
 		// dB File
 		std::ifstream dBFile("___Db/DataBase.txt");
@@ -84,13 +87,10 @@ public:
 			{
 				dbParam = std::stof(match.str(1) + match.str(2)); // match.str(0) // Whole matched string
 			}
-			else {
-				// std::cout << "No match!" << std::endl;
-			}
 		}
 	}
 
-	static void getFromDB(std::string dbEntry, std::string dbTarget, glm::vec3& dbParam)
+	void getFromDB(std::string dbEntry, std::string dbTarget, glm::vec3& dbParam)
 	{
 		// dB File
 		std::ifstream dBFile("___Db/DataBase.txt");
@@ -108,14 +108,24 @@ public:
 					                 std::stof(match.str(3) + match.str(4)), 
 					                 std::stof(match.str(5) + match.str(6)) );
 			}
-			else 
-			{
-				// std::cout << "No match!" << std::endl;
-			}
 		}
 	}
 
+	bool checkError() 
+	{
+		return error;
+	}
+
+	void raiseError()
+	{
+		error = true;
+	}
+
+	void clearError()
+	{
+		error = false;
+	}
 private:
 	std::ofstream& logFile;
+	bool error;
 };
-// #endif

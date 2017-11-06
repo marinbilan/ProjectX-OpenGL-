@@ -55,7 +55,7 @@ void Loader::TextureLoader::setTextureForEachMesh()
 
 		// CHECK if mesh (texture) has NormalMap - Fill struct Mesh
 		std::string isNormalMap;
-		CommonFunctions::getFromDB(modelFolder, "meshTexture" + std::to_string(i), isNormalMap);
+		CF->getStringFromDB(modelFolder, "meshTexture" + std::to_string(i), isNormalMap);
 
 		if (std::stoi(isNormalMap))
 		{
