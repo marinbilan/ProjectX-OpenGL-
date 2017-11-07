@@ -5,7 +5,7 @@ Shaders::ShaderLearningOpenGL0::ShaderLearningOpenGL0(GLfloat projMatrixWidth, G
 {
 	shaderName = "ShaderLearningOpenGL0";
 
-    shaderProgramID = createShader(vertexShader1, fragmentShader1);
+    shaderProgramID = createShader(vertexShader2, fragmentShader2);
 	// [ VERTEX SHADER ]
 	//   ATTRIBUTEs
 	positionsID = glGetAttribLocation(shaderProgramID, "aPos");
@@ -18,6 +18,7 @@ Shaders::ShaderLearningOpenGL0::ShaderLearningOpenGL0(GLfloat projMatrixWidth, G
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
 	lightPositionID = glGetUniformLocation(shaderProgramID, "lightPos");
+	viewPositionID = glGetUniformLocation(shaderProgramID, "viewPos");
 	lightColorID = glGetUniformLocation(shaderProgramID, "lightColor");
 	objectColorID = glGetUniformLocation(shaderProgramID, "objectColor");
 
@@ -73,6 +74,11 @@ GLuint const Shaders::ShaderLearningOpenGL0::getModelMatrixInvID() const
 GLuint const Shaders::ShaderLearningOpenGL0::getLightPositionID() const
 {
 	return lightPositionID;
+}
+
+GLuint const Shaders::ShaderLearningOpenGL0::getCameraPositionID() const
+{
+	return viewPositionID;
 }
 
 GLuint const Shaders::ShaderLearningOpenGL0::getLightColorID() const

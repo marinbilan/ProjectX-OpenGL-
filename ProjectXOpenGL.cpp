@@ -314,14 +314,7 @@ int main(int argc, char** argv)
 	//
 	std::vector<Models::ModelsIf::ModelsIf*> vectorOfModelsPTN;
 
-	// TEST getFromDb
-	//std::string modelName;
-	//CF->getFromDB("_src/_models/testis/", "modelName", modelName);
-	//std::cout << " CHECK ERROR: " << CF->checkError() << std::endl;
-
-	//bool error = false;
-
-	// for...
+	// for each model in db try create model...
 
 	// Try to create object
 	Models::ModelPTN0* modelPTN = new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders);
@@ -329,7 +322,7 @@ int main(int argc, char** argv)
 	if (CF->checkError())
 	{
 		std::cout << "ERROR: Can't instanciate object!" << std::endl;
-		// Reset error
+		// clear error
 		// delete object
 	}
 	else

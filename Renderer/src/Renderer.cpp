@@ -173,11 +173,12 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticMo
 			glm::mat4 modelInv = glm::inverse(_staticModel->getModelMatrix());
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixInvID(), 1, GL_FALSE, &modelInv[0][0]);
 
-			GLfloat lightPosition1[] = { 385.0f, 77.0f, 485.0f };
+			GLfloat lightPosition1[] = { 385.0f, 27.0f, 385.0f };
 			GLfloat lightColor1[] = { 1.0f, 1.0f, 1.0f };
-			GLfloat objectColor1[] = { 1.0f, 1.0f, 1.0f };
+			GLfloat objectColor1[] = { 1.0f, 0.5f, 0.31f };
 
 			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPosition1[0], lightPosition1[1], lightPosition1[2]);
+			glUniform3f(mesh.meshShaderPtr->getCameraPositionID(), _camera->getcameraPosition()[0], _camera->getcameraPosition()[1], _camera->getcameraPosition()[2]);
 			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColor1[0], lightColor1[1], lightColor1[2]);
 			glUniform3f(mesh.meshShaderPtr->getObjectColorID(), objectColor1[0], objectColor1[1], objectColor1[2]);
 			glDrawElements(GL_TRIANGLES, _staticModel->getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
