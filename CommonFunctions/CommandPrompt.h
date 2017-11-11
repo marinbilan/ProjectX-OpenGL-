@@ -1,5 +1,4 @@
-#ifndef COMMANDPROMPT__
-#define COMMANDPROMPT__
+#pragma once
 
 namespace CommandPrompt
 {
@@ -8,7 +7,7 @@ class CommandPrompt
 	public:
 	// CONSTRUCTORs / DESTRUCTORs
 	CommandPrompt(std::vector<Shaders::ShadersIf::ShadersIf*> _vectorOfShaders,
-		          std::vector<Models::ModelsIf::ModelsIf*> _vectorOfModels)
+		                      std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> _vectorOfModels)
 	{
 		vectorOfShaders = _vectorOfShaders;
 		vectorOfModels = _vectorOfModels;
@@ -156,7 +155,7 @@ class CommandPrompt
 	void cmdModelsNames()
 	{
 		std::cout << std::endl << " | Model Names: " << std::endl;
-		std::vector<Models::ModelsIf::ModelsIf*>::iterator it;
+		std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>>::iterator it;
 		for (it = vectorOfModels.begin(); it != vectorOfModels.end(); it++)
 		{
 			std::cout << "    " << (*it)->getModelName() << std::endl;
@@ -165,7 +164,7 @@ class CommandPrompt
 
 	void cmdModelName(std::string str)
 	{
-		std::vector<Models::ModelsIf::ModelsIf*>::iterator it;
+		std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>>::iterator it;
 		for (it = vectorOfModels.begin(); it != vectorOfModels.end(); it++)
 		{
 			if (!str.compare((*it)->getModelName()))
@@ -177,7 +176,7 @@ class CommandPrompt
 
 	void cmdModelsAll()
 	{
-		std::vector<Models::ModelsIf::ModelsIf*>::iterator it;
+		std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>>::iterator it;
 		for (it = vectorOfModels.begin(); it != vectorOfModels.end(); it++)
 		{
 			(*it)->printINFO();
@@ -205,8 +204,7 @@ class CommandPrompt
 	}
 private:
 	std::vector<Shaders::ShadersIf::ShadersIf*> vectorOfShaders;
-	std::vector<Models::ModelsIf::ModelsIf*> vectorOfModels;
+	std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> vectorOfModels;
 };
 
 }
-#endif

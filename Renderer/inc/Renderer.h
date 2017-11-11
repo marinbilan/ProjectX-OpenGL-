@@ -22,7 +22,7 @@ public:
 	virtual void renderDepthMap(Models::ModelPTN0* _modelPTN, Shaders::ShadersIf::ShadersIf* _shader);
 	// NEW
 	virtual void renderTerrain(Shaders::ShadersIf::ShadersIf* _shader, Models::ModelTerrain0* _staticModel, Camera::CameraIf::CameraIf* _camera);
-	virtual void renderStaticModel(Models::ModelsIf::ModelsIf* _staticModel, Camera::CameraIf::CameraIf* _camera);
+	virtual void renderStaticModel(std::shared_ptr<Models::ModelsIf::ModelsIf> _staticModel, Camera::CameraIf::CameraIf* _camera);
 	// OPERATORs
 private:
 	GLfloat distance;

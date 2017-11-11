@@ -5,6 +5,7 @@
 #include <fstream>
 #include <regex>
 #include <vector>
+#include <memory>
 // GLEW
 #include "../../__libs/glew-1.13.0/include/GL/glew.h"
 // GLFW

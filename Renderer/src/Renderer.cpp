@@ -127,7 +127,7 @@ void Renderer::Renderer::renderTerrain(Shaders::ShadersIf::ShadersIf* _shader, M
 	glUseProgram(0);
 }
 
-void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf* _staticModel, Camera::CameraIf::CameraIf* _camera)
+void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::ModelsIf> _staticModel, Camera::CameraIf::CameraIf* _camera)
 {
 	glBindVertexArray(_staticModel->getModelVAO());
 
