@@ -5,7 +5,7 @@
 #include "../../Loader/inc/ModelLoaderLearningOpenGL.h"
 #include "../../Loader/inc/TextureLoader.h"
 // ShaderIf
-#include "../../Shaders/if/ShaderIf.h" // Remove this
+#include "../../Shaders/if/ShaderIf.h"
 // CameraIf
 #include "../../Camera/if/CameraIf.h" // Remove this
 
@@ -15,7 +15,7 @@ struct Mesh
 {
 	std::string meshName;       // TODO
 	std::string meshShaderName;
-	Shaders::ShadersIf::ShadersIf* meshShaderPtr;
+	std::shared_ptr<Shaders::ShadersIf::ShadersIf> meshShaderPtr;
 
 	// Loader::Mesh
 	GLuint VBO;

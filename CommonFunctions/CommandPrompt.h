@@ -6,8 +6,8 @@ class CommandPrompt
 {
 	public:
 	// CONSTRUCTORs / DESTRUCTORs
-	CommandPrompt(std::vector<Shaders::ShadersIf::ShadersIf*> _vectorOfShaders,
-		                      std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> _vectorOfModels)
+	CommandPrompt(std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>> _vectorOfShaders,
+		          std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> _vectorOfModels)
 	{
 		vectorOfShaders = _vectorOfShaders;
 		vectorOfModels = _vectorOfModels;
@@ -136,7 +136,7 @@ class CommandPrompt
 	void cmdShadersNames()
 	{
 		std::cout << std::endl << " | Shader Names: " << std::endl;
-		std::vector<Shaders::ShadersIf::ShadersIf*>::iterator it;
+		std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>>::iterator it;
 		for (it = vectorOfShaders.begin(); it != vectorOfShaders.end(); it++)
 		{
 			std::cout << "    " << (*it)->getShaderName() << std::endl;
@@ -145,7 +145,7 @@ class CommandPrompt
 
 	void cmdShadersAll()
 	{
-		std::vector<Shaders::ShadersIf::ShadersIf*>::iterator it;
+		std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>>::iterator it;
 		for (it = vectorOfShaders.begin(); it != vectorOfShaders.end(); it++)
 		{
 			(*it)->printINFO();
@@ -203,7 +203,7 @@ class CommandPrompt
 		}
 	}
 private:
-	std::vector<Shaders::ShadersIf::ShadersIf*> vectorOfShaders;
+	std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>> vectorOfShaders;
 	std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> vectorOfModels;
 };
 

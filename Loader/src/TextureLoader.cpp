@@ -10,6 +10,8 @@ Loader::TextureLoader::TextureLoader(CommonFunctions* _CF,
 {
 	// COMMON FUNCTIONS
 	CF = _CF;
+
+	loadTModelPTNTextures();
 }
 
 Loader::TextureLoader::~TextureLoader()

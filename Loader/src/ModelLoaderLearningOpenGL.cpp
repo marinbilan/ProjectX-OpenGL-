@@ -9,6 +9,8 @@ Loader::ModelLoaderLearningOpenGL::ModelLoaderLearningOpenGL(CommonFunctions* _C
 {
 	CF->getStringFromDB(modelFolder, "modelName", modelName);
 	modelName += ".3ds";
+
+	loadModelPTN();
 }
 
 Loader::ModelLoaderLearningOpenGL::~ModelLoaderLearningOpenGL()

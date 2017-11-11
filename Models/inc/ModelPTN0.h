@@ -10,7 +10,7 @@ public:
 	// CONSTRUCTORs / DESTRUCTORs
 	ModelPTN0(CommonFunctions* _CF, 
 		      std::string _modelFolder, 
-		      std::vector<Shaders::ShadersIf::ShadersIf*> _vectorOfShaders);
+		      std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>> _vectorOfShaders);
 	~ModelPTN0();
 	// FUNCTIONs
 	void initPTNModel();
@@ -57,7 +57,7 @@ public:
 private:
 	// CONSTRUCTOR params
 	CommonFunctions* CF;
-	std::vector<Shaders::ShadersIf::ShadersIf*> vectorOfShaders;
+	std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>> vectorOfShaders;
 
 	std::string                        modelFolder;
 	std::string                        modelName;
@@ -65,9 +65,6 @@ private:
 	GLfloat                            modelMeshSizeMB;
 	GLfloat                            modelTextureSizeMB;
 	GLfloat                            modelTotalSizeMB;
-
-	Loader::ModelLoaderLearningOpenGL* modelPTNLoader;
-	Loader::TextureLoader*             textureLoader;
 
 	GLuint                             VAO;
 	std::vector<Models::Mesh>          vectorOfMeshes;

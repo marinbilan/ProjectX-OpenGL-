@@ -13,12 +13,12 @@ _src/_models/_vanquish/	modelScale              10 10 10
 _src/_models/_vanquish/	modelRotateAround 1 0 0
 _src/_models/_vanquish/	angle                        -1.57
 
-_src/_models/_vanquish/    meshShader0    ShaderLearningOpenGL0
-_src/_models/_vanquish/    meshShader1    ShaderLearningOpenGL0
-_src/_models/_vanquish/    meshShader2    ShaderLearningOpenGL0
-_src/_models/_vanquish/    meshShader3    ShaderLearningOpenGL0
-_src/_models/_vanquish/    meshShader4    ShaderLearningOpenGL0
-_src/_models/_vanquish/    meshShader5    ShaderLearningOpenGL0
+_src/_models/_vanquish/    meshShader0    ShaderPTN0
+_src/_models/_vanquish/    meshShader1    ShaderPTN0
+_src/_models/_vanquish/    meshShader2    ShaderPTN0
+_src/_models/_vanquish/    meshShader3    ShaderPTN0
+_src/_models/_vanquish/    meshShader4    ShaderPTN0
+_src/_models/_vanquish/    meshShader5    ShaderPTN0
 
 // MESH NORMAL MAP INFO
                                            // Mesh              // Normal Map Info

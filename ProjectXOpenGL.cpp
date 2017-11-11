@@ -235,34 +235,7 @@ void characterModCallback(GLFWwindow* window, unsigned int keyCode, int modifier
 	}
 }
 
-void RenderSceneMaster(std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> _vectorOfSmartModelsPTN, GLfloat deltaTime)
-{
-	glClear(GL_COLOR_BUFFER_BIT);
-	glClear(GL_DEPTH_BUFFER_BIT);
-	// glEnable(GL_CLIP_DISTANCE0);
-
-	// RENDER SKY BOX
-	renderer->renderSkyBox(camera, modelSkyBox00);
-	// RENDER TERRAIN
-	renderer->renderTerrain(shaderTerrain00, modelTerrain00, camera);
-	// RENDER MODELSPTN
-	//	renderer->renderStaticModel(_vectorOfModelsPTN[0], camera);
-	//std::vector<Models::ModelsIf::ModelsIf*>::iterator itModelsPTN;
-	//for (itModelsPTN = _vectorOfModelsPTN.begin(); itModelsPTN != _vectorOfModelsPTN.end(); itModelsPTN++)
-	//{
-	//	renderer->renderStaticModel((*itModelsPTN), camera);
-	//}
-	for (auto& it : _vectorOfSmartModelsPTN) 
-	{
-		renderer->renderStaticModel(it, camera);
-	}
-	// TEST: Render another light in scene
-	// Set new position
-	//_vectorOfModelsPTN[2]->setModelPosition(glm::vec3(385, 50, 435)); // PTN LIGHT
-	//renderer->renderStaticModel(_vectorOfModelsPTN[2], camera);
-	// Reset on original position
-	//_vectorOfModelsPTN[2]->setModelPosition(glm::vec3(380, 10, 380)); // TERRAIN LIGHT
-}
+void RenderSceneMaster(std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> _vectorOfSmartModelsPTN, GLfloat deltaTime);
 
 int main(int argc, char** argv)
 {
@@ -314,22 +287,8 @@ int main(int argc, char** argv)
 	//
 	// ----==== SHADERs [ ProjectionMatrix ] Initialization (only once) ====----
 	//
-	std::vector<Shaders::ShadersIf::ShadersIf*> vectorOfShaders;
-
-
-	vectorOfShaders.push_back(new Shaders::ShaderLearningOpenGL0(WIDTH, HEIGHT)); // 0 DONE
-	vectorOfShaders.push_back(new Shaders::ShaderPTN0(WIDTH, HEIGHT));            // 1 DONE
-	vectorOfShaders.push_back(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT));         // 2 DONE
-	vectorOfShaders.push_back(new Shaders::ShaderNormalMapPTNT0(WIDTH, HEIGHT));  // 1 DONE
-	// vectorOfShaders.push_back(new Shaders::ShaderTerrain0(WIDTH, HEIGHT));     // 3 DONE
-	vectorOfShaders.push_back(new Shaders::ShaderMarker0(WIDTH, HEIGHT));         // 4 DONE
-
-	shaderTerrain00 = new Shaders::ShaderTerrain0(WIDTH, HEIGHT); // TODO
-	// TODO
-	shaderWaterTile00 = new Shaders::ShaderWaterTile0(VS_Water_Tile, FS_Water_Tile);
-	shaderGUI00 = new Shaders::ShaderGUI0(VS2, FS2);
-	// NEW SMART SHADERs
 	std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>> vectorOfSmartShaders;
+
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderLearningOpenGL0>(new Shaders::ShaderLearningOpenGL0(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderPTN0>(new Shaders::ShaderPTN0(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderSkyBox0>(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT)));
@@ -338,7 +297,7 @@ int main(int argc, char** argv)
 	//
 	// ----==== CAMERAs [ ViewMatrix ] ====----
 	//
-	camera = new Camera::Camera(glm::vec3(375, 25, 420), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // Current Light position
+	camera = new Camera::Camera(glm::vec3(375, 25, 420), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	//
 	// ----==== FBOs ====----	
 	//
@@ -348,8 +307,8 @@ int main(int argc, char** argv)
 	// ----==== MODELs [ ModelMatrix ] ====----	
 	//
 	std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> vectorOfSmartModelsPTN;
-	// for each model in db try create model...
-	std::shared_ptr<Models::ModelPTN0> modelSmartPTN(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders));
+	// for each model in db try to create model...
+	std::shared_ptr<Models::ModelPTN0> modelSmartPTN(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfSmartShaders));
 	// Check error
 	if (CF->checkError()) // Error
 	{
@@ -362,7 +321,8 @@ int main(int argc, char** argv)
 		vectorOfSmartModelsPTN.push_back(modelSmartPTN);
 	}
 	CF->clearError();
-	vectorOfSmartModelsPTN.push_back(std::shared_ptr<Models::ModelPTN0>(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfShaders)));
+	vectorOfSmartModelsPTN.push_back(std::shared_ptr<Models::ModelPTN0>(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfSmartShaders)));
+
 
 	// vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders));
 	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/cubeNM/", vectorOfShaders));
@@ -371,13 +331,17 @@ int main(int argc, char** argv)
 	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/arrow/", vectorOfShaders));
 	// vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfShaders));
 	// vectorOfModelsPTN[0]->printINFO();
-	// TODO
-	modelSkyBox00 = new Models::ModelSkyBox0(vectorOfShaders[2], camera);
+	// LEGACY TODO
+	std::vector<Shaders::ShadersIf::ShadersIf*> vectorOfShaders;
+	vectorOfShaders.push_back(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT));
+	modelSkyBox00 = new Models::ModelSkyBox0(vectorOfShaders[0], camera);
+	shaderWaterTile00 = new Shaders::ShaderWaterTile0(VS_Water_Tile, FS_Water_Tile);
 	modelWaterTile00 = new Models::ModelWaterTile0("_src/water/waterDUDV.png", shaderWaterTile00, camera, 8, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(14.0f));
+	shaderGUI00 = new Shaders::ShaderGUI0(VS2, FS2);
 	modelGUI00 = new Models::ModelGUI0("sword.png", shaderGUI00, 10, glm::vec3(-0.7f, 0.5f, 0.f), glm::vec3(0.5f));
 	modelGUI01 = new Models::ModelGUI0("socuwan.png", shaderGUI00, 9, glm::vec3(0.7f, 0.5f, 0.0f), glm::vec3(0.3));
+	shaderTerrain00 = new Shaders::ShaderTerrain0(WIDTH, HEIGHT); // TODO: remove shader
 	modelTerrain00 = new Models::ModelTerrain0(CF, "_src/_models/_vanquish/", vectorOfShaders);
-
 	//
 	// ----==== RENDERERs ====----	
 	//
@@ -385,7 +349,10 @@ int main(int argc, char** argv)
 	//
 	// ----==== CMD ====----
 	//
-	CommandPrompt::CommandPrompt* CP = new CommandPrompt::CommandPrompt(vectorOfShaders, vectorOfSmartModelsPTN);
+	CommandPrompt::CommandPrompt* CP = new CommandPrompt::CommandPrompt(vectorOfSmartShaders, vectorOfSmartModelsPTN);
+	//
+	//
+	//
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	glEnable(GL_CULL_FACE);
@@ -430,4 +397,27 @@ int main(int argc, char** argv)
 
 	glfwTerminate();
 	return 0;
+}
+
+void RenderSceneMaster(std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> _vectorOfSmartModelsPTN, GLfloat deltaTime)
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	// glEnable(GL_CLIP_DISTANCE0);
+
+	// RENDER SKY BOX
+	renderer->renderSkyBox(camera, modelSkyBox00);
+	// RENDER TERRAIN
+	renderer->renderTerrain(shaderTerrain00, modelTerrain00, camera);
+	// RENDER MODELSPTN
+	for (auto& it : _vectorOfSmartModelsPTN)
+	{
+		renderer->renderStaticModel(it, camera);
+	}
+	// TEST: Render another light in scene
+	// Set new position
+	//_vectorOfModelsPTN[2]->setModelPosition(glm::vec3(385, 50, 435)); // PTN LIGHT
+	//renderer->renderStaticModel(_vectorOfModelsPTN[2], camera);
+	// Reset on original position
+	//_vectorOfModelsPTN[2]->setModelPosition(glm::vec3(380, 10, 380)); // TERRAIN LIGHT
 }
