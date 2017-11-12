@@ -1,5 +1,4 @@
-#ifndef SHADERIF__
-#define SHADERIF__
+#pragma once
 
 #include "../../CommonFunctions/CommonFunctions.h"
 
@@ -42,7 +41,7 @@ public:
 
 		return shaderID;
 	}
-	virtual std::string getShaderName()                  { return dummyString; }
+	virtual std::string  getShaderName()                 { return dummyString; }
 	virtual GLuint const getShaderProgramID()      const { return 0; }
 	// VERTEX SHADER
 	// [ ATTRIBs ]
@@ -99,6 +98,18 @@ public:
 	virtual GLuint const getGTextureID()           const { return 0; }
 	virtual GLuint const getBTextureID()           const { return 0; }
 	virtual GLuint const getBlendMapID()           const { return 0; }
+
+	// MATERIALs and LIGHT
+	virtual GLuint const getMaterialAmbientID()    const { return 0; }
+	virtual GLuint const getMaterialDiffuseID()    const { return 0; }
+	virtual GLuint const getMaterialSpecularID()   const { return 0; }
+	virtual GLuint const getMaterialShininessID()  const { return 0; }
+
+	virtual GLuint const NEWgetLightPositionID()   const { return 0; }
+	virtual GLuint const getLightAmbientID()       const { return 0; }
+	virtual GLuint const getLightDiffuseID()       const { return 0; }
+	virtual GLuint const getLightSpecularID()      const { return 0; }
+
 	// OPERATORs
 	virtual void printINFO() {};
 private:
@@ -106,4 +117,3 @@ private:
 };
 }
 }
-#endif

@@ -159,6 +159,31 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 			glDrawElements(GL_TRIANGLES, _staticModel->getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
 			glUseProgram(0);
 		}
+		//else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderLearningOpenGL0"))
+		//{
+		//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), 0);
+		//	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
+
+		//	glEnableVertexAttribArray(0); // VERTEXs
+		//	glEnableVertexAttribArray(1); // NORMALs
+		//	// VERTEX SHADER UNIFORMS
+		//	// Projection matrix updated in shader constructor (Only once)
+		//	glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
+		//	glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
+		//	glm::mat4 modelInv = glm::inverse(_staticModel->getModelMatrix());
+		//	glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixInvID(), 1, GL_FALSE, &modelInv[0][0]);
+
+		//	GLfloat lightPosition1[] = { 385.0f, 27.0f, 385.0f };
+		//	GLfloat lightColor1[] = { 1.0f, 1.0f, 1.0f };
+		//	GLfloat objectColor1[] = { 1.0f, 0.5f, 0.31f };
+
+		//	glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPosition1[0], lightPosition1[1], lightPosition1[2]);
+		//	glUniform3f(mesh.meshShaderPtr->getCameraPositionID(), _camera->getcameraPosition()[0], _camera->getcameraPosition()[1], _camera->getcameraPosition()[2]);
+		//	glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColor1[0], lightColor1[1], lightColor1[2]);
+		//	glUniform3f(mesh.meshShaderPtr->getObjectColorID(), objectColor1[0], objectColor1[1], objectColor1[2]);
+		//	glDrawElements(GL_TRIANGLES, _staticModel->getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
+		//	glUseProgram(0);
+		//}
 		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderLearningOpenGL0"))
 		{
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), 0);
@@ -167,20 +192,49 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 			glEnableVertexAttribArray(0); // VERTEXs
 			glEnableVertexAttribArray(1); // NORMALs
 			// VERTEX SHADER UNIFORMS
-			// Projection matrix updated in shader constructor (Only once)
+		    // Projection matrix updated in shader constructor (Only once)
 			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 			glm::mat4 modelInv = glm::inverse(_staticModel->getModelMatrix());
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixInvID(), 1, GL_FALSE, &modelInv[0][0]);
+
+			// FRAGMENT SHADER UNIFORMs
+			// uniform vec3 viewPos;
+			glUniform3f(mesh.meshShaderPtr->getCameraPositionID(), _camera->getcameraPosition()[0], _camera->getcameraPosition()[1], _camera->getcameraPosition()[2]);
+
+			// Material
+			glm::vec3 materialAmbient(1.0f, 0.5f, 0.31f);
+			glUniform3f(mesh.meshShaderPtr->getMaterialAmbientID(), materialAmbient[0], materialAmbient[1], materialAmbient[2]);
+			glm::vec3 materialDiffuse(1.0f, 0.5f, 0.31f);
+			glUniform3f(mesh.meshShaderPtr->getMaterialDiffuseID(), materialDiffuse[0], materialDiffuse[1], materialDiffuse[2]);
+			glm::vec3 materialSpecular(1.0f, 0.5f, 0.31f);
+			glUniform3f(mesh.meshShaderPtr->getMaterialSpecularID, materialSpecular[0], materialSpecular[1], materialSpecular[2]);
+			float materialShinines = 32.0f;
+			glUniform1f(mesh.meshShaderPtr->getMaterialShininessID(), materialShinines);
+			// Light (Try sin from tutorial)
+			glm::vec3 ambientColor = glm::vec3(0.2f);
+			glUniform3f(mesh.meshShaderPtr->getMaterialAmbientID(), ambientColor[0], ambientColor[1], ambientColor[2]);
+			glm::vec3 materialDiffuse(1.0f, 0.5f, 0.31f);
+			glUniform3f(mesh.meshShaderPtr->getMaterialDiffuseID(), materialDiffuse[0], materialDiffuse[1], materialDiffuse[2]);
+			glm::vec3 materialSpecular(1.0f, 0.5f, 0.31f);
+			glUniform3f(mesh.meshShaderPtr->getMaterialSpecularID, materialSpecular[0], materialSpecular[1], materialSpecular[2]);
+			float materialShinines = 32.0f;
+			glUniform1f(mesh.meshShaderPtr->getMaterialShininessID(), materialShinines);
+
+
+
 
 			GLfloat lightPosition1[] = { 385.0f, 27.0f, 385.0f };
 			GLfloat lightColor1[] = { 1.0f, 1.0f, 1.0f };
 			GLfloat objectColor1[] = { 1.0f, 0.5f, 0.31f };
 
 			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPosition1[0], lightPosition1[1], lightPosition1[2]);
-			glUniform3f(mesh.meshShaderPtr->getCameraPositionID(), _camera->getcameraPosition()[0], _camera->getcameraPosition()[1], _camera->getcameraPosition()[2]);
 			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColor1[0], lightColor1[1], lightColor1[2]);
 			glUniform3f(mesh.meshShaderPtr->getObjectColorID(), objectColor1[0], objectColor1[1], objectColor1[2]);
+
+
+
+
 			glDrawElements(GL_TRIANGLES, _staticModel->getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
 			glUseProgram(0);
 		}

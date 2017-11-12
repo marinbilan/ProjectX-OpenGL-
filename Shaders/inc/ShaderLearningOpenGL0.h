@@ -1,5 +1,4 @@
-#ifndef SHADERLEARNINGOPENGL0__
-#define SHADERLEARNINGOPENGL0__
+#pragma once
 
 #include "../if/ShaderIf.h"
 
@@ -84,7 +83,7 @@ class ShaderLearningOpenGL0 : public ShadersIf::ShadersIf
 		"		vec3 result = (ambient + diffuse) * objectColor;"
 		"		FragColor = vec4(result, 1.0);"
 		"	}";
-	// AMBIENT + DIFFUSE
+	// AMBIENT + DIFFUSE + SPECULAR
 	const char* vertexShader2 =
 		"	#version 330 \r\n"
 		""
@@ -142,6 +141,78 @@ class ShaderLearningOpenGL0 : public ShadersIf::ShadersIf
 		"		vec3 result = (ambient + diffuse + specular) * objectColor;"
 		"		FragColor = vec4(result, 1.0);"
 		"	}";
+
+	// AMBIENT + DIFFUSE + SPECULAR + MATERIALs
+	const char* vertexShader3 =
+		"	#version 330 \r\n"
+		""
+		"	in vec3 aPos;"
+		"	in vec3 aNormal;"
+		""
+		"	uniform mat4 projection;"
+		"	uniform mat4 view;"
+		"	uniform mat4 model;"
+		"	uniform mat4 modelInv;"
+		""
+		"	out vec3 FragPos;"
+		"	out vec3 Normal;"
+		""
+		"	void main()"
+		"	{"
+		"		FragPos = vec3(model * vec4(aPos, 1.0));"
+		"       Normal = mat3(transpose(modelInv)) * aNormal;"
+		""
+		"		gl_Position = projection * view * vec4(FragPos, 1.0);"
+		"   }";
+
+	const char* fragmentShader3 =
+		"#version 330 \r\n"
+		""
+		"	out vec4 FragColor;"
+		""
+	    "   struct Material" 
+	    "   {"
+		"      vec3 ambient;"
+		"      vec3 diffuse;"
+		"      vec3 specular;"
+		"      float shininess;"
+	    "   };"
+		""
+	    "   struct Light" 
+	    "   {"
+		"      vec3 position;"
+		""
+		"      vec3 ambient;"
+		"      vec3 diffuse;"
+		"      vec3 specular;"
+	    "   };"
+		""
+		"	in vec3 Normal;"
+		"	in vec3 FragPos;"
+		""
+		"	uniform vec3 viewPos;"
+		"   uniform Material material;"
+		"   uniform Light light;"
+		""
+		"	void main()"
+		"	{"
+		// AMBIENT
+		"		vec3 ambient = light.ambient * material.ambient;"
+		// DIFFUSE
+		"		vec3 norm = normalize(Normal);"
+		"		vec3 lightDir = normalize(light.position - FragPos);"
+		"		float diff = max(dot(norm, lightDir), 0.0);"
+		"		vec3 diffuse = light.diffuse * (diff * material.diffuse);"
+		""
+		// SPECULAR
+		"       vec3 viewDir = normalize(viewPos - FragPos);"
+		"       vec3 reflectDir = reflect(-lightDir, norm);"
+		"       float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);"
+		"       vec3 specular = light.specular * (spec * material.specular);"
+		""
+		"		vec3 result = ambient + diffuse + specular;"
+		"		FragColor = vec4(result, 1.0);"
+		"	}";
 public:
 	// CONSTRUCTORs / DESTRUCTORs
 	ShaderLearningOpenGL0(GLfloat projMatrixWidth, GLfloat projMatrixHeight);
@@ -164,6 +235,17 @@ public:
 	GLuint const getCameraPositionID() const;
 	virtual GLuint const getLightColorID() const;
 	virtual GLuint const getObjectColorID() const;
+	
+	// MATERIALs and LIGHTs
+	GLuint const getMaterialAmbientID() const;
+	GLuint const getMaterialDiffuseID() const;
+	GLuint const getMaterialSpecularID() const;
+	GLuint const getMaterialShininessID() const;
+
+	GLuint const NEWgetLightPositionID() const;
+	GLuint const getLightAmbientID() const;
+	GLuint const getLightDiffuseID() const;
+	GLuint const getLightSpecularID() const;
 
 	// OPERATORs
 	void printINFO();
@@ -184,6 +266,15 @@ public:
 		output << "      viewPositionID     = " << info.viewPositionID << std::endl;
 		output << "      lightColorID       = " << info.lightColorID << std::endl;
 		output << "      objectColorID      = " << info.objectColorID << std::endl;
+		output << "" << std::endl;
+		output << "      materialAmbientID  = " << info.materialAmbientID << std::endl;
+		output << "      materialDiffuseID  = " << info.materialDiffuseID << std::endl;
+		output << "      materialSpecularID = " << info.materialSpecularID << std::endl;
+		output << "      matrialShininessID = " << info.matrialShininessID << std::endl;
+		output << "      NEWlightPositionID = " << info.NEWlightPositionID << std::endl;
+		output << "      lightAmbientID     = " << info.lightAmbientID << std::endl;
+		output << "      lightDiffuseID     = " << info.lightDiffuseID << std::endl;
+		output << "      lightSpecularID    = " << info.lightSpecularID << std::endl;
 		output << "" << std::endl;
 		return output;
 	}
@@ -206,7 +297,17 @@ private:
 	GLuint viewPositionID;
 	GLuint lightColorID;
 	GLuint objectColorID;
+
+	// MATERIALs and LIGHTs
+	GLuint materialAmbientID;
+	GLuint materialDiffuseID;
+	GLuint materialSpecularID;
+	GLuint matrialShininessID;
+
+	GLuint NEWlightPositionID;
+	GLuint lightAmbientID;
+	GLuint lightDiffuseID;
+	GLuint lightSpecularID;
 };
 }
 
-#endif

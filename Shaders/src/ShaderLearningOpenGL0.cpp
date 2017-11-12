@@ -5,7 +5,7 @@ Shaders::ShaderLearningOpenGL0::ShaderLearningOpenGL0(GLfloat projMatrixWidth, G
 {
 	shaderName = "ShaderLearningOpenGL0";
 
-    shaderProgramID = createShader(vertexShader2, fragmentShader2);
+    shaderProgramID = createShader(vertexShader3, fragmentShader3);
 	// [ VERTEX SHADER ]
 	//   ATTRIBUTEs
 	positionsID = glGetAttribLocation(shaderProgramID, "aPos");
@@ -21,6 +21,17 @@ Shaders::ShaderLearningOpenGL0::ShaderLearningOpenGL0(GLfloat projMatrixWidth, G
 	viewPositionID = glGetUniformLocation(shaderProgramID, "viewPos");
 	lightColorID = glGetUniformLocation(shaderProgramID, "lightColor");
 	objectColorID = glGetUniformLocation(shaderProgramID, "objectColor");
+
+	// NEW
+	materialAmbientID = glGetUniformLocation(shaderProgramID, "material.ambient");
+	materialDiffuseID = glGetUniformLocation(shaderProgramID, "material.diffuse");
+	materialSpecularID = glGetUniformLocation(shaderProgramID, "material.specular");
+	matrialShininessID = glGetUniformLocation(shaderProgramID, "material.shininess");
+
+	NEWlightPositionID = glGetUniformLocation(shaderProgramID, "light.position");
+	lightAmbientID = glGetUniformLocation(shaderProgramID, "light.ambient");
+	lightDiffuseID = glGetUniformLocation(shaderProgramID, "light.diffuse");
+	lightSpecularID = glGetUniformLocation(shaderProgramID, "light.specular");
 
 	// Set Projection Matrix
 	projectionMatrix = glm::perspective(glm::radians(60.0f), projMatrixWidth / projMatrixHeight, 0.1f, 1000.f);
@@ -91,6 +102,46 @@ GLuint const Shaders::ShaderLearningOpenGL0::getObjectColorID() const
 	return objectColorID;
 }
 
+// MATERIALs and LIGHTs
+GLuint const Shaders::ShaderLearningOpenGL0::getMaterialAmbientID() const
+{
+	return materialAmbientID;
+}
+
+GLuint const Shaders::ShaderLearningOpenGL0::getMaterialDiffuseID() const
+{
+	return materialDiffuseID;
+}
+
+GLuint const Shaders::ShaderLearningOpenGL0::getMaterialSpecularID() const
+{
+	return materialSpecularID;
+}
+
+GLuint const Shaders::ShaderLearningOpenGL0::getMaterialShininessID() const
+{
+	return matrialShininessID;
+}
+
+GLuint const Shaders::ShaderLearningOpenGL0::NEWgetLightPositionID() const
+{
+	return NEWlightPositionID;
+}
+
+GLuint const Shaders::ShaderLearningOpenGL0::getLightAmbientID() const
+{
+	return lightAmbientID;
+}
+
+GLuint const Shaders::ShaderLearningOpenGL0::getLightDiffuseID() const
+{
+	return lightDiffuseID;
+}
+
+GLuint const Shaders::ShaderLearningOpenGL0::getLightSpecularID() const
+{
+	return lightSpecularID;
+}
 // OPERATORs
 void Shaders::ShaderLearningOpenGL0::printINFO()
 {
