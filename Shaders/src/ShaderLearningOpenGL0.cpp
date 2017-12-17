@@ -102,7 +102,7 @@ GLuint const Shaders::ShaderLearningOpenGL0::getObjectColorID() const
 	return objectColorID;
 }
 
-// MATERIALs and LIGHTs
+// MATERIALs
 GLuint const Shaders::ShaderLearningOpenGL0::getMaterialAmbientID() const
 {
 	return materialAmbientID;
@@ -122,7 +122,7 @@ GLuint const Shaders::ShaderLearningOpenGL0::getMaterialShininessID() const
 {
 	return matrialShininessID;
 }
-
+// LIGHTs
 GLuint const Shaders::ShaderLearningOpenGL0::NEWgetLightPositionID() const
 {
 	return NEWlightPositionID;
