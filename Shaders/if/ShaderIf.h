@@ -75,6 +75,7 @@ public:
 	virtual GLuint const getshineDamperID()        const { return 0; }
 	virtual GLuint const getreflectivityID()       const { return 0; }
 	virtual GLuint const getmodelTextureID()       const { return 0; }
+	virtual GLuint const getSpecularMapID()        const { return 0; }
 	//
 	virtual GLuint const gettextureSamplerID()     const { return 0; }
 	virtual GLuint const getnormalMapID()          const { return 0; }

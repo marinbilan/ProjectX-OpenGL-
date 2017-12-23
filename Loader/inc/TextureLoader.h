@@ -37,6 +37,7 @@ private:
 
 	std::string textures;
 	std::string textureName;
+	std::string textureSpecularMapName;
 	std::string textureNormalMapName;
 	std::string textureNameExt;
 

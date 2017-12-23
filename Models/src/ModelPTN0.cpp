@@ -73,6 +73,9 @@ void Models::ModelPTN0::initPTNModel()
 		vectorOfMeshes[i].textureSizeMB = textureLoader->getVectorOfMeshes()[i].textureSizeMB;
 		modelTextureSizeMB += vectorOfMeshes[i].textureSizeMB;
 
+		// SPECULAR MAP TEXTUREs LOADER
+		vectorOfMeshes[i].textureSpecularMap0ID = textureLoader->getVectorOfMeshes()[i].textureSpecularMap0ID;
+
 		// NORMAL MAP TEXTUREs LOADER
 		vectorOfMeshes[i].textureNormalMap0ID = textureLoader->getVectorOfMeshes()[i].textureNormalMap0ID;
 	}

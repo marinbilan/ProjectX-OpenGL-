@@ -24,6 +24,7 @@ void Loader::TextureLoader::loadTModelPTNTextures()
     // PATH
 	textures = "textures/";
 	textureName = "texture";
+	textureSpecularMapName = "textureSM";
 	textureNormalMapName = "textureNM";
 	textureNameExt = ".png";
 
@@ -54,6 +55,25 @@ void Loader::TextureLoader::setTextureForEachMesh()
 		vectorOfMeshes[i].textureWidth = textureWidth;
 		vectorOfMeshes[i].textureHeight = textureHeight;
 		vectorOfMeshes[i].textureSizeMB = textureSize / bitsInMB;
+
+		// CHECK if mesh (texture) has SpecularMap - Fill struct Mesh
+		std::string isSpecularMap;
+		CF->getStringFromDB(modelFolder, "meshSpecular" + std::to_string(i), isSpecularMap);
+
+		if (std::stoi(isSpecularMap))
+		{
+			GLuint textureWidth = 0;
+			GLuint textureHeight = 0;
+			GLfloat textureSize = 0;
+
+			std::string textureSpecularMapFile = modelFolder + textures + textureSpecularMapName + std::to_string(i) + textureNameExt;
+			int texSpecularMapID = createSingleTexture(textureWidth, textureHeight, textureSize, textureSpecularMapFile);
+			CF->LOGFILE(LOG "--> Specular Map " + std::to_string(i) + ": " + textureSpecularMapFile + " created. Specular Map Texture ID = " + std::to_string(texSpecularMapID));
+			vectorOfMeshes[i].textureSpecularMap0ID = texSpecularMapID;
+			vectorOfMeshes[i].textureSpecularlMapWidth = textureWidth;
+			vectorOfMeshes[i].textureSpecularMapHeight = textureHeight;
+			vectorOfMeshes[i].textureSpecularlMapSizeMB = textureSize / bitsInMB;
+		}
 
 		// CHECK if mesh (texture) has NormalMap - Fill struct Mesh
 		std::string isNormalMap;
@@ -90,7 +110,7 @@ GLuint Loader::TextureLoader::createSingleTexture(GLuint& _textureWidth, GLuint&
 	if (fif == FIF_UNKNOWN)
 	{
 		fif = FreeImage_GetFIFFromFilename(_textureName.c_str());
-		std::cout << "FIF UNKNOWN!!!!" << std::endl;
+		std::cout << _textureName.c_str() << "FIF UNKNOWN!!!!" << std::endl;
 	}
 	if (FreeImage_FIFSupportsReading(fif)) dib = FreeImage_Load(fif, _textureName.c_str());
 

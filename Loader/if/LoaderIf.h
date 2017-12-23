@@ -25,8 +25,13 @@ struct Mesh
 	GLuint  textureWidth;
 	GLuint  textureHeight;
 	GLfloat textureSizeMB;
+	// Texture Specular Map params
+	GLuint  textureSpecularMap0ID;
+	GLuint  textureSpecularlMapWidth;
+	GLuint  textureSpecularMapHeight;
+	GLfloat textureSpecularlMapSizeMB;
 	// Texture Normal Map params
-	GLuint textureNormalMap0ID;
+	GLuint  textureNormalMap0ID;
 	GLuint  textureNormalMapWidth;
 	GLuint  textureNormalMapHeight;
 	GLfloat textureNormalMapSizeMB;
