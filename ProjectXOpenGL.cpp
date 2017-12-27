@@ -11,6 +11,7 @@
 #include "Shaders\inc\ShaderLearningOpenGL0.h"
 #include "Shaders\inc\ShaderPTN0.h"
 #include "Shaders\inc\ShaderPTN1.h"
+#include "Shaders\inc\ShaderPTN2.h"
 #include "Shaders\inc\ShaderNormalMapPTNT0.h"
 #include "Shaders\inc\ShaderGUI0.h"
 #include "Shaders\inc\ShaderTerrain0.h"
@@ -293,6 +294,7 @@ int main(int argc, char** argv)
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderLearningOpenGL0>(new Shaders::ShaderLearningOpenGL0(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderPTN0>(new Shaders::ShaderPTN0(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderPTN1>(new Shaders::ShaderPTN1(WIDTH, HEIGHT)));
+	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderPTN2>(new Shaders::ShaderPTN2(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderSkyBox0>(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderNormalMapPTNT0>(new Shaders::ShaderNormalMapPTNT0(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderMarker0>(new Shaders::ShaderMarker0(WIDTH, HEIGHT)));

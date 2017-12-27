@@ -120,7 +120,7 @@ Models::ModelSkyBox0::ModelSkyBox0(Shaders::ShadersIf::ShadersIf* _shader, Camer
 	//
 	VertexAttribPointers();
 
-	std::cout << "ModelSkyBox0 created!" << std::endl;
+	std::cout << "ModelSkyBox0 created! ID = " << texID << std::endl;
 }
 
 Models::ModelSkyBox0::~ModelSkyBox0()

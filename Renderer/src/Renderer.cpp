@@ -300,6 +300,35 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 			//
 			glUseProgram(0);
 		}
+		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderPTN2"))
+		{
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, 0);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
+			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
+
+
+			glEnableVertexAttribArray(0); // VERTEXs
+			glEnableVertexAttribArray(1); // TEXTURECOORDs
+			glEnableVertexAttribArray(2); // NORMALs
+			// VERTEX SHADER UNIFORMS
+			// Projection matrix updated in shader constructor (Only once)
+			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
+			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
+			glUniform3f(mesh.meshShaderPtr->getCameraPositionID(), _camera->getcameraPosition()[0], _camera->getcameraPosition()[1], _camera->getcameraPosition()[2]);
+
+			// FRAGMENT SHADER UNIFORMS
+			glUniform1i(mesh.meshShaderPtr->getmodelTextureID(), 0);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, _staticModel->getVectorOfMeshes()[i].texture0ID);
+
+			glUniform1i(mesh.meshShaderPtr->getSpecularMapID(), 1);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, 15); // Remove hardcoded value
+			// RENDER MESH
+			glDrawElements(GL_TRIANGLES, _staticModel->getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
+			//
+			glUseProgram(0);
+		}
 		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderNormalMapPTNT0"))
 		{
 			//std::cout << "RENDER " << sizeof(Loader::VertNormalMap) <<  std::endl;
