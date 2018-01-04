@@ -1,5 +1,4 @@
-#ifndef RENDERERIF__
-#define RENDERERIF__
+#pragma once
 
 #include "..\..\Camera\if\CameraIf.h"
 #include "..\..\Shaders\if\ShaderIf.h"
@@ -40,4 +39,3 @@ public:
 };
 }
 }
-#endif

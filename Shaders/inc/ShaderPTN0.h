@@ -1,5 +1,4 @@
-#ifndef SHADERPNT0__
-#define SHADERPNT0__
+#pragma once
 
 #include "../if/ShaderIf.h"
 
@@ -81,26 +80,29 @@ public:
 
 	~ShaderPTN0();
 	// FUNCTIONs
-	virtual std::string getShaderName();
-	virtual GLuint const getShaderProgramID() const;
+	virtual std::string  getShaderName();
+	virtual GLuint const getShaderProgramID()    const;
 	// [ VERTEX SHADER ]
 	//   ATTRIBUTEs
-	virtual GLuint const getPositionsID() const;
-	virtual GLuint const getTextureCoordsID() const;
-	virtual GLuint const getNormalsID() const;
+	// ---------------- [ ShaderPTN0 ] ----------------
+	virtual GLuint const getPositionsID()        const;
+	virtual GLuint const getTextureCoordsID()    const;
+	virtual GLuint const getNormalsID()          const;
 	//   UNIFORMs
 	virtual GLuint const getProjectionMatrixID() const;
-	virtual GLuint const getViewMatrixID() const;
-	virtual GLuint const getViewMatrixInvID() const;
-	virtual GLuint const getModelMatrixID() const;
-	virtual GLuint const getLightID() const;
-	virtual GLuint const getplaneID() const;
+	virtual GLuint const getViewMatrixID()       const;
+	virtual GLuint const getViewMatrixInvID()    const;
+	virtual GLuint const getModelMatrixID()      const;
+
+	virtual GLuint const getLightID()            const;
+	virtual GLuint const getplaneID()            const;
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
-	virtual GLuint const getlightColorID() const;	
-	virtual GLuint const getshineDamperID() const;
-	virtual GLuint const getreflectivityID() const;
-	virtual GLuint const getmodelTextureID() const;
+	virtual GLuint const getlightColorID()       const;	
+	virtual GLuint const getshineDamperID()      const;
+	virtual GLuint const getreflectivityID()     const;
+	virtual GLuint const getmodelTextureID()     const;
+	// ------------------------------------------------
 
 	// OPERATORs
 	void printINFO();
@@ -130,9 +132,10 @@ public:
 	}
 private:
 	std::string shaderName;
+	glm::mat4   projectionMatrix;
+
 	GLuint shaderProgramID;
 
-	glm::mat4 projectionMatrix;
 	// VERTEX SHADER
 	GLuint positionsID;
 	GLuint textureCoordsID;
@@ -142,15 +145,14 @@ private:
 	GLuint viewMatrixID;
 	GLuint viewMatrixInvID;
 	GLuint modelMatrixID;
+
 	GLuint lightPositionID;	
 	GLuint planeID;
 
 	// FRAGMENT SHADER
-	GLuint modelTextureID;
 	GLuint lightColourID;
 	GLuint shineDamperID;
 	GLuint reflectivityID;
+	GLuint modelTextureID;
 };
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef RENDERER__
-#define RENDERER__
+#pragma once
 
 #include "..\if\RendererIf.h"
 
@@ -34,4 +33,3 @@ private:
 	GLfloat WAVE_SPEED;
 };
 }
-#endif

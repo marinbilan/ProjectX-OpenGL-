@@ -8,12 +8,12 @@ _src/_models/_vanquish/	modelScale              10 10 10
 _src/_models/_vanquish/	modelRotateAround 1 0 0
 _src/_models/_vanquish/	angle                        -1.57
 
-_src/_models/_vanquish/    meshShader0    ShaderPTN2
-_src/_models/_vanquish/    meshShader1    ShaderPTN2
-_src/_models/_vanquish/    meshShader2    ShaderPTN2
-_src/_models/_vanquish/    meshShader3    ShaderPTN2
-_src/_models/_vanquish/    meshShader4    ShaderPTN2
-_src/_models/_vanquish/    meshShader5    ShaderPTN2
+_src/_models/_vanquish/    meshShader0    ShaderPTN0
+_src/_models/_vanquish/    meshShader1    ShaderPTN0
+_src/_models/_vanquish/    meshShader2    ShaderPTN0
+_src/_models/_vanquish/    meshShader3    ShaderPTN0
+_src/_models/_vanquish/    meshShader4    ShaderPTN0
+_src/_models/_vanquish/    meshShader5    ShaderPTN0
 
 // MESH SPECULAR MAP INFO
                                            // Mesh              // Specular Map Info
@@ -21,7 +21,7 @@ _src/_models/_vanquish/    meshSpecular0    0
 _src/_models/_vanquish/    meshSpecular1    0
 _src/_models/_vanquish/    meshSpecular2    0
 _src/_models/_vanquish/    meshSpecular3    0
-_src/_models/_vanquish/    meshSpecular4    2
+_src/_models/_vanquish/    meshSpecular4    0
 _src/_models/_vanquish/    meshSpecular5    0
 
 // MESH NORMAL MAP INFO
@@ -43,11 +43,10 @@ _src/_models/lightMarker/    modelName    lightMarker
 
 _src/_models/lightMarker/    meshShader0    ShaderMarker0
 
-_src/_models/lightMarker/    modelPosition           385 27 385
+_src/_models/lightMarker/    modelPosition           385 7 385
 _src/_models/lightMarker/    modelScale              0.5 0.5 0.5
 _src/_models/lightMarker/    modelRotateAround 1 0 0
 _src/_models/lightMarker/    angle                        -1.57
-
 
 // MESH SPECULAR MAP INFO
                                            // Mesh              // Specular Map Info
@@ -60,7 +59,26 @@ _src/_models/lightMarker/    meshTexture0     0
 
 
 
+// ----======================----
+// ----==== Model Raptor ====----
+// ----======================----
+_src/_models/_raptor/    modelName    model
 
+//_src/_models/_raptor/    meshShader0    ShaderLearningOpenGL0
+//_src/_models/_raptor/    meshShader0    ShaderPTN0
+_src/_models/_raptor/    meshShader0       ShaderPTN2
+
+_src/_models/_raptor/	modelPosition           400 0 400
+_src/_models/_raptor/	modelScale              1 1 1
+_src/_models/_raptor/	modelRotateAround 1 0 0
+_src/_models/_raptor/	angle                        -1.57
+
+// MESH SPECULAR MAP INFO
+_src/_models/_raptor/    meshSpecular0    0
+
+// MESH NORMAL MAP INFO
+_src/_models/_raptor/    meshTexture0    0
+// ----====================----
 
 
 
@@ -88,20 +106,6 @@ _src/_models/barrelNM/        angle                        -1.57
 
 
 
-// ----======================----
-// ----==== Model Raptor ====----
-// ----======================----
-_src/_models/_raptor/    modelName    model
-
-_src/_models/_raptor/    meshShader0    ShaderLearningOpenGL0
-// MESH NORMAL MAP INFO
-_src/_models/_raptor/    meshTexture0    0
-
-_src/_models/_raptor/	modelPosition           400 0 400
-_src/_models/_raptor/	modelScale              1 1 1
-_src/_models/_raptor/	modelRotateAround 1 0 0
-_src/_models/_raptor/	angle                        -1.57
-// ----====================----
 
 // ----======================----
 // ----==== Model plantNM ====----

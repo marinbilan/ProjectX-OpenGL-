@@ -291,10 +291,10 @@ int main(int argc, char** argv)
 	//
 	std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>> vectorOfSmartShaders;
 
-	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderLearningOpenGL0>(new Shaders::ShaderLearningOpenGL0(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderPTN0>(new Shaders::ShaderPTN0(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderPTN1>(new Shaders::ShaderPTN1(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderPTN2>(new Shaders::ShaderPTN2(WIDTH, HEIGHT)));
+	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderLearningOpenGL0>(new Shaders::ShaderLearningOpenGL0(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderSkyBox0>(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderNormalMapPTNT0>(new Shaders::ShaderNormalMapPTNT0(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderMarker0>(new Shaders::ShaderMarker0(WIDTH, HEIGHT)));

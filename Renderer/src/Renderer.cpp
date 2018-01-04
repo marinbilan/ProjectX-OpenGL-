@@ -232,7 +232,6 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
 			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
 
-
 			glEnableVertexAttribArray(0); // VERTEXs
 			glEnableVertexAttribArray(1); // TEXTURECOORDs
 			glEnableVertexAttribArray(2); // NORMALs
@@ -350,12 +349,12 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 			// glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
 			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 			// TODO: Remove from here
-			glm::vec3 lightPositionEyeSpace(385.0f, 7.0f, 385.0f);
+			glm::vec3 lightPositionEyeSpace(385.0f, 80.0f, 385.0f);
 			glUniform3f(mesh.meshShaderPtr->getLightPositionEyeSpaceID(), lightPositionEyeSpace[0], lightPositionEyeSpace[1], lightPositionEyeSpace[2]);
 			//
 			// FRAGMENT SHADER UNIFORMs
 			//
-			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
+			glm::vec3 lightColorModelPTN(1.0f, 0.0f, 0.0f);
 			glUniform3f(mesh.meshShaderPtr->getlightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
 			glUniform1f(mesh.meshShaderPtr->getshineDamperID(), 15.0f);
 			glUniform1f(mesh.meshShaderPtr->getreflectivityID(), 0.2f);

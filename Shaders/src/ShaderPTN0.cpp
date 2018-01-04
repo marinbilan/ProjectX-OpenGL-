@@ -16,6 +16,7 @@ Shaders::ShaderPTN0::ShaderPTN0(GLfloat projMatrixWidth, GLfloat projMatrixHeigh
 	viewMatrixID = glGetUniformLocation(shaderProgramID, "viewMatrix");
 	viewMatrixInvID = glGetUniformLocation(shaderProgramID, "viewMatrixInv");
 	modelMatrixID = glGetUniformLocation(shaderProgramID, "transformationMatrix");
+
 	lightPositionID = glGetUniformLocation(shaderProgramID, "lightPosition");
 	planeID = glGetUniformLocation(shaderProgramID, "plane");
 	// [ FRAGMENT SHADER ]
