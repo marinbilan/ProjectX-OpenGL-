@@ -244,15 +244,15 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 			// TODO: Remove from here
 			glm::vec3 lightPositionModelPTN(385.0f, 7.0f, 385.0f);
 			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
-			glUniform3f(mesh.meshShaderPtr->getLightID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
+			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
 			glm::vec4 planeModelPTN(0.0f, -1.0f, 0.0f, 100000.0f);
 			glUniform4f(mesh.meshShaderPtr->getplaneID(), planeModelPTN[0], planeModelPTN[1], planeModelPTN[2], planeModelPTN[3]);
 			// FRAGMENT SHADER UNIFORMS
-			glUniform3f(mesh.meshShaderPtr->getlightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
-			glUniform1f(mesh.meshShaderPtr->getshineDamperID(), 5.0f);
-			glUniform1f(mesh.meshShaderPtr->getreflectivityID(), 0.1f);
+			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
+			glUniform1f(mesh.meshShaderPtr->getShineDamperID(), 5.0f);
+			glUniform1f(mesh.meshShaderPtr->getReflectivityID(), 0.1f);
 
-			glUniform1i(mesh.meshShaderPtr->getmodelTextureID(), i);
+			glUniform1i(mesh.meshShaderPtr->getModelTextureID(), i);
 			glActiveTexture(GL_TEXTURE0 + i);
 			glBindTexture(GL_TEXTURE_2D, _staticModel->getVectorOfMeshes()[i].texture0ID);
 			// RENDER MESH
@@ -279,15 +279,15 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 			// TODO: Remove from here
 			glm::vec3 lightPositionModelPTN(385.0f, 7.0f, 385.0f);
 			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
-			glUniform3f(mesh.meshShaderPtr->getLightID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
+			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
 			glm::vec4 planeModelPTN(0.0f, -1.0f, 0.0f, 100000.0f);
 			glUniform4f(mesh.meshShaderPtr->getplaneID(), planeModelPTN[0], planeModelPTN[1], planeModelPTN[2], planeModelPTN[3]);
 			// FRAGMENT SHADER UNIFORMS
-			glUniform3f(mesh.meshShaderPtr->getlightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
-			glUniform1f(mesh.meshShaderPtr->getshineDamperID(), 25.0f);
-			glUniform1f(mesh.meshShaderPtr->getreflectivityID(), 5.0f);
+			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
+			glUniform1f(mesh.meshShaderPtr->getShineDamperID(), 25.0f);
+			glUniform1f(mesh.meshShaderPtr->getReflectivityID(), 5.0f);
 
-			glUniform1i(mesh.meshShaderPtr->getmodelTextureID(), 0);
+			glUniform1i(mesh.meshShaderPtr->getModelTextureID(), 0);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, _staticModel->getVectorOfMeshes()[i].texture0ID);
 
@@ -305,7 +305,6 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
 			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
 
-
 			glEnableVertexAttribArray(0); // VERTEXs
 			glEnableVertexAttribArray(1); // TEXTURECOORDs
 			glEnableVertexAttribArray(2); // NORMALs
@@ -316,7 +315,7 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 			glUniform3f(mesh.meshShaderPtr->getCameraPositionID(), _camera->getcameraPosition()[0], _camera->getcameraPosition()[1], _camera->getcameraPosition()[2]);
 
 			// FRAGMENT SHADER UNIFORMS
-			glUniform1i(mesh.meshShaderPtr->getmodelTextureID(), 0);
+			glUniform1i(mesh.meshShaderPtr->getModelTextureID(), 0);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, _staticModel->getVectorOfMeshes()[i].texture0ID);
 
@@ -354,7 +353,7 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 			//
 			// FRAGMENT SHADER UNIFORMs
 			//
-			glm::vec3 lightColorModelPTN(1.0f, 0.0f, 0.0f);
+			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
 			glUniform3f(mesh.meshShaderPtr->getlightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
 			glUniform1f(mesh.meshShaderPtr->getshineDamperID(), 15.0f);
 			glUniform1f(mesh.meshShaderPtr->getreflectivityID(), 0.2f);

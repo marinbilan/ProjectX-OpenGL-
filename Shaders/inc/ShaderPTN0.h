@@ -94,14 +94,14 @@ public:
 	virtual GLuint const getViewMatrixInvID()    const;
 	virtual GLuint const getModelMatrixID()      const;
 
-	virtual GLuint const getLightID()            const;
+	virtual GLuint const getLightPositionID()    const;
 	virtual GLuint const getplaneID()            const;
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
-	virtual GLuint const getlightColorID()       const;	
-	virtual GLuint const getshineDamperID()      const;
-	virtual GLuint const getreflectivityID()     const;
-	virtual GLuint const getmodelTextureID()     const;
+	virtual GLuint const getLightColorID()       const;	
+	virtual GLuint const getShineDamperID()      const;
+	virtual GLuint const getReflectivityID()     const;
+	virtual GLuint const getModelTextureID()     const;
 	// ------------------------------------------------
 
 	// OPERATORs

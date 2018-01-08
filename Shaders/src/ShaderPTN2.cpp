@@ -85,7 +85,7 @@ GLuint const Shaders::ShaderPTN2::getCameraPositionID() const
 
 // FRAGMENT SHADER
 
-GLuint const Shaders::ShaderPTN2::getmodelTextureID() const
+GLuint const Shaders::ShaderPTN2::getModelTextureID() const
 {
 	return modelTextureID;
 }

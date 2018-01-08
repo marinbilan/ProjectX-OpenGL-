@@ -47,27 +47,41 @@ public:
 	virtual GLuint const getViewMatrixInvID()    const { return 0; }
 	virtual GLuint const getModelMatrixID()      const { return 0; }
 
-	virtual GLuint const getLightID()            const { return 0; } // LIGHT POSITION
+	virtual GLuint const getLightPositionID()    const { return 0; } // LIGHT POSITION
 	virtual GLuint const getplaneID()            const { return 0; }
 	// FRAGMENT SHADER
 	// [ UNIFORMs ]
-	virtual GLuint const getlightColorID()       const { return 0; }	
+	virtual GLuint const getLightColorID()       const { return 0; }	
+	virtual GLuint const getShineDamperID()      const { return 0; }
+	virtual GLuint const getReflectivityID()     const { return 0; }
+	virtual GLuint const getModelTextureID()     const { return 0; }
+	// -------------------------------------------------------------
+	// ------------------- [ ShaderPTN1 ] --------------------------
+	virtual GLuint const getSpecularMapID()      const { return 0; }
+	// -------------------------------------------------------------
+	// ------------------- [ ShaderPTN2 ] --------------------------
+	// -------------------------------------------------------------
+
+
+
+
+	virtual GLuint const getlightColorID()       const { return 0; }
 	virtual GLuint const getshineDamperID()      const { return 0; }
 	virtual GLuint const getreflectivityID()     const { return 0; }
 	virtual GLuint const getmodelTextureID()     const { return 0; }
-	// -------------------------------------------------------------
 
-	// ------------------- [ ShaderPTN1 ] --------------------------
 
-	// -------------------------------------------------------------
+
+
+
 
 
 
 
 	virtual GLuint const getTangentsID()           const { return 0; }
-	virtual GLuint const getlightPositionID()      const { return 0; }
 	virtual GLuint const getLightPositionEyeSpaceID() const { return 0; }
-	virtual GLuint const getLightPositionID()      const { return 0; }
+	virtual GLuint const getLightID()      const { return 0; }
+	virtual GLuint const getlightPositionID()      const { return 0; }
 	//
 	virtual GLuint const getModelMatrixInvID()     const { return 0; }
 	virtual GLuint const getCameraPositionID()     const { return 0; } // CAMERA POSITION
@@ -78,7 +92,6 @@ public:
 	// Depth Map
 	virtual GLuint const getLightSpaceMatrixID()   const { return 0; }
 	virtual GLuint const getInvMat3ModelID()       const { return 0; }
-	virtual GLuint const getSpecularMapID()        const { return 0; }
 	virtual GLuint const getEnviroMapID()          const { return 0; }
 	//
 	virtual GLuint const gettextureSamplerID()     const { return 0; }
@@ -94,7 +107,7 @@ public:
 	virtual GLuint const getShadowMapID()          const { return 0; }
 	// LEARNING OPENGL
 	virtual GLuint const getObjectColorID()        const { return 0; }
-	virtual GLuint const getLightColorID()         const { return 0; }
+	//virtual GLuint const getLightColorID()         const { return 0; }
 	virtual GLuint const getmvpMatrixID()          const { return 0; }
 	// TERRAIN
 	virtual GLuint const getTextureSamplerID()     const { return 0; }

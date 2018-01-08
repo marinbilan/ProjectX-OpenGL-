@@ -1,5 +1,4 @@
-#ifndef SHADERPNT2__
-#define SHADERPNT2__
+#pragma once
 
 #include "../if/ShaderIf.h"
 
@@ -84,7 +83,7 @@ public:
 	virtual GLuint const getCameraPositionID() const;
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
-	virtual GLuint const getmodelTextureID() const;
+	virtual GLuint const getModelTextureID() const;
 	virtual GLuint const getEnviroMapID() const;
 
 	// OPERATORs
@@ -129,5 +128,3 @@ private:
 	GLuint enviroMapID;
 };
 }
-
-#endif

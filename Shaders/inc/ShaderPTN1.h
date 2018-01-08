@@ -1,5 +1,4 @@
-#ifndef SHADERPNT1__
-#define SHADERPNT1__
+#pragma once
 
 #include "../if/ShaderIf.h"
 
@@ -100,14 +99,14 @@ public:
 	virtual GLuint const getViewMatrixID() const;
 	virtual GLuint const getViewMatrixInvID() const;
 	virtual GLuint const getModelMatrixID() const;
-	virtual GLuint const getLightID() const;
+	virtual GLuint const getLightPositionID() const;
 	virtual GLuint const getplaneID() const;
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
-	virtual GLuint const getlightColorID() const;	
-	virtual GLuint const getshineDamperID() const;
-	virtual GLuint const getreflectivityID() const;
-	virtual GLuint const getmodelTextureID() const;
+	virtual GLuint const getLightColorID() const;
+	virtual GLuint const getShineDamperID() const;
+	virtual GLuint const getReflectivityID() const;
+	virtual GLuint const getModelTextureID() const;
 	virtual GLuint const getSpecularMapID() const;
 
 	// OPERATORs
@@ -155,13 +154,10 @@ private:
 	GLuint planeID;
 
 	// FRAGMENT SHADER
-	GLuint modelTextureID;
-	GLuint specularMapID;
-
 	GLuint lightColourID;
 	GLuint shineDamperID;
 	GLuint reflectivityID;
+	GLuint modelTextureID;
+	GLuint specularMapID;
 };
 }
-
-#endif

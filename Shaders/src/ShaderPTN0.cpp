@@ -86,7 +86,7 @@ GLuint const Shaders::ShaderPTN0::getModelMatrixID() const
 	return modelMatrixID;
 }
 
-GLuint const Shaders::ShaderPTN0::getLightID() const
+GLuint const Shaders::ShaderPTN0::getLightPositionID() const
 {
 	return lightPositionID;
 }
@@ -96,22 +96,22 @@ GLuint const Shaders::ShaderPTN0::getplaneID() const
 	return planeID;
 }
 // FRAGMENT SHADER
-GLuint const Shaders::ShaderPTN0::getlightColorID() const
+GLuint const Shaders::ShaderPTN0::getLightColorID() const
 {
 	return lightColourID;
 }
 
-GLuint const Shaders::ShaderPTN0::getshineDamperID() const
+GLuint const Shaders::ShaderPTN0::getShineDamperID() const
 {
 	return shineDamperID;
 }
 
-GLuint const Shaders::ShaderPTN0::getreflectivityID() const
+GLuint const Shaders::ShaderPTN0::getReflectivityID() const
 {
 	return reflectivityID;
 }
 
-GLuint const Shaders::ShaderPTN0::getmodelTextureID() const
+GLuint const Shaders::ShaderPTN0::getModelTextureID() const
 {
 	return modelTextureID;
 }
