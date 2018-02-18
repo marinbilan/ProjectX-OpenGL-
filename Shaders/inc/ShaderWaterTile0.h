@@ -1,9 +1,4 @@
-#ifndef SHADERWATERTILE0__
-#define SHADERWATERTILE0__
-//
-//#include <iostream>
-//#include <string>
-
+#pragma once
 #include "../if/ShaderIf.h"
 
 namespace Shaders
@@ -11,53 +6,30 @@ namespace Shaders
 	class ShaderWaterTile0 : public ShadersIf::ShadersIf
 	{
 	public:
-		//
-		//
 		// CONSTRUCTORs / DESTRUCTORs
-		//
-		//	
 		ShaderWaterTile0(const char* vertexShader, const char* fragmentShader);
-
 		~ShaderWaterTile0();
-		//
-		//
-		// FUNCTIONs
-		// 
-		//
+
 		virtual GLuint const getShaderProgramID() const;
-		// =============
 		// VERTEX SHADER
-		// =============
-		//
 		// [ ATTRIBs ]
-		//
 		virtual GLuint const getPositionsID() const;
-		// 
 		// [ UNIFORMs ]
-		//
 		virtual GLuint const getViewMatrixID() const;
 		virtual GLuint const getModelMatrixID() const;
-
 		virtual GLuint const getCameraPositionID() const;
-		virtual GLuint const getlightPositionID() const;
-		// ===============
-		// FRAGMENT SHADER
-		// ===============
-		// 
-		// [ UNIFORMs ]
-		//
-		virtual GLuint const getreflectionTextureID() const;
-		virtual GLuint const getrefractionTextureID() const;
-		virtual GLuint const getdudvMapID() const;
-		virtual GLuint const getnormalMapID() const;
+		virtual GLuint const getLightPositionID() const;
 
-		virtual GLuint const getlightColorID() const;
-		virtual GLuint const getmoveFactorID() const;
-		//
-		//
+		// FRAGMENT SHADER
+		// [ UNIFORMs ]
+		virtual GLuint const getReflectionTextureID() const;
+		virtual GLuint const getRefractionTextureID() const;
+		virtual GLuint const getDudvMapID() const;
+		virtual GLuint const getNormalMapID() const;
+		virtual GLuint const getLightColorID() const;
+		virtual GLuint const getMoveFactorID() const;
+
 		// OPERATORs
-		//
-		//	
 		friend std::ostream& operator<<(std::ostream& output, ShaderWaterTile0& info)
 		{
 			output << "" << std::endl;
@@ -84,30 +56,20 @@ namespace Shaders
 
 	private:
 		glm::mat4 projectionMatrix;
-
 		GLuint shaderProgramID;
-		// =============
+
 		// VERTEX SHADER
-		// =============
-		//
 		// [ ATTRIBs ]
-		//
 		GLuint positionsID;
-		// 
 		// [ UNIFORMs ]
-		//
 		GLuint projectionMatrixID;
 		GLuint viewMatrixID;
 		GLuint modelMatrixID;
-
 		GLuint cameraPositionID;
 		GLuint lightPositionID;
-		// =============
+
 		// VERTEX SHADER
-		// =============
-		// 
 		// [ UNIFORMs ]
-		//
 		GLuint reflectionTextureID;
 		GLuint refractionTextureID;
 		GLuint dudvMapID;
@@ -117,5 +79,3 @@ namespace Shaders
 		GLuint moveFactorID;
 	};
 }
-
-#endif

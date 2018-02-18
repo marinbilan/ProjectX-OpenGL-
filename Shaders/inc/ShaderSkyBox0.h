@@ -1,6 +1,4 @@
-#ifndef SHADERSKYBOX0__
-#define SHADERSKYBOX0__
-
+#pragma once
 #include "../if/ShaderIf.h"
 
 namespace Shaders
@@ -78,5 +76,3 @@ private:
 	GLuint viewMatrixID;
 };
 }
-
-#endif

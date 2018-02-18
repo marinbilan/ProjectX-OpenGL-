@@ -163,17 +163,17 @@ void Models::ModelWaterTile0::renderModel()
 
 	//glActiveTexture(GL_TEXTURE0);
 	//glBindTexture(GL_TEXTURE_2D, texID); // Bind texture that we want to use to TEXTURE UNIT 0 !REMOVE HARCODED NO 8!
-	glUniform1i(shader->getreflectionTextureID(), 0);
+	glUniform1i(shader->getReflectionTextureID(), 0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 8);	
-	glUniform1i(shader->getrefractionTextureID(), 1);
+	glUniform1i(shader->getRefractionTextureID(), 1);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, 12);
-	glUniform1i(shader->getdudvMapID(), 2);
+	glUniform1i(shader->getDudvMapID(), 2);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, texID);
 	// NORMAL MAP
-	glUniform1i(shader->getnormalMapID(), 3);
+	glUniform1i(shader->getNormalMapID(), 3);
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, normalMapID);
 	//

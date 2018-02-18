@@ -231,8 +231,7 @@ public:
 	virtual GLuint const getModelMatrixInvID() const;
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
-	GLuint const getLightPositionID() const;
-	GLuint const getCameraPositionID() const;
+	virtual GLuint const getCameraPositionID() const;
 	virtual GLuint const getLightColorID() const;
 	virtual GLuint const getObjectColorID() const;
 	
@@ -242,7 +241,7 @@ public:
 	GLuint const getMaterialSpecularID() const;
 	GLuint const getMaterialShininessID() const;
 
-	GLuint const NEWgetLightPositionID() const;
+	GLuint const getLightPositionID() const;
 	GLuint const getLightAmbientID() const;
 	GLuint const getLightDiffuseID() const;
 	GLuint const getLightSpecularID() const;
@@ -262,7 +261,6 @@ public:
 		output << "      viewMatrixID       = " << info.viewMatrixID << std::endl;
 		output << "      modelMatrixID      = " << info.modelMatrixID << std::endl;
 		output << "  [ FRAGMENT SHADER ]" << std::endl;
-		output << "      lightPositionID    = " << info.lightPositionID << std::endl;
 		output << "      viewPositionID     = " << info.viewPositionID << std::endl;
 		output << "      lightColorID       = " << info.lightColorID << std::endl;
 		output << "      objectColorID      = " << info.objectColorID << std::endl;
@@ -271,7 +269,7 @@ public:
 		output << "      materialDiffuseID  = " << info.materialDiffuseID << std::endl;
 		output << "      materialSpecularID = " << info.materialSpecularID << std::endl;
 		output << "      matrialShininessID = " << info.matrialShininessID << std::endl;
-		output << "      NEWlightPositionID = " << info.NEWlightPositionID << std::endl;
+		output << "      lightPositionID    = " << info.lightPositionID << std::endl;
 		output << "      lightAmbientID     = " << info.lightAmbientID << std::endl;
 		output << "      lightDiffuseID     = " << info.lightDiffuseID << std::endl;
 		output << "      lightSpecularID    = " << info.lightSpecularID << std::endl;
@@ -293,7 +291,6 @@ private:
 	GLuint modelMatrixInvID;
 
 	// FRAGMENT SHADER
-	GLuint lightPositionID;
 	GLuint viewPositionID;
 	GLuint lightColorID;
 	GLuint objectColorID;
@@ -304,7 +301,7 @@ private:
 	GLuint materialSpecularID;
 	GLuint matrialShininessID;
 
-	GLuint NEWlightPositionID;
+	GLuint lightPositionID;
 	GLuint lightAmbientID;
 	GLuint lightDiffuseID;
 	GLuint lightSpecularID;

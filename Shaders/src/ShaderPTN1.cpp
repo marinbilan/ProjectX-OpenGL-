@@ -91,7 +91,7 @@ GLuint const Shaders::ShaderPTN1::getLightPositionID() const
 	return lightPositionID;
 }
 
-GLuint const Shaders::ShaderPTN1::getplaneID() const
+GLuint const Shaders::ShaderPTN1::getPlaneID() const
 {
 	return planeID;
 }

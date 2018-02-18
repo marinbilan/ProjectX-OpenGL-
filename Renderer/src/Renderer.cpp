@@ -34,10 +34,10 @@ void Renderer::Renderer::renderWater(Shaders::ShadersIf::ShadersIf* _shader,
 	WAVE_SPEED = 0.001;
 	moveFactor += WAVE_SPEED;
 	glUseProgram(_shader->getShaderProgramID());
-	glUniform1f(_shader->getmoveFactorID(), moveFactor);
+	glUniform1f(_shader->getMoveFactorID(), moveFactor);
 	_modelWaterTile->renderModel(); // plane high (y = +100000) TODO
 }
-
+/*
 void Renderer::Renderer::renderModelPTN(GLfloat* _planeModelPTN, 
 	                                    Camera::CameraIf::CameraIf* _camera,
 	                                    Models::ModelPTN0* _modelPTN, 
@@ -62,7 +62,7 @@ void Renderer::Renderer::renderModelPTN(GLfloat* _planeModelPTN,
 	_modelPTN->render();
 	glUseProgram(0);
 }
-
+*/
 void Renderer::Renderer::renderDepthMap(Models::ModelPTN0* _modelPTN, Shaders::ShadersIf::ShadersIf* _shader)
 {
 	glUseProgram(_shader->getShaderProgramID());
@@ -71,7 +71,6 @@ void Renderer::Renderer::renderDepthMap(Models::ModelPTN0* _modelPTN, Shaders::S
 	glUseProgram(0);
 }
 
-// NEW
 void Renderer::Renderer::renderTerrain(Shaders::ShadersIf::ShadersIf* _shader, Models::ModelTerrain0* _staticModel, Camera::CameraIf::CameraIf* _camera)
 {
 	glUseProgram(_shader->getShaderProgramID());
@@ -111,11 +110,9 @@ void Renderer::Renderer::renderTerrain(Shaders::ShadersIf::ShadersIf* _shader, M
 	glBindTexture(GL_TEXTURE_2D, _staticModel->blendMapID);
 
 	glm::vec3 lightColorTerrain(1.0f, 1.0f, 1.0f);
-	glUniform3f(_shader->getlightColorID(), lightColorTerrain[0], lightColorTerrain[1], lightColorTerrain[2]);
-	glUniform1f(_shader->getshineDamperID(), 30.0f);
-	glUniform1f(_shader->getreflectivityID(), 0.1f);
-
-	// std::cout << _staticModel->numInd << std::endl;
+	glUniform3f(_shader->getLightColorID(), lightColorTerrain[0], lightColorTerrain[1], lightColorTerrain[2]);
+	glUniform1f(_shader->getShineDamperID(), 30.0f);
+	glUniform1f(_shader->getReflectivityID(), 0.1f);
 
 	glDrawElements(GL_TRIANGLES, _staticModel->numInd, GL_UNSIGNED_INT, 0);
 
@@ -134,9 +131,8 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 	for (unsigned int i = 0; i < _staticModel->getVectorOfMeshes().size(); i++) {
 		glBindBuffer(GL_ARRAY_BUFFER, _staticModel->getVectorOfMeshes()[i].VBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _staticModel->getVectorOfMeshes()[i].IBO);
-		//
+
 		// GET SHADER FOR EACH MESH IN MODEL
-		//
 		Models::Mesh mesh = _staticModel->getVectorOfMeshes()[i];
 
 		glUseProgram(mesh.meshShaderPtr->getShaderProgramID());
@@ -211,7 +207,7 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 
 			// Light (Try sin from tutorial)
 			GLfloat lightPosition1[] = { 385.0f, 27.0f, 385.0f };
-			glUniform3f(mesh.meshShaderPtr->NEWgetLightPositionID(), lightPosition1[0], lightPosition1[1], lightPosition1[2]);
+			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPosition1[0], lightPosition1[1], lightPosition1[2]);
 
 			glm::vec3 lightAmbient(0.2f, 0.2f, 0.2f);
 			glUniform3f(mesh.meshShaderPtr->getLightAmbientID(), lightAmbient[0], lightAmbient[1], lightAmbient[2]);
@@ -246,7 +242,7 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
 			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
 			glm::vec4 planeModelPTN(0.0f, -1.0f, 0.0f, 100000.0f);
-			glUniform4f(mesh.meshShaderPtr->getplaneID(), planeModelPTN[0], planeModelPTN[1], planeModelPTN[2], planeModelPTN[3]);
+			glUniform4f(mesh.meshShaderPtr->getPlaneID(), planeModelPTN[0], planeModelPTN[1], planeModelPTN[2], planeModelPTN[3]);
 			// FRAGMENT SHADER UNIFORMS
 			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
 			glUniform1f(mesh.meshShaderPtr->getShineDamperID(), 5.0f);
@@ -281,7 +277,7 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
 			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
 			glm::vec4 planeModelPTN(0.0f, -1.0f, 0.0f, 100000.0f);
-			glUniform4f(mesh.meshShaderPtr->getplaneID(), planeModelPTN[0], planeModelPTN[1], planeModelPTN[2], planeModelPTN[3]);
+			glUniform4f(mesh.meshShaderPtr->getPlaneID(), planeModelPTN[0], planeModelPTN[1], planeModelPTN[2], planeModelPTN[3]);
 			// FRAGMENT SHADER UNIFORMS
 			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
 			glUniform1f(mesh.meshShaderPtr->getShineDamperID(), 25.0f);
@@ -354,11 +350,11 @@ void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::Mod
 			// FRAGMENT SHADER UNIFORMs
 			//
 			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
-			glUniform3f(mesh.meshShaderPtr->getlightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
-			glUniform1f(mesh.meshShaderPtr->getshineDamperID(), 15.0f);
-			glUniform1f(mesh.meshShaderPtr->getreflectivityID(), 0.2f);
+			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
+			glUniform1f(mesh.meshShaderPtr->getShineDamperID(), 15.0f);
+			glUniform1f(mesh.meshShaderPtr->getReflectivityID(), 0.2f);
 
-			glUniform1i(mesh.meshShaderPtr->getmodelTextureID(), 0);
+			glUniform1i(mesh.meshShaderPtr->getModelTextureID(), 0);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, _staticModel->getVectorOfMeshes()[i].texture0ID);
 

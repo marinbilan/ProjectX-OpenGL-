@@ -1,6 +1,4 @@
-#ifndef SHADERTERRAIN0__
-#define SHADERTERRAIN0__
-
+#pragma once
 #include "../if/ShaderIf.h"
 
 namespace Shaders
@@ -111,9 +109,9 @@ public:
 	virtual GLuint const getBTextureID() const;
 	virtual GLuint const getBlendMapID() const;
 
-	virtual GLuint const getlightColorID() const;
-	virtual GLuint const getshineDamperID() const;
-	virtual GLuint const getreflectivityID() const;
+	virtual GLuint const getLightColorID() const;
+	virtual GLuint const getShineDamperID() const;
+	virtual GLuint const getReflectivityID() const;
 
 	// OPERATORs
 	void printINFO();
@@ -172,4 +170,3 @@ private:
 	GLuint reflectivityID;
 };
 }
-#endif

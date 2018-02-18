@@ -1,34 +1,32 @@
 #include "../../Shaders/inc/ShaderNormalMapPTNT0.h"
-//
+
 // CONSTRUCTORs / DESTRUCTORs
-//
 Shaders::ShaderNormalMapPTNT0::ShaderNormalMapPTNT0(GLfloat projMatrixWidth, GLfloat projMatrixHeight)
 {
 	shaderName = "ShaderNormalMapPTNT0"; // Hardcoded shader name
     shaderProgramID = createShader(VertexShaderNormalMapPTNT, FragmentShaderNormalMapPTNT);
+
 	// [ VERTEX SHADER ]
-	//   ATTRIBUTEs
+	//  ATTRIBUTEs
 	positionsID = glGetAttribLocation(shaderProgramID, "position");
 	textureCoordsID = glGetAttribLocation(shaderProgramID, "textureCoordinates");
 	normalsID = glGetAttribLocation(shaderProgramID, "normal");
 	tangentsID = glGetAttribLocation(shaderProgramID, "tangent");
-	// [ UNIFORMs ]
+	// UNIFORMs 
 	projectionMatrixID = glGetUniformLocation(shaderProgramID, "projectionMatrix");      
 	viewMatrixID = glGetUniformLocation(shaderProgramID, "viewMatrix");
 	modelMatrixID = glGetUniformLocation(shaderProgramID, "transformationMatrix");
-
 	lightPositionEyeSpaceID = glGetUniformLocation(shaderProgramID, "lightPositionEyeSpace");
+
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
 	lightColourID = glGetUniformLocation(shaderProgramID, "lightColour");
 	shineDamperID = glGetUniformLocation(shaderProgramID, "shineDamper");
 	reflectivityID = glGetUniformLocation(shaderProgramID, "reflectivity");
-
 	modelTextureID = glGetUniformLocation(shaderProgramID, "modelTexture");
 	modelNormalMapID = glGetUniformLocation(shaderProgramID, "normalMap");
-	//
+
 	// Set Projection Matrix
-    // 
 	projectionMatrix = glm::perspective(glm::radians(60.0f), projMatrixWidth / projMatrixHeight, 0.1f, 1000.f);
 	glUseProgram(shaderProgramID);
 	glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, &projectionMatrix[0][0]);
@@ -93,22 +91,22 @@ GLuint const Shaders::ShaderNormalMapPTNT0::getLightPositionEyeSpaceID() const
 }
 
 // FRAGMENT SHADER
-GLuint const Shaders::ShaderNormalMapPTNT0::getlightColorID() const
+GLuint const Shaders::ShaderNormalMapPTNT0::getLightColorID() const
 {
 	return lightColourID;
 }
 
-GLuint const Shaders::ShaderNormalMapPTNT0::getshineDamperID() const
+GLuint const Shaders::ShaderNormalMapPTNT0::getShineDamperID() const
 {
 	return shineDamperID;
 }
 
-GLuint const Shaders::ShaderNormalMapPTNT0::getreflectivityID() const
+GLuint const Shaders::ShaderNormalMapPTNT0::getReflectivityID() const
 {
 	return reflectivityID;
 }
 
-GLuint const Shaders::ShaderNormalMapPTNT0::getmodelTextureID() const
+GLuint const Shaders::ShaderNormalMapPTNT0::getModelTextureID() const
 {
 	return modelTextureID;
 }

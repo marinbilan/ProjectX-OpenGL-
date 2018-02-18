@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../if/ShaderIf.h"
 
 namespace Shaders
@@ -69,7 +68,7 @@ public:
 
 	~ShaderPTN2();
 	// FUNCTIONs
-	virtual std::string getShaderName();
+	virtual std::string  getShaderName();
 	virtual GLuint const getShaderProgramID() const;
 	// [ VERTEX SHADER ]
 	//   ATTRIBUTEs

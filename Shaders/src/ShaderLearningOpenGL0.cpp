@@ -17,18 +17,16 @@ Shaders::ShaderLearningOpenGL0::ShaderLearningOpenGL0(GLfloat projMatrixWidth, G
 	modelMatrixInvID = glGetUniformLocation(shaderProgramID, "modelInv");
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
-	lightPositionID = glGetUniformLocation(shaderProgramID, "lightPos");
 	viewPositionID = glGetUniformLocation(shaderProgramID, "viewPos");
 	lightColorID = glGetUniformLocation(shaderProgramID, "lightColor");
 	objectColorID = glGetUniformLocation(shaderProgramID, "objectColor");
 
-	// NEW
 	materialAmbientID = glGetUniformLocation(shaderProgramID, "material.ambient");
 	materialDiffuseID = glGetUniformLocation(shaderProgramID, "material.diffuse");
 	materialSpecularID = glGetUniformLocation(shaderProgramID, "material.specular");
 	matrialShininessID = glGetUniformLocation(shaderProgramID, "material.shininess");
 
-	NEWlightPositionID = glGetUniformLocation(shaderProgramID, "light.position");
+	lightPositionID = glGetUniformLocation(shaderProgramID, "light.position");
 	lightAmbientID = glGetUniformLocation(shaderProgramID, "light.ambient");
 	lightDiffuseID = glGetUniformLocation(shaderProgramID, "light.diffuse");
 	lightSpecularID = glGetUniformLocation(shaderProgramID, "light.specular");
@@ -82,11 +80,6 @@ GLuint const Shaders::ShaderLearningOpenGL0::getModelMatrixInvID() const
 	return modelMatrixInvID;
 }
 // FRAGMENT SHADER
-GLuint const Shaders::ShaderLearningOpenGL0::getLightPositionID() const
-{
-	return lightPositionID;
-}
-
 GLuint const Shaders::ShaderLearningOpenGL0::getCameraPositionID() const
 {
 	return viewPositionID;
@@ -123,9 +116,9 @@ GLuint const Shaders::ShaderLearningOpenGL0::getMaterialShininessID() const
 	return matrialShininessID;
 }
 // LIGHTs
-GLuint const Shaders::ShaderLearningOpenGL0::NEWgetLightPositionID() const
+GLuint const Shaders::ShaderLearningOpenGL0::getLightPositionID() const
 {
-	return NEWlightPositionID;
+	return lightPositionID;
 }
 
 GLuint const Shaders::ShaderLearningOpenGL0::getLightAmbientID() const

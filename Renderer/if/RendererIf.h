@@ -28,10 +28,10 @@ public:
 		                      Models::ModelSkyBox0* _skyBox) {}
 	virtual void renderWater(Shaders::ShadersIf::ShadersIf* _shader, 
 		                     Models::ModelWaterTile0* _modelWaterTile) {};
-	virtual void renderModelPTN(GLfloat* _planeModelPTN, 
+	/*virtual void renderModelPTN(GLfloat* _planeModelPTN, 
 		                        Camera::CameraIf::CameraIf* _camera,
 		                        Models::ModelPTN0* _modelPTN, 
-		                        Shaders::ShadersIf::ShadersIf* _shader) {}
+		                        Shaders::ShadersIf::ShadersIf* _shader) {}*/
 	virtual void renderDepthMap(Models::ModelPTN0* _modelPTN, Shaders::ShadersIf::ShadersIf* _shader) {}
 	// NEW
 	virtual void renderStaticModel(std::shared_ptr<Models::ModelsIf::ModelsIf> _staticModel, Camera::CameraIf::CameraIf* _camera) {}

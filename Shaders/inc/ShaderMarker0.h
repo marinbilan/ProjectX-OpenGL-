@@ -1,6 +1,4 @@
-#ifndef SHADERMARKER0__
-#define SHADERMARKER0__
-
+#pragma once
 #include "../if/ShaderIf.h"
 
 namespace Shaders
@@ -92,5 +90,3 @@ private:
 	GLuint objectColorID;
 };
 }
-
-#endif

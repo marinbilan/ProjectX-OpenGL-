@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../if/ShaderIf.h"
 
 namespace Shaders
@@ -127,15 +126,14 @@ public:
 	virtual GLuint const getProjectionMatrixID() const;
 	virtual GLuint const getViewMatrixID() const;
 	virtual GLuint const getModelMatrixID() const;
-
 	virtual GLuint const getLightPositionEyeSpaceID() const;
+
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
-	virtual GLuint const getlightColorID() const;	
-	virtual GLuint const getshineDamperID() const;
-	virtual GLuint const getreflectivityID() const;
-
-	virtual GLuint const getmodelTextureID() const;
+	virtual GLuint const getLightColorID() const;	
+	virtual GLuint const getShineDamperID() const;
+	virtual GLuint const getReflectivityID() const;
+	virtual GLuint const getModelTextureID() const;
 	virtual GLuint const getNormalMapID() const;
 
 	// OPERATORs
@@ -152,10 +150,7 @@ public:
 		output << "     normalsID           = " << info.normalsID << std::endl;
 		output << "      projectionMatrixID = " << info.projectionMatrixID << std::endl;
 		output << "      viewMatrixID       = " << info.viewMatrixID << std::endl;
-		// output << "      viewMatrixInvID    = " << info.viewMatrixInvID << std::endl;
 		output << "      modelMatrixID      = " << info.modelMatrixID << std::endl;
-		// output << "      lightPositionID    = " << info.lightPositionID << std::endl;
-		// output << "      planeID            = " << info.planeID << std::endl;
 		output << "  [ FRAGMENT SHADER ]" << std::endl;
 		output << "      lightColourID      = " << info.lightColourID << std::endl;
 		output << "      shineDamperID      = " << info.shineDamperID << std::endl;
@@ -179,7 +174,6 @@ private:
 	GLuint projectionMatrixID;
 	GLuint viewMatrixID;
 	GLuint modelMatrixID;
-
 	GLuint lightPositionEyeSpaceID;
 
 	// FRAGMENT SHADER

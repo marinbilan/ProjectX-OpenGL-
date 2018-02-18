@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../if/ShaderIf.h"
 
 namespace Shaders
@@ -82,9 +81,9 @@ public:
 	// FUNCTIONs
 	virtual std::string  getShaderName();
 	virtual GLuint const getShaderProgramID()    const;
+	// ---------------- [ ShaderPTN0 ] ----------------
 	// [ VERTEX SHADER ]
 	//   ATTRIBUTEs
-	// ---------------- [ ShaderPTN0 ] ----------------
 	virtual GLuint const getPositionsID()        const;
 	virtual GLuint const getTextureCoordsID()    const;
 	virtual GLuint const getNormalsID()          const;
@@ -93,9 +92,9 @@ public:
 	virtual GLuint const getViewMatrixID()       const;
 	virtual GLuint const getViewMatrixInvID()    const;
 	virtual GLuint const getModelMatrixID()      const;
-
 	virtual GLuint const getLightPositionID()    const;
-	virtual GLuint const getplaneID()            const;
+	virtual GLuint const getPlaneID()            const;
+
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
 	virtual GLuint const getLightColorID()       const;	

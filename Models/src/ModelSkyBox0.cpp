@@ -157,11 +157,11 @@ void Models::ModelSkyBox0::renderModel()
 	camera->updateCameraUniform(shader);
 	camera->updateCameraPosition();
 	glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
-	glUniform3f(shader->getCameraPositionID(), camera->getcameraPosition().x, camera->getcameraPosition().y, camera->getcameraPosition().z);
+	//glUniform3f(shader->getCameraPositionID(), camera->getcameraPosition().x, camera->getcameraPosition().y, camera->getcameraPosition().z);
 	GLfloat lightPosition[] = { 0.0f, 5.0f, 15.0f };
 	GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
-	glUniform3f(shader->getlightPositionID(), lightPosition[0], lightPosition[1], lightPosition[2]);
-	glUniform3f(shader->getlightColorID(), lightColour[0], lightColour[1], lightColour[2]);
+	//glUniform3f(shader->getLightPositionID(), lightPosition[0], lightPosition[1], lightPosition[2]);
+	//glUniform3f(shader->getLightColorID(), lightColour[0], lightColour[1], lightColour[2]);
 	//
 	// ACTIVE TEXTURE
 	//

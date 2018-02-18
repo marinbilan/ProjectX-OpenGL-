@@ -66,7 +66,7 @@ _src/_models/_raptor/    modelName    model
 
 //_src/_models/_raptor/    meshShader0    ShaderLearningOpenGL0
 //_src/_models/_raptor/    meshShader0    ShaderPTN0
-_src/_models/_raptor/    meshShader0       ShaderPTN2
+_src/_models/_raptor/    meshShader0       ShaderPTN0
 
 _src/_models/_raptor/	modelPosition           400 0 400
 _src/_models/_raptor/	modelScale              1 1 1

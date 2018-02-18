@@ -119,17 +119,17 @@ GLuint const Shaders::ShaderTerrain0::getBlendMapID() const
 	return blendMapID;
 }
 
-GLuint const Shaders::ShaderTerrain0::getlightColorID() const
+GLuint const Shaders::ShaderTerrain0::getLightColorID() const
 {
 	return lightColorID;
 }
 
-GLuint const Shaders::ShaderTerrain0::getshineDamperID() const
+GLuint const Shaders::ShaderTerrain0::getShineDamperID() const
 {
 	return shineDamperID;
 }
 
-GLuint const Shaders::ShaderTerrain0::getreflectivityID() const
+GLuint const Shaders::ShaderTerrain0::getReflectivityID() const
 {
 	return reflectivityID;
 }

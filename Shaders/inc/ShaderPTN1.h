@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../if/ShaderIf.h"
 
 namespace Shaders
@@ -100,7 +99,7 @@ public:
 	virtual GLuint const getViewMatrixInvID() const;
 	virtual GLuint const getModelMatrixID() const;
 	virtual GLuint const getLightPositionID() const;
-	virtual GLuint const getplaneID() const;
+	virtual GLuint const getPlaneID() const;
 	// [ FRAGMENT SHADER ]
 	//   UNIFORMs
 	virtual GLuint const getLightColorID() const;

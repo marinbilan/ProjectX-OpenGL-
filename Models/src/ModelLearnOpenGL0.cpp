@@ -115,12 +115,12 @@ void Models::ModelLearnOpenGL0::render()
 		// VERTEX SHADER
 		glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
 		// FRAGMENT SHADER
-		glUniform1f(shader->getshineDamperID(), 15.0f);
-		glUniform1f(shader->getreflectivityID(), 0.6f);
+		glUniform1f(shader->getShineDamperID(), 15.0f);
+		glUniform1f(shader->getReflectivityID(), 0.6f);
 		//
 		// uniform sampler2D modelTexture
 		//
-		glUniform1i(shader->getmodelTextureID(), i); // shader textureID from each mesh connect with GL_TEXTURE0, GL_TEXTURE1...
+		glUniform1i(shader->getModelTextureID(), i); // shader textureID from each mesh connect with GL_TEXTURE0, GL_TEXTURE1...
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, texturesVectorId[i]);
 		//
