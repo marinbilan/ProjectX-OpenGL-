@@ -63,8 +63,8 @@ Models::ModelGUI0*        modelGUI00;
 Models::ModelGUI0*        modelGUI01;
 Models::ModelTerrain0*    modelTerrain00;
 
-Renderer::Renderer* renderer;
-Renderer::Renderer* renderer2;
+Renderer::Renderer* renderer0;
+
 GLuint WIDTH;
 GLuint HEIGHT;
 GLfloat deltaTime = 0.0f; 
@@ -118,7 +118,7 @@ void RenderScene(GLfloat deltaTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_CLIP_DISTANCE0);
 
-	renderer->renderSkyBox(camera, modelSkyBox00);
+	renderer0->renderSkyBox(camera, modelSkyBox00);
 	//renderer->renderStaticModel(modelTest1, camera);
  //   renderer->renderStaticModel(modelTest2, camera);
 	// =============================================
@@ -298,8 +298,7 @@ int main(int argc, char** argv)
 	//
 	// ----==== RENDERERs ====----	
 	//
-	renderer = new Renderer::Renderer(*camera);
-	renderer2 = new Renderer::Renderer(*camera, vectorShaders, vectorModels);
+	renderer0 = new Renderer::Renderer(*camera, vectorShaders, vectorModels);
 	//
 	// ----==== CMD ====----
 	//
@@ -338,10 +337,10 @@ int main(int argc, char** argv)
 		//
 		// DO PROCESSING
 		//
+
 		//
 		// RENDER SCENE
 		//
-		// RenderScene(deltaTime);
 		RenderSceneMaster(deltaTime);
 		//
 		//
@@ -360,9 +359,9 @@ void RenderSceneMaster(GLfloat deltaTime)
 	// glEnable(GL_CLIP_DISTANCE0);
 
 	// RENDER SKY BOX
-	renderer->renderSkyBox(camera, modelSkyBox00);
+	renderer0->renderSkyBox(camera, modelSkyBox00);
 	// RENDER TERRAIN
-	renderer->renderTerrain(shaderTerrain00, modelTerrain00, camera);
+	renderer0->renderTerrain(shaderTerrain00, modelTerrain00, camera);
 	// RENDER STATIC MODELS
-	renderer2->renderStaticModels();
+	renderer0->renderStaticModels();
 }

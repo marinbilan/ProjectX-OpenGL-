@@ -7,7 +7,6 @@ class Renderer : public RendererIf::RendererIf
 {
 public:
 	// CONSTRUCTORs / DESTRUCTORs
-	Renderer(Camera::CameraIf::CameraIf& camera);
 	Renderer(Camera::CameraIf::CameraIf& camera,
 		     std::vector<Shaders::ShadersIf::ShadersIf*>& vectorShaders, 
 		     std::vector<Models::ModelsIf::ModelsIf*>& vectorModels);
@@ -22,12 +21,10 @@ public:
 	virtual void renderTerrain(Shaders::ShadersIf::ShadersIf* _shader, 
 		                       Models::ModelTerrain0* _staticModel, 
 		                       Camera::CameraIf::CameraIf* _camera);
-	virtual void renderStaticModel(std::shared_ptr<Models::ModelsIf::ModelsIf> _staticModel, 
-		                           Camera::CameraIf::CameraIf* _camera);
 
 	// ...
-	virtual void renderStaticModels();
-	virtual void renderStaticModel(Models::ModelsIf::ModelsIf& _staticModel);
+	void renderStaticModels();
+	void renderStaticModel(Models::ModelsIf::ModelsIf& _staticModel);
 	// OPERATORs
 
 private:

@@ -17,11 +17,6 @@
 // 5 ] Disable everything
 
 // CONSTRUCTORs / DESTRUCTORs
-Renderer::Renderer::Renderer(Camera::CameraIf::CameraIf& camera) : m_camera(camera)
-{
-	std::cout << "Renderer created!" << std::endl;
-};
-
 Renderer::Renderer::Renderer(Camera::CameraIf::CameraIf& camera,
 	                         std::vector<Shaders::ShadersIf::ShadersIf*>& vectorShaders,
 	                         std::vector<Models::ModelsIf::ModelsIf*>& vectorModels) :
@@ -112,235 +107,8 @@ void Renderer::Renderer::renderTerrain(Shaders::ShadersIf::ShadersIf* _shader,
 	glUseProgram(0);
 }
 
-void Renderer::Renderer::renderStaticModel(std::shared_ptr<Models::ModelsIf::ModelsIf> _staticModel, 
-	                                       Camera::CameraIf::CameraIf* _camera)
-{
-	glBindVertexArray(_staticModel->getModelVAO());
-
-	for (unsigned int i = 0; i < _staticModel->getVectorOfMeshes().size(); i++) {
-		glBindBuffer(GL_ARRAY_BUFFER, _staticModel->getVectorOfMeshes()[i].VBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _staticModel->getVectorOfMeshes()[i].IBO);
-
-		// GET SHADER FOR EACH MESH IN MODEL
-		Models::Mesh mesh = _staticModel->getVectorOfMeshes()[i];
-
-		glUseProgram(mesh.meshShaderPtr->getShaderProgramID());
-		if (!mesh.meshShaderPtr->getShaderName().compare("ShaderMarker0"))
-		{
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, 0); // VERTs
-
-			glEnableVertexAttribArray(0); // VERTs
-			// VERTEX SHADER UNIFORMS
-			// Projection matrix updated in shader constructor (Only once)
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
-			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
-
-			GLfloat lightPosition1[] = { 380.0f, 7.0f, 380.0f };
-			GLfloat lightColor1[] = { 1.0f, 1.0f, 1.0f };
-			GLfloat objectColor1[] = { 1.0f, 1.0f, 1.0f };
-
-			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColor1[0], lightColor1[1], lightColor1[2]);
-			glUniform3f(mesh.meshShaderPtr->getObjectColorID(), objectColor1[0], objectColor1[1], objectColor1[2]);
-			glDrawElements(GL_TRIANGLES, _staticModel->getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
-			glUseProgram(0);
-		}
-		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderLearningOpenGL0"))
-		{
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), 0);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
-
-			glEnableVertexAttribArray(0); // VERTEXs
-			glEnableVertexAttribArray(1); // NORMALs
-			// VERTEX SHADER UNIFORMS
-		    // Projection matrix updated in shader constructor (Only once)
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
-			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
-			glm::mat4 modelInv = glm::inverse(_staticModel->getModelMatrix());
-			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixInvID(), 1, GL_FALSE, &modelInv[0][0]);
-
-			// FRAGMENT SHADER UNIFORMs
-			// Material
-			glm::vec3 materialAmbient(1.0f, 0.5f, 0.31f);
-			glUniform3f(mesh.meshShaderPtr->getMaterialAmbientID(), materialAmbient[0], materialAmbient[1], materialAmbient[2]);
-			glm::vec3 materialDiffuse(1.0f, 0.5f, 0.31f);
-			glUniform3f(mesh.meshShaderPtr->getMaterialDiffuseID(), materialDiffuse[0], materialDiffuse[1], materialDiffuse[2]);
-			glm::vec3 materialSpecular(0.5f, 0.5f, 0.5f);
-			glUniform3f(mesh.meshShaderPtr->getMaterialSpecularID(), materialSpecular[0], materialSpecular[1], materialSpecular[2]);
-			float materialShinines = 32.0f;
-			glUniform1f(mesh.meshShaderPtr->getMaterialShininessID(), materialShinines);
-
-			// Light (Try sin from tutorial)
-			GLfloat lightPosition1[] = { 385.0f, 27.0f, 385.0f };
-			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPosition1[0], lightPosition1[1], lightPosition1[2]);
-
-			glm::vec3 lightAmbient(0.2f, 0.2f, 0.2f);
-			glUniform3f(mesh.meshShaderPtr->getLightAmbientID(), lightAmbient[0], lightAmbient[1], lightAmbient[2]);
-			glm::vec3 lightDiffuse(0.5f, 0.5f, 0.5f);
-			glUniform3f(mesh.meshShaderPtr->getLightDiffuseID(), lightDiffuse[0], lightDiffuse[1], lightDiffuse[2]);
-			glm::vec3 lightSpecular(1.0f, 1.0f, 1.0f);
-			glUniform3f(mesh.meshShaderPtr->getLightSpecularID(), lightSpecular[0], lightSpecular[1], lightSpecular[2]);
-
-			glUniform3f(mesh.meshShaderPtr->getCameraPositionID(), _camera->getcameraPosition()[0], _camera->getcameraPosition()[1], _camera->getcameraPosition()[2]);
-
-
-			glDrawElements(GL_TRIANGLES, _staticModel->getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
-			glUseProgram(0);
-		}
-		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderPTN0"))
-		{
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, 0);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
-
-			glEnableVertexAttribArray(0); // VERTEXs
-			glEnableVertexAttribArray(1); // TEXTURECOORDs
-			glEnableVertexAttribArray(2); // NORMALs
-			// VERTEX SHADER UNIFORMS
-			// Projection matrix updated in shader constructor (Only once)
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
-			_camera->invertCameraMatrix();
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
-			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
-			// TODO: Remove from here
-			glm::vec3 lightPositionModelPTN(385.0f, 7.0f, 385.0f);
-			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
-			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
-			glm::vec4 planeModelPTN(0.0f, -1.0f, 0.0f, 100000.0f);
-			glUniform4f(mesh.meshShaderPtr->getPlaneID(), planeModelPTN[0], planeModelPTN[1], planeModelPTN[2], planeModelPTN[3]);
-			// FRAGMENT SHADER UNIFORMS
-			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
-			glUniform1f(mesh.meshShaderPtr->getShineDamperID(), 5.0f);
-			glUniform1f(mesh.meshShaderPtr->getReflectivityID(), 0.1f);
-
-			glUniform1i(mesh.meshShaderPtr->getModelTextureID(), i);
-			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, _staticModel->getVectorOfMeshes()[i].texture0ID);
-			// RENDER MESH
-			glDrawElements(GL_TRIANGLES, _staticModel->getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
-			//
-			glUseProgram(0);
-		}
-		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderPTN1"))
-		{
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, 0);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
-
-
-			glEnableVertexAttribArray(0); // VERTEXs
-			glEnableVertexAttribArray(1); // TEXTURECOORDs
-			glEnableVertexAttribArray(2); // NORMALs
-										  // VERTEX SHADER UNIFORMS
-										  // Projection matrix updated in shader constructor (Only once)
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
-			_camera->invertCameraMatrix();
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
-			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
-			// TODO: Remove from here
-			glm::vec3 lightPositionModelPTN(385.0f, 7.0f, 385.0f);
-			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
-			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
-			glm::vec4 planeModelPTN(0.0f, -1.0f, 0.0f, 100000.0f);
-			glUniform4f(mesh.meshShaderPtr->getPlaneID(), planeModelPTN[0], planeModelPTN[1], planeModelPTN[2], planeModelPTN[3]);
-			// FRAGMENT SHADER UNIFORMS
-			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
-			glUniform1f(mesh.meshShaderPtr->getShineDamperID(), 25.0f);
-			glUniform1f(mesh.meshShaderPtr->getReflectivityID(), 5.0f);
-
-			glUniform1i(mesh.meshShaderPtr->getModelTextureID(), 0);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, _staticModel->getVectorOfMeshes()[i].texture0ID);
-
-			glUniform1i(mesh.meshShaderPtr->getSpecularMapID(), 1);
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, _staticModel->getVectorOfMeshes()[i].textureSpecularMap0ID);
-			// RENDER MESH
-			glDrawElements(GL_TRIANGLES, _staticModel->getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
-			//
-			glUseProgram(0);
-		}
-		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderPTN2"))
-		{
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, 0);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
-
-			glEnableVertexAttribArray(0); // VERTEXs
-			glEnableVertexAttribArray(1); // TEXTURECOORDs
-			glEnableVertexAttribArray(2); // NORMALs
-			// VERTEX SHADER UNIFORMS
-			// Projection matrix updated in shader constructor (Only once)
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
-			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
-			glUniform3f(mesh.meshShaderPtr->getCameraPositionID(), _camera->getcameraPosition()[0], _camera->getcameraPosition()[1], _camera->getcameraPosition()[2]);
-
-			// FRAGMENT SHADER UNIFORMS
-			glUniform1i(mesh.meshShaderPtr->getModelTextureID(), 0);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, _staticModel->getVectorOfMeshes()[i].texture0ID);
-
-			glUniform1i(mesh.meshShaderPtr->getSpecularMapID(), 1);
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_CUBE_MAP, 15); // Remove hardcoded value
-			// RENDER MESH
-			glDrawElements(GL_TRIANGLES, _staticModel->getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
-			//
-			glUseProgram(0);
-		}
-		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderNormalMapPTNT0"))
-		{
-			//std::cout << "RENDER " << sizeof(Loader::VertNormalMap) <<  std::endl;
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::VertNormalMap), 0);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Loader::VertNormalMap), (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::VertNormalMap), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
-			glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::VertNormalMap), (const GLvoid*)32); // Tangent
-
-			glEnableVertexAttribArray(0); // VERTEXs
-			glEnableVertexAttribArray(1); // TEXTURECOORDs
-			glEnableVertexAttribArray(2); // NORMALs
-			glEnableVertexAttribArray(3); // TANGENTs
-			//
-			// VERTEX SHADER UNIFORMs
-			//
-            // Projection matrix updated in shader constructor (Only once)
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &_camera->getViewMatrix()[0][0]);
-			// _camera->invertCameraMatrix();
-			// glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
-			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
-			// TODO: Remove from here
-			glm::vec3 lightPositionEyeSpace(385.0f, 80.0f, 385.0f);
-			glUniform3f(mesh.meshShaderPtr->getLightPositionEyeSpaceID(), lightPositionEyeSpace[0], lightPositionEyeSpace[1], lightPositionEyeSpace[2]);
-			//
-			// FRAGMENT SHADER UNIFORMs
-			//
-			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
-			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
-			glUniform1f(mesh.meshShaderPtr->getShineDamperID(), 15.0f);
-			glUniform1f(mesh.meshShaderPtr->getReflectivityID(), 0.2f);
-
-			glUniform1i(mesh.meshShaderPtr->getModelTextureID(), 0);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, _staticModel->getVectorOfMeshes()[i].texture0ID);
-
-			glUniform1i(mesh.meshShaderPtr->getNormalMapID(), 1);
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, _staticModel->getVectorOfMeshes()[i].textureNormalMap0ID);
-			// RENDER MESH
-			glDrawElements(GL_TRIANGLES, _staticModel->getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
-			//
-			glUseProgram(0);
-		}
-
-	}
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
-	glDisableVertexAttribArray(3);
-
-	glBindVertexArray(0); // Unbind VAO
-}
-
 // ...
+// RENDER ALL STATIC MODELs
 void Renderer::Renderer::renderStaticModels()
 {
 	for (auto& it : m_vectorModels)
@@ -358,29 +126,27 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf& _staticMo
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _staticModel.getVectorOfMeshes()[i].IBO);
 
 		// GET SHADER FOR EACH MESH IN MODEL
-		Models::Mesh mesh = _staticModel.getVectorOfMeshes()[i];
-
-		glUseProgram(mesh.meshShaderPtr->getShaderProgramID());
-		if (!mesh.meshShaderPtr->getShaderName().compare("ShaderMarker0"))
+		glUseProgram(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getShaderProgramID());
+		if (!_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getShaderName().compare("ShaderMarker0"))
 		{
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, 0); // VERTs
 
 			glEnableVertexAttribArray(0); // VERTs
 										  // VERTEX SHADER UNIFORMS
 										  // Projection matrix updated in shader constructor (Only once)
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &m_camera.getViewMatrix()[0][0]);
-			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel.getModelMatrix()[0][0]));
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &m_camera.getViewMatrix()[0][0]);
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel.getModelMatrix()[0][0]));
 
 			GLfloat lightPosition1[] = { 380.0f, 7.0f, 380.0f };
 			GLfloat lightColor1[] = { 1.0f, 1.0f, 1.0f };
 			GLfloat objectColor1[] = { 1.0f, 1.0f, 1.0f };
 
-			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColor1[0], lightColor1[1], lightColor1[2]);
-			glUniform3f(mesh.meshShaderPtr->getObjectColorID(), objectColor1[0], objectColor1[1], objectColor1[2]);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getLightColorID(), lightColor1[0], lightColor1[1], lightColor1[2]);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getObjectColorID(), objectColor1[0], objectColor1[1], objectColor1[2]);
 			glDrawElements(GL_TRIANGLES, _staticModel.getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
 			glUseProgram(0);
 		}
-		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderLearningOpenGL0"))
+		else if (!_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getShaderName().compare("ShaderLearningOpenGL0"))
 		{
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), 0);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::Vert), (const GLvoid*)20); // 3 (x, y, z) * 4 (BYTEs) + 2 (u, v) * 4 (BYTEs) = 20 (BYTES)
@@ -389,40 +155,39 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf& _staticMo
 			glEnableVertexAttribArray(1); // NORMALs
 										  // VERTEX SHADER UNIFORMS
 										  // Projection matrix updated in shader constructor (Only once)
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &m_camera.getViewMatrix()[0][0]);
-			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel.getModelMatrix()[0][0]));
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &m_camera.getViewMatrix()[0][0]);
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel.getModelMatrix()[0][0]));
 			glm::mat4 modelInv = glm::inverse(_staticModel.getModelMatrix());
-			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixInvID(), 1, GL_FALSE, &modelInv[0][0]);
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getModelMatrixInvID(), 1, GL_FALSE, &modelInv[0][0]);
 
 			// FRAGMENT SHADER UNIFORMs
 			// Material
 			glm::vec3 materialAmbient(1.0f, 0.5f, 0.31f);
-			glUniform3f(mesh.meshShaderPtr->getMaterialAmbientID(), materialAmbient[0], materialAmbient[1], materialAmbient[2]);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getMaterialAmbientID(), materialAmbient[0], materialAmbient[1], materialAmbient[2]);
 			glm::vec3 materialDiffuse(1.0f, 0.5f, 0.31f);
-			glUniform3f(mesh.meshShaderPtr->getMaterialDiffuseID(), materialDiffuse[0], materialDiffuse[1], materialDiffuse[2]);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getMaterialDiffuseID(), materialDiffuse[0], materialDiffuse[1], materialDiffuse[2]);
 			glm::vec3 materialSpecular(0.5f, 0.5f, 0.5f);
-			glUniform3f(mesh.meshShaderPtr->getMaterialSpecularID(), materialSpecular[0], materialSpecular[1], materialSpecular[2]);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getMaterialSpecularID(), materialSpecular[0], materialSpecular[1], materialSpecular[2]);
 			float materialShinines = 32.0f;
-			glUniform1f(mesh.meshShaderPtr->getMaterialShininessID(), materialShinines);
+			glUniform1f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getMaterialShininessID(), materialShinines);
 
 			// Light (Try sin from tutorial)
 			GLfloat lightPosition1[] = { 385.0f, 27.0f, 385.0f };
-			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPosition1[0], lightPosition1[1], lightPosition1[2]);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getLightPositionID(), lightPosition1[0], lightPosition1[1], lightPosition1[2]);
 
 			glm::vec3 lightAmbient(0.2f, 0.2f, 0.2f);
-			glUniform3f(mesh.meshShaderPtr->getLightAmbientID(), lightAmbient[0], lightAmbient[1], lightAmbient[2]);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getLightAmbientID(), lightAmbient[0], lightAmbient[1], lightAmbient[2]);
 			glm::vec3 lightDiffuse(0.5f, 0.5f, 0.5f);
-			glUniform3f(mesh.meshShaderPtr->getLightDiffuseID(), lightDiffuse[0], lightDiffuse[1], lightDiffuse[2]);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getLightDiffuseID(), lightDiffuse[0], lightDiffuse[1], lightDiffuse[2]);
 			glm::vec3 lightSpecular(1.0f, 1.0f, 1.0f);
-			glUniform3f(mesh.meshShaderPtr->getLightSpecularID(), lightSpecular[0], lightSpecular[1], lightSpecular[2]);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getLightSpecularID(), lightSpecular[0], lightSpecular[1], lightSpecular[2]);
 
-			glUniform3f(mesh.meshShaderPtr->getCameraPositionID(), m_camera.getcameraPosition()[0], m_camera.getcameraPosition()[1], m_camera.getcameraPosition()[2]);
-
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getCameraPositionID(), m_camera.getcameraPosition()[0], m_camera.getcameraPosition()[1], m_camera.getcameraPosition()[2]);
 
 			glDrawElements(GL_TRIANGLES, _staticModel.getVectorOfMeshes()[i].numIndices, GL_UNSIGNED_INT, 0);
 			glUseProgram(0);
 		}
-		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderPTN0"))
+		else if (!_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getShaderName().compare("ShaderPTN0"))
 		{
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, 0);
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
@@ -433,22 +198,22 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf& _staticMo
 			glEnableVertexAttribArray(2); // NORMALs
 										  // VERTEX SHADER UNIFORMS
 										  // Projection matrix updated in shader constructor (Only once)
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &m_camera.getViewMatrix()[0][0]);
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &m_camera.getViewMatrix()[0][0]);
 			m_camera.invertCameraMatrix();
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &m_camera.getInvViewMatrix()[0][0]);
-			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel.getModelMatrix()[0][0]));
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &m_camera.getInvViewMatrix()[0][0]);
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel.getModelMatrix()[0][0]));
 			// TODO: Remove from here
 			glm::vec3 lightPositionModelPTN(385.0f, 7.0f, 385.0f);
 			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
-			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getLightPositionID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
 			glm::vec4 planeModelPTN(0.0f, -1.0f, 0.0f, 100000.0f);
-			glUniform4f(mesh.meshShaderPtr->getPlaneID(), planeModelPTN[0], planeModelPTN[1], planeModelPTN[2], planeModelPTN[3]);
+			glUniform4f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getPlaneID(), planeModelPTN[0], planeModelPTN[1], planeModelPTN[2], planeModelPTN[3]);
 			// FRAGMENT SHADER UNIFORMS
-			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
-			glUniform1f(mesh.meshShaderPtr->getShineDamperID(), 5.0f);
-			glUniform1f(mesh.meshShaderPtr->getReflectivityID(), 0.1f);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getLightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
+			glUniform1f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getShineDamperID(), 5.0f);
+			glUniform1f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getReflectivityID(), 0.1f);
 
-			glUniform1i(mesh.meshShaderPtr->getModelTextureID(), i);
+			glUniform1i(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getModelTextureID(), i);
 			glActiveTexture(GL_TEXTURE0 + i);
 			glBindTexture(GL_TEXTURE_2D, _staticModel.getVectorOfMeshes()[i].texture0ID);
 			// RENDER MESH
@@ -456,7 +221,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf& _staticMo
 			//
 			glUseProgram(0);
 		}
-		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderPTN1"))
+		else if (!_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getShaderName().compare("ShaderPTN1"))
 		{
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, 0);
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
@@ -468,26 +233,26 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf& _staticMo
 			glEnableVertexAttribArray(2); // NORMALs
 										  // VERTEX SHADER UNIFORMS
 										  // Projection matrix updated in shader constructor (Only once)
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &m_camera.getViewMatrix()[0][0]);
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &m_camera.getViewMatrix()[0][0]);
 			m_camera.invertCameraMatrix();
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &m_camera.getInvViewMatrix()[0][0]);
-			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel.getModelMatrix()[0][0]));
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &m_camera.getInvViewMatrix()[0][0]);
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel.getModelMatrix()[0][0]));
 			// TODO: Remove from here
 			glm::vec3 lightPositionModelPTN(385.0f, 7.0f, 385.0f);
 			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
-			glUniform3f(mesh.meshShaderPtr->getLightPositionID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getLightPositionID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
 			glm::vec4 planeModelPTN(0.0f, -1.0f, 0.0f, 100000.0f);
-			glUniform4f(mesh.meshShaderPtr->getPlaneID(), planeModelPTN[0], planeModelPTN[1], planeModelPTN[2], planeModelPTN[3]);
+			glUniform4f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getPlaneID(), planeModelPTN[0], planeModelPTN[1], planeModelPTN[2], planeModelPTN[3]);
 			// FRAGMENT SHADER UNIFORMS
-			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
-			glUniform1f(mesh.meshShaderPtr->getShineDamperID(), 25.0f);
-			glUniform1f(mesh.meshShaderPtr->getReflectivityID(), 5.0f);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getLightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
+			glUniform1f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getShineDamperID(), 25.0f);
+			glUniform1f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getReflectivityID(), 5.0f);
 
-			glUniform1i(mesh.meshShaderPtr->getModelTextureID(), 0);
+			glUniform1i(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getModelTextureID(), 0);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, _staticModel.getVectorOfMeshes()[i].texture0ID);
 
-			glUniform1i(mesh.meshShaderPtr->getSpecularMapID(), 1);
+			glUniform1i(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getSpecularMapID(), 1);
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, _staticModel.getVectorOfMeshes()[i].textureSpecularMap0ID);
 			// RENDER MESH
@@ -495,7 +260,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf& _staticMo
 			//
 			glUseProgram(0);
 		}
-		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderPTN2"))
+		else if (!_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getShaderName().compare("ShaderPTN2"))
 		{
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, 0);
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 32, (const GLvoid*)12); // 3 (x, y, z) * 4 (BYTEs) = 12 (BYTES)
@@ -506,16 +271,16 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf& _staticMo
 			glEnableVertexAttribArray(2); // NORMALs
 										  // VERTEX SHADER UNIFORMS
 										  // Projection matrix updated in shader constructor (Only once)
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &m_camera.getViewMatrix()[0][0]);
-			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel.getModelMatrix()[0][0]));
-			glUniform3f(mesh.meshShaderPtr->getCameraPositionID(), m_camera.getcameraPosition()[0], m_camera.getcameraPosition()[1], m_camera.getcameraPosition()[2]);
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &m_camera.getViewMatrix()[0][0]);
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel.getModelMatrix()[0][0]));
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getCameraPositionID(), m_camera.getcameraPosition()[0], m_camera.getcameraPosition()[1], m_camera.getcameraPosition()[2]);
 
 			// FRAGMENT SHADER UNIFORMS
-			glUniform1i(mesh.meshShaderPtr->getModelTextureID(), 0);
+			glUniform1i(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getModelTextureID(), 0);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, _staticModel.getVectorOfMeshes()[i].texture0ID);
 
-			glUniform1i(mesh.meshShaderPtr->getSpecularMapID(), 1);
+			glUniform1i(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getSpecularMapID(), 1);
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_CUBE_MAP, 15); // Remove hardcoded value
 													// RENDER MESH
@@ -523,7 +288,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf& _staticMo
 			//
 			glUseProgram(0);
 		}
-		else if (!mesh.meshShaderPtr->getShaderName().compare("ShaderNormalMapPTNT0"))
+		else if (!_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getShaderName().compare("ShaderNormalMapPTNT0"))
 		{
 			//std::cout << "RENDER " << sizeof(Loader::VertNormalMap) <<  std::endl;
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Loader::VertNormalMap), 0);
@@ -539,26 +304,26 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf& _staticMo
 										  // VERTEX SHADER UNIFORMs
 										  //
 										  // Projection matrix updated in shader constructor (Only once)
-			glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &m_camera.getViewMatrix()[0][0]);
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getViewMatrixID(), 1, GL_FALSE, &m_camera.getViewMatrix()[0][0]);
 			// m_camera.invertCameraMatrix();
 			// glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &m_camera.getInvViewMatrix()[0][0]);
-			glUniformMatrix4fv(mesh.meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel.getModelMatrix()[0][0]));
+			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getModelMatrixID(), 1, GL_FALSE, &(_staticModel.getModelMatrix()[0][0]));
 			// TODO: Remove from here
 			glm::vec3 lightPositionEyeSpace(385.0f, 80.0f, 385.0f);
-			glUniform3f(mesh.meshShaderPtr->getLightPositionEyeSpaceID(), lightPositionEyeSpace[0], lightPositionEyeSpace[1], lightPositionEyeSpace[2]);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getLightPositionEyeSpaceID(), lightPositionEyeSpace[0], lightPositionEyeSpace[1], lightPositionEyeSpace[2]);
 			//
 			// FRAGMENT SHADER UNIFORMs
 			//
 			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
-			glUniform3f(mesh.meshShaderPtr->getLightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
-			glUniform1f(mesh.meshShaderPtr->getShineDamperID(), 15.0f);
-			glUniform1f(mesh.meshShaderPtr->getReflectivityID(), 0.2f);
+			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getLightColorID(), lightColorModelPTN[0], lightColorModelPTN[1], lightColorModelPTN[2]);
+			glUniform1f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getShineDamperID(), 15.0f);
+			glUniform1f(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getReflectivityID(), 0.2f);
 
-			glUniform1i(mesh.meshShaderPtr->getModelTextureID(), 0);
+			glUniform1i(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getModelTextureID(), 0);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, _staticModel.getVectorOfMeshes()[i].texture0ID);
 
-			glUniform1i(mesh.meshShaderPtr->getNormalMapID(), 1);
+			glUniform1i(_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getNormalMapID(), 1);
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, _staticModel.getVectorOfMeshes()[i].textureNormalMap0ID);
 			// RENDER MESH
@@ -566,7 +331,6 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf& _staticMo
 			//
 			glUseProgram(0);
 		}
-
 	}
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
