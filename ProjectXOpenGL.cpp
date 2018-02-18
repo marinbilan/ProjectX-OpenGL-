@@ -64,6 +64,7 @@ Models::ModelGUI0*        modelGUI01;
 Models::ModelTerrain0*    modelTerrain00;
 
 Renderer::Renderer* renderer;
+Renderer::Renderer* renderer2;
 GLuint WIDTH;
 GLuint HEIGHT;
 GLfloat deltaTime = 0.0f; 
@@ -172,7 +173,7 @@ void characterModCallback(GLFWwindow* window, unsigned int keyCode, int modifier
 	}
 }
 
-void RenderSceneMaster(std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> _vectorOfSmartModelsPTN, GLfloat deltaTime);
+void RenderSceneMaster(GLfloat deltaTime);
 
 int main(int argc, char** argv)
 {
@@ -224,8 +225,16 @@ int main(int argc, char** argv)
 	//
 	// ----==== SHADERs [ ProjectionMatrix ] Initialization (only once) ====----
 	//
+	std::vector<Shaders::ShadersIf::ShadersIf*> vectorShaders;
+	vectorShaders.push_back(new Shaders::ShaderPTN0(WIDTH, HEIGHT));
+	vectorShaders.push_back(new Shaders::ShaderPTN1(WIDTH, HEIGHT));
+	vectorShaders.push_back(new Shaders::ShaderPTN2(WIDTH, HEIGHT));
+	vectorShaders.push_back(new Shaders::ShaderLearningOpenGL0(WIDTH, HEIGHT));
+	vectorShaders.push_back(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT));
+	vectorShaders.push_back(new Shaders::ShaderNormalMapPTNT0(WIDTH, HEIGHT));
+	vectorShaders.push_back(new Shaders::ShaderMarker0(WIDTH, HEIGHT));
+	// TODO: remove
 	std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>> vectorOfSmartShaders;
-
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderPTN0>(new Shaders::ShaderPTN0(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderPTN1>(new Shaders::ShaderPTN1(WIDTH, HEIGHT)));
 	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderPTN2>(new Shaders::ShaderPTN2(WIDTH, HEIGHT)));
@@ -245,6 +254,11 @@ int main(int argc, char** argv)
 	//
 	// ----==== MODELs [ ModelMatrix ] ====----	
 	//
+	std::vector<Models::ModelsIf::ModelsIf*> vectorModels;
+	vectorModels.push_back(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfSmartShaders));
+	vectorModels.push_back(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfSmartShaders));
+
+	// TODO: remove smart_ptrs
 	std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> vectorOfSmartModelsPTN;
 	// for each model in db try to create model...
 	std::shared_ptr<Models::ModelPTN0> modelSmartPTN(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfSmartShaders));
@@ -284,7 +298,8 @@ int main(int argc, char** argv)
 	//
 	// ----==== RENDERERs ====----	
 	//
-	renderer = new Renderer::Renderer();
+	renderer = new Renderer::Renderer(*camera);
+	renderer2 = new Renderer::Renderer(*camera, vectorShaders, vectorModels);
 	//
 	// ----==== CMD ====----
 	//
@@ -327,7 +342,7 @@ int main(int argc, char** argv)
 		// RENDER SCENE
 		//
 		// RenderScene(deltaTime);
-		RenderSceneMaster(vectorOfSmartModelsPTN, deltaTime);
+		RenderSceneMaster(deltaTime);
 		//
 		//
 		//
@@ -338,7 +353,7 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-void RenderSceneMaster(std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> _vectorOfSmartModelsPTN, GLfloat deltaTime)
+void RenderSceneMaster(GLfloat deltaTime)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
@@ -348,15 +363,6 @@ void RenderSceneMaster(std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> 
 	renderer->renderSkyBox(camera, modelSkyBox00);
 	// RENDER TERRAIN
 	renderer->renderTerrain(shaderTerrain00, modelTerrain00, camera);
-	// RENDER MODELSPTN
-	for (auto& it : _vectorOfSmartModelsPTN)
-	{
-		renderer->renderStaticModel(it, camera);
-	}
-	// TEST: Render another light in scene
-	// Set new position
-	//_vectorOfModelsPTN[2]->setModelPosition(glm::vec3(385, 50, 435)); // PTN LIGHT
-	//renderer->renderStaticModel(_vectorOfModelsPTN[2], camera);
-	// Reset on original position
-	//_vectorOfModelsPTN[2]->setModelPosition(glm::vec3(380, 10, 380)); // TERRAIN LIGHT
+	// RENDER STATIC MODELS
+	renderer2->renderStaticModels();
 }

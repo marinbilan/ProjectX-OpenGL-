@@ -1,5 +1,4 @@
 #pragma once
-
 #include "..\if\RendererIf.h"
 
 namespace Renderer
@@ -8,22 +7,35 @@ class Renderer : public RendererIf::RendererIf
 {
 public:
 	// CONSTRUCTORs / DESTRUCTORs
-	Renderer();
+	Renderer(Camera::CameraIf::CameraIf& camera);
+	Renderer(Camera::CameraIf::CameraIf& camera,
+		     std::vector<Shaders::ShadersIf::ShadersIf*>& vectorShaders, 
+		     std::vector<Models::ModelsIf::ModelsIf*>& vectorModels);
+
 	// FUNCTIONs
 	virtual void renderSkyBox(Camera::CameraIf::CameraIf* _camera,
 		                      Models::ModelSkyBox0* _skyBox);
 	virtual void renderWater(Shaders::ShadersIf::ShadersIf* _shader, 
 		                     Models::ModelWaterTile0* _modelWaterTile);
-	/*virtual void renderModelPTN(GLfloat* _planeModelPTN, 
-		                        Camera::CameraIf::CameraIf* _camera,
-		                        Models::ModelPTN0* _modelPTN, 
-		                        Shaders::ShadersIf::ShadersIf* _shader);*/
-	virtual void renderDepthMap(Models::ModelPTN0* _modelPTN, Shaders::ShadersIf::ShadersIf* _shader);
-	// NEW
-	virtual void renderTerrain(Shaders::ShadersIf::ShadersIf* _shader, Models::ModelTerrain0* _staticModel, Camera::CameraIf::CameraIf* _camera);
-	virtual void renderStaticModel(std::shared_ptr<Models::ModelsIf::ModelsIf> _staticModel, Camera::CameraIf::CameraIf* _camera);
+	virtual void renderDepthMap(Models::ModelPTN0* _modelPTN, 
+		                        Shaders::ShadersIf::ShadersIf* _shader);
+	virtual void renderTerrain(Shaders::ShadersIf::ShadersIf* _shader, 
+		                       Models::ModelTerrain0* _staticModel, 
+		                       Camera::CameraIf::CameraIf* _camera);
+	virtual void renderStaticModel(std::shared_ptr<Models::ModelsIf::ModelsIf> _staticModel, 
+		                           Camera::CameraIf::CameraIf* _camera);
+
+	// ...
+	virtual void renderStaticModels();
+	virtual void renderStaticModel(Models::ModelsIf::ModelsIf& _staticModel);
 	// OPERATORs
+
 private:
+	Camera::CameraIf::CameraIf& m_camera;
+	std::vector<Shaders::ShadersIf::ShadersIf*> m_vectorShaders;
+	std::vector<Models::ModelsIf::ModelsIf*> m_vectorModels;
+
+	// TODO: remove
 	GLfloat distance;
 	GLfloat lightPositionModelPTN[3];
 	GLfloat lightColorModelPTN[3];
