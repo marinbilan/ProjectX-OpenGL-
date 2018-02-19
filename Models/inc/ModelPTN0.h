@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../if/ModelIf.h"
 
 namespace Models
@@ -12,23 +11,22 @@ public:
 		      std::string _modelFolder, 
 		      std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>> _vectorOfShaders);
 	~ModelPTN0();
+
 	// FUNCTIONs
-	void initPTNModel();
-
+	void                      initPTNModel();
 	// GET
-	std::string getModelName();
-	GLuint getModelVAO();
+	std::string               getModelName();
+	GLuint                    getModelVAO();
 	std::vector<Models::Mesh> getVectorOfMeshes();
-
-	glm::mat4 getModelMatrix();
-	glm::vec3 getModelPosition();
-	glm::vec3 getModelScale();
-	glm::vec3 getModelRotation();
-	GLfloat   getModelAngle();
+	glm::mat4                 getModelMatrix();
+	glm::vec3                 getModelPosition();
+	glm::vec3                 getModelScale();
+	glm::vec3                 getModelRotation();
+	GLfloat                   getModelAngle();
 	// SET
-	void setModelPosition(glm::vec3 _modelPosition);
-	void setModelScale(glm::vec3 _modelScale);
-	void setModelRotation(glm::vec3 _modelRotateAround, GLfloat _angle);
+	void                      setModelPosition(glm::vec3 _modelPosition);
+	void                      setModelScale(glm::vec3 _modelScale);
+	void                      setModelRotation(glm::vec3 _modelRotateAround, GLfloat _angle);
 	// Add setModelAngle
 
 	// OPERATORs
@@ -59,20 +57,20 @@ private:
 	CommonFunctions* CF;
 	std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>> vectorOfShaders;
 
-	std::string                        modelFolder;
-	std::string                        modelName;
-	std::string                        modelFullName;
-	GLfloat                            modelMeshSizeMB;
-	GLfloat                            modelTextureSizeMB;
-	GLfloat                            modelTotalSizeMB;
+	std::string               modelFolder;
+	std::string               modelName;
+	std::string               modelFullName;
+	GLfloat                   modelMeshSizeMB;
+	GLfloat                   modelTextureSizeMB;
+	GLfloat                   modelTotalSizeMB;
 
-	GLuint                             VAO;
-	std::vector<Models::Mesh>          vectorOfMeshes;
+	GLuint                    VAO;
+	std::vector<Models::Mesh> vectorOfMeshes;
 
-	glm::mat4                          modelMatrix;
-	glm::vec3                          modelPosition;
-	glm::vec3                          modelScale;
-	glm::vec3                          modelRotateAround;
-	GLfloat                            angle;
+	glm::mat4                 modelMatrix;
+	glm::vec3                 modelPosition;
+	glm::vec3                 modelScale;
+	glm::vec3                 modelRotateAround;
+	GLfloat                   angle;
 };
 }

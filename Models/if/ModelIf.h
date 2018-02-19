@@ -1,5 +1,4 @@
 #pragma once
-
 // Loader
 #include "../../Loader/inc/ModelLoader.h"
 #include "../../Loader/inc/ModelLoaderLearningOpenGL.h"
@@ -77,6 +76,7 @@ public:
 	virtual glm::vec3 getModelScale()    { return glm::vec3(0.0, 0.0, 0.0); }
 	virtual glm::vec3 getModelRotation() { return glm::vec3(0.0, 0.0, 0.0); }
 	virtual GLfloat   getModelAngle()    { return 0; };
+
 	// SET
 	virtual void setModelPosition(glm::vec3 _modelPosition)                     {}
 	virtual void setModelScale(glm::vec3 _modelScale)                           {}

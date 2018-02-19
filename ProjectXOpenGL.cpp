@@ -118,7 +118,7 @@ void RenderScene(GLfloat deltaTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_CLIP_DISTANCE0);
 
-	renderer0->renderSkyBox(camera, modelSkyBox00);
+	renderer0->renderSkyBox(*modelSkyBox00);
 	//renderer->renderStaticModel(modelTest1, camera);
  //   renderer->renderStaticModel(modelTest2, camera);
 	// =============================================
@@ -207,7 +207,7 @@ int main(int argc, char** argv)
 		std::cout << "Failed to initialize GLEW" << std::endl;
 	}
 	// IMPORTANT: OpenGL version after initialisation!
-	std::cout << "|-------------------------------------------------" << std::endl;
+	std::cout << "||" << std::endl;
 	std::cout << "||  Starting GLFW context, OpenGL" << std::endl;
 	std::cout << "||  Graphics vendor   : " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "||  Renderer          : " << glGetString(GL_RENDERER) << std::endl;
@@ -215,7 +215,7 @@ int main(int argc, char** argv)
 	std::cout << "||  GLEW version      : " << glewGetString(GLEW_VERSION) << std::endl;
 	std::cout << "||  GLFW version      : " << glfwGetVersionString() << std::endl;
 	std::cout << "||  Screen Resolution : " << WIDTH << " x " << HEIGHT << std::endl;
-	std::cout << "|-------------------------------------------------" << std::endl;
+	std::cout << "||" << std::endl;
 	std::cout << std::endl;
 	std::ofstream logFile("___Log/logFile.txt");
 	//
@@ -287,7 +287,10 @@ int main(int argc, char** argv)
 	// LEGACY TODO
 	std::vector<Shaders::ShadersIf::ShadersIf*> vectorOfShaders;
 	vectorOfShaders.push_back(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT));
-	modelSkyBox00 = new Models::ModelSkyBox0(vectorOfShaders[0], camera);
+
+	modelSkyBox00 = new Models::ModelSkyBox0(vectorShaders, camera);
+
+
 	shaderWaterTile00 = new Shaders::ShaderWaterTile0(VS_Water_Tile, FS_Water_Tile);
 	modelWaterTile00 = new Models::ModelWaterTile0("_src/water/waterDUDV.png", shaderWaterTile00, camera, 8, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(14.0f));
 	shaderGUI00 = new Shaders::ShaderGUI0(VS2, FS2);
@@ -359,7 +362,7 @@ void RenderSceneMaster(GLfloat deltaTime)
 	// glEnable(GL_CLIP_DISTANCE0);
 
 	// RENDER SKY BOX
-	renderer0->renderSkyBox(camera, modelSkyBox00);
+	renderer0->renderSkyBox(*modelSkyBox00);
 	// RENDER TERRAIN
 	renderer0->renderTerrain(shaderTerrain00, modelTerrain00, camera);
 	// RENDER STATIC MODELS

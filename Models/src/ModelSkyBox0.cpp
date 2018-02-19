@@ -1,26 +1,25 @@
-//#include <iostream>
-//#include <string>
-
 #include "../../Models/inc/ModelSkyBox0.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
-//
-//
+
 // CONSTRUCTORs / DESTRUCTOR(s)
-//
-//
-Models::ModelSkyBox0::ModelSkyBox0(Shaders::ShadersIf::ShadersIf* _shader, Camera::CameraIf::CameraIf* _camera)
+Models::ModelSkyBox0::ModelSkyBox0(std::vector<Shaders::ShadersIf::ShadersIf*>& vectorShaders, 
+	                               Camera::CameraIf::CameraIf* _camera)
 {
-	//
-	// ADD SHADER(s)
-	//
-	shader = _shader;
+	// shader = _shader;
 	camera = _camera;
 
+	for (auto& it : vectorShaders)
+	{
+		if (!(it)->getShaderName().compare("ShaderSkyBox0"))
+		{
+			shader = it;
+		}
+	}
+
 	modelMatrix = glm::mat4(1.0f);
-	//
+
 	// CREATE MODEL
-	//
 	const char* skyBox[] = 
 	{ 
 		"_src/skyBox/right.png", 
@@ -34,7 +33,6 @@ Models::ModelSkyBox0::ModelSkyBox0(Shaders::ShadersIf::ShadersIf* _shader, Camer
 	num_ver = 36;
 
 	GLfloat SIZE = 500.0f;
-
 	GLfloat verts[] = {
 		-SIZE,  SIZE, -SIZE,
 		-SIZE, -SIZE, -SIZE,
@@ -84,11 +82,12 @@ Models::ModelSkyBox0::ModelSkyBox0(Shaders::ShadersIf::ShadersIf* _shader, Camer
 
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	std::cout << " xxx VBO = " << VBO << std::endl;
+	
 
 	glBufferData(GL_ARRAY_BUFFER, 3 * num_ver * sizeof(GLfloat), verts, GL_STATIC_DRAW); // 3 = x, y, z
-	//
+
 	// TEXTUREs
-	//
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	FIBITMAP*         dib = 0;            //pointer to the image data
 	BYTE*             bits = 0;           
@@ -118,7 +117,7 @@ Models::ModelSkyBox0::ModelSkyBox0(Shaders::ShadersIf::ShadersIf* _shader, Camer
 	//
 	// VERTEX ATTRIBUTE POINTER(s)
 	//
-	VertexAttribPointers();
+	//VertexAttribPointers();
 
 	std::cout << "ModelSkyBox0 created! ID = " << texID << std::endl;
 }
@@ -132,10 +131,42 @@ Models::ModelSkyBox0::~ModelSkyBox0()
 // FUNCTION(s)
 // 
 //
+GLuint Models::ModelSkyBox0::getModelVAO()
+{
+	return VAO;
+}
+
+GLuint Models::ModelSkyBox0::getModelVBO()
+{
+	return VBO;
+}
+
+
+Shaders::ShadersIf::ShadersIf& Models::ModelSkyBox0::getShader()
+{
+	return *shader;
+}
+
+glm::mat4 Models::ModelSkyBox0::getModelMatrix()
+{
+	return modelMatrix;
+}
+
+GLuint Models::ModelSkyBox0::getTextureID()
+{
+	return texID;
+}
+
+GLuint Models::ModelSkyBox0::getNumVertices()
+{
+	return num_ver;
+}
+
 void Models::ModelSkyBox0::VertexAttribPointers()
 {
 	glUseProgram(shader->getShaderProgramID());
 	glVertexAttribPointer(shader->getPositionsID(), 3, GL_FLOAT, GL_FALSE, 0, 0);
+	std::cout << " xxx SHADER GETPOSITIONID = " << shader->getPositionsID() << std::endl;
 	glUseProgram(0);
 }
 

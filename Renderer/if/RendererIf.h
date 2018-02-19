@@ -24,8 +24,7 @@ public:
 	}
 
 	// FUNCTIONs
-	virtual void renderSkyBox(Camera::CameraIf::CameraIf* _camera,
-		                      Models::ModelSkyBox0* _skyBox) {}
+	virtual void renderSkyBox(Models::ModelSkyBox0& _skyBox) {}
 	virtual void renderWater(Shaders::ShadersIf::ShadersIf* _shader, 
 		                     Models::ModelWaterTile0* _modelWaterTile) {};
 	virtual void renderDepthMap(Models::ModelPTN0* _modelPTN, 

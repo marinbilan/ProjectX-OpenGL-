@@ -158,6 +158,7 @@ void Models::ModelPTN0::setModelRotation(glm::vec3 _modelRotateAround, GLfloat _
 	modelRotateAround = _modelRotateAround;
 	modelMatrix = glm::rotate(modelMatrix, angle, modelRotateAround);
 }
+
 // OPERATORs
 void Models::ModelPTN0::printINFO()
 {

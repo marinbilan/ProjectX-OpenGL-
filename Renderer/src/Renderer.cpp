@@ -28,10 +28,32 @@ Renderer::Renderer::Renderer(Camera::CameraIf::CameraIf& camera,
 }
 
 // FUNCTIONs
-void Renderer::Renderer::renderSkyBox(Camera::CameraIf::CameraIf* _camera,
-	                                  Models::ModelSkyBox0* _skyBox)
+void Renderer::Renderer::renderSkyBox(Models::ModelSkyBox0& _skyBox)
 {
-	_skyBox->renderModel();
+	glBindVertexArray(_skyBox.getModelVAO());
+	glUseProgram(_skyBox.getShader().getShaderProgramID());
+
+	glBindBuffer(GL_ARRAY_BUFFER, _skyBox.getModelVBO());
+	glVertexAttribPointer(_skyBox.getShader().getPositionsID(), 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(_skyBox.getShader().getPositionsID());
+
+	m_camera.stopTranslate();
+	m_camera.updateCameraUniform(&_skyBox.getShader());
+	m_camera.updateCameraPosition();
+	glUniformMatrix4fv(_skyBox.getShader().getModelMatrixID(), 1, GL_FALSE, &_skyBox.getModelMatrix()[0][0]);
+
+	GLfloat lightPosition[] = { 0.0f, 5.0f, 15.0f };
+	GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, _skyBox.getTextureID());
+
+	glDrawArrays(GL_TRIANGLES, 0, _skyBox.getNumVertices());
+
+	glDisableVertexAttribArray(_skyBox.getShader().getPositionsID());
+
+	glUseProgram(0);
+	glBindVertexArray(0);
 }
 
 void Renderer::Renderer::renderWater(Shaders::ShadersIf::ShadersIf* _shader, 
@@ -130,7 +152,6 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf& _staticMo
 		if (!_staticModel.getVectorOfMeshes()[i].meshShaderPtr->getShaderName().compare("ShaderMarker0"))
 		{
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 32, 0); // VERTs
-
 			glEnableVertexAttribArray(0); // VERTs
 										  // VERTEX SHADER UNIFORMS
 										  // Projection matrix updated in shader constructor (Only once)
