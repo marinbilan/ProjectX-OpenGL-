@@ -254,6 +254,10 @@ int main(int argc, char** argv)
 	//
 	// ----==== MODELs [ ModelMatrix ] ====----	
 	//
+
+	// MODELs NEW
+	modelSkyBox00 = new Models::ModelSkyBox0(vectorShaders);
+
 	std::vector<Models::ModelsIf::ModelsIf*> vectorModels;
 	vectorModels.push_back(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfSmartShaders));
 	vectorModels.push_back(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfSmartShaders));
@@ -288,7 +292,6 @@ int main(int argc, char** argv)
 	std::vector<Shaders::ShadersIf::ShadersIf*> vectorOfShaders;
 	vectorOfShaders.push_back(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT));
 
-	modelSkyBox00 = new Models::ModelSkyBox0(vectorShaders, camera);
 
 
 	shaderWaterTile00 = new Shaders::ShaderWaterTile0(VS_Water_Tile, FS_Water_Tile);

@@ -3,12 +3,8 @@
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 // CONSTRUCTORs / DESTRUCTOR(s)
-Models::ModelSkyBox0::ModelSkyBox0(std::vector<Shaders::ShadersIf::ShadersIf*>& vectorShaders, 
-	                               Camera::CameraIf::CameraIf* _camera)
+Models::ModelSkyBox0::ModelSkyBox0(std::vector<Shaders::ShadersIf::ShadersIf*>& vectorShaders)
 {
-	// shader = _shader;
-	camera = _camera;
-
 	for (auto& it : vectorShaders)
 	{
 		if (!(it)->getShaderName().compare("ShaderSkyBox0"))
@@ -82,8 +78,6 @@ Models::ModelSkyBox0::ModelSkyBox0(std::vector<Shaders::ShadersIf::ShadersIf*>& 
 
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	std::cout << " xxx VBO = " << VBO << std::endl;
-	
 
 	glBufferData(GL_ARRAY_BUFFER, 3 * num_ver * sizeof(GLfloat), verts, GL_STATIC_DRAW); // 3 = x, y, z
 
@@ -114,10 +108,6 @@ Models::ModelSkyBox0::ModelSkyBox0(std::vector<Shaders::ShadersIf::ShadersIf*>& 
 
 		FreeImage_Unload(dib);
 	}
-	//
-	// VERTEX ATTRIBUTE POINTER(s)
-	//
-	//VertexAttribPointers();
 
 	std::cout << "ModelSkyBox0 created! ID = " << texID << std::endl;
 }
@@ -126,11 +116,8 @@ Models::ModelSkyBox0::~ModelSkyBox0()
 {
 	std::cout << "ModelSkyBox0 destructor called!" << std::endl;
 }
-//
-//
-// FUNCTION(s)
-// 
-//
+
+// FUNCTIONs
 GLuint Models::ModelSkyBox0::getModelVAO()
 {
 	return VAO;
@@ -161,54 +148,3 @@ GLuint Models::ModelSkyBox0::getNumVertices()
 {
 	return num_ver;
 }
-
-void Models::ModelSkyBox0::VertexAttribPointers()
-{
-	glUseProgram(shader->getShaderProgramID());
-	glVertexAttribPointer(shader->getPositionsID(), 3, GL_FLOAT, GL_FALSE, 0, 0);
-	std::cout << " xxx SHADER GETPOSITIONID = " << shader->getPositionsID() << std::endl;
-	glUseProgram(0);
-}
-
-void Models::ModelSkyBox0::renderModel()
-{
-	//
-	// Bind VAO and Activate SHADER(s)
-	//
-	glBindVertexArray(VAO);
-	glUseProgram(shader->getShaderProgramID());
-	//
-	// ENABLE ATTRIBs
-	//
-	glEnableVertexAttribArray(shader->getPositionsID());
-	//
-	// UPDATE UNIFORMs
-	//
-	camera->stopTranslate();
-	camera->updateCameraUniform(shader);
-	camera->updateCameraPosition();
-	glUniformMatrix4fv(shader->getModelMatrixID(), 1, GL_FALSE, &modelMatrix[0][0]);
-	//glUniform3f(shader->getCameraPositionID(), camera->getcameraPosition().x, camera->getcameraPosition().y, camera->getcameraPosition().z);
-	GLfloat lightPosition[] = { 0.0f, 5.0f, 15.0f };
-	GLfloat lightColour[] = { 1.0f, 1.0f, 1.0f };
-	//glUniform3f(shader->getLightPositionID(), lightPosition[0], lightPosition[1], lightPosition[2]);
-	//glUniform3f(shader->getLightColorID(), lightColour[0], lightColour[1], lightColour[2]);
-	//
-	// ACTIVE TEXTURE
-	//
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, texID); // Bind texture that we want to use to TEXTURE UNIT 0
-	//
-	// RENDER SKYBOX
-	//
-	glDrawArrays(GL_TRIANGLES, 0, num_ver);
-	//
-	// DISABLE TEXTURE
-	//
-	glDisableVertexAttribArray(shader->getPositionsID());
-
-	glUseProgram(0);
-	glBindVertexArray(0);
-}
-
-
