@@ -1,5 +1,4 @@
 #include "../../Loader/inc/ModelLoaderLearningOpenGL.h"
-
 // CONSTRUCTORs / DESTRUCTORs
 Loader::ModelLoaderLearningOpenGL::ModelLoaderLearningOpenGL(CommonFunctions& _CF, char* _modelFolder) 
 	                                                         :
@@ -50,7 +49,8 @@ void Loader::ModelLoaderLearningOpenGL::initScene(const aiScene* _pScene)
 
 	// START CREATING MESHes
 	// Create VBO and IBO for each Mesh in Model
-	for (unsigned int i = 0; i < vectorOfMeshes.size(); i++) {
+	for (unsigned int i = 0; i < vectorOfMeshes.size(); i++) 
+	{
 		const aiMesh* paiMesh = _pScene->mMeshes[i];
 		// Check if mesh (texture) has NormalMap - Fill struct Mesh
 		std::string isNormalMap;
@@ -76,7 +76,8 @@ void Loader::ModelLoaderLearningOpenGL::initMesh(GLuint _index, const aiMesh* _p
 	glm::vec3* textureCoord  = new glm::vec3(0.0f);
 	glm::vec3* normalCoord   = new glm::vec3(0.0f);
 
-	for (unsigned int i = 0; i < _paiMesh->mNumVertices; i++) {
+	for (unsigned int i = 0; i < _paiMesh->mNumVertices; i++) 
+	{
 		// Positions
 		positionCoord->x = _paiMesh->mVertices[i].x;
 		positionCoord->y = _paiMesh->mVertices[i].y;
@@ -96,7 +97,8 @@ void Loader::ModelLoaderLearningOpenGL::initMesh(GLuint _index, const aiMesh* _p
 		vertices.push_back(v);
 	}
 
-	for (unsigned int i = 0; i < _paiMesh->mNumFaces; i++) {
+	for (unsigned int i = 0; i < _paiMesh->mNumFaces; i++) 
+	{
 		const aiFace& Face = _paiMesh->mFaces[i];
 		assert(Face.mNumIndices == 3);
 		indices.push_back(Face.mIndices[0]);
@@ -118,12 +120,6 @@ void Loader::ModelLoaderLearningOpenGL::initMesh(GLuint _index, const aiMesh* _p
 	CF.LOGFILE(LOG "--> Model " + modelName + " IBO = " + std::to_string(vectorOfMeshes[_index].IBO) + " generated.");
 
 	vectorOfMeshes[_index].numIndices = indices.size(); // For each mesh! Important for rendering!
-
-	//Calculate size for each Mesh
-	GLfloat bitsInMB = 8388608; // 1048576 * 8
-	//                                   <------------ verts + textureCoords + normals ------------------------------ indices ---------------------------->
-	vectorOfMeshes[_index].meshSizeMB = ( _paiMesh->mNumVertices*(3*sizeof(GLuint)+2*sizeof(GLuint)+3*sizeof(GLuint))+_paiMesh->mNumVertices*sizeof(GLuint)) / bitsInMB;
-
 }
 // NORMALMAP MESH
 void Loader::ModelLoaderLearningOpenGL::initNormalMapMesh(GLuint _index, const aiMesh* _paiMesh)
@@ -136,7 +132,8 @@ void Loader::ModelLoaderLearningOpenGL::initNormalMapMesh(GLuint _index, const a
 	glm::vec3* normalCoord = new glm::vec3(0.0f);
 	glm::vec3* tangentCoord = new glm::vec3(0.0f);
 
-	for (unsigned int i = 0; i < _paiMesh->mNumVertices; i++) {
+	for (unsigned int i = 0; i < _paiMesh->mNumVertices; i++) 
+	{
 		// Positions
 		positionCoord->x = _paiMesh->mVertices[i].x;
 		positionCoord->y = _paiMesh->mVertices[i].y;
@@ -155,13 +152,14 @@ void Loader::ModelLoaderLearningOpenGL::initNormalMapMesh(GLuint _index, const a
 
 		VertNormalMap v(glm::vec3(positionCoord->x, positionCoord->y, positionCoord->z), // in vec3 position
 			glm::vec2(textureCoord->x, textureCoord->y),                                 // in vec2 textureCoordinates
-			glm::vec3(normalCoord->x, normalCoord->y, normalCoord->z),
-			glm::vec3(tangentCoord->x, tangentCoord->y, tangentCoord->z));               // in vec3 normal
+			glm::vec3(normalCoord->x, normalCoord->y, normalCoord->z),                   // in vec3 normal
+			glm::vec3(tangentCoord->x, tangentCoord->y, tangentCoord->z));               // in vec3 tangent       
 
 		vertices.push_back(v);
 	}
 
-	for (unsigned int i = 0; i < _paiMesh->mNumFaces; i++) {
+	for (unsigned int i = 0; i < _paiMesh->mNumFaces; i++) 
+	{
 		const aiFace& Face = _paiMesh->mFaces[i];
 		assert(Face.mNumIndices == 3);
 		indices.push_back(Face.mIndices[0]);
@@ -183,11 +181,6 @@ void Loader::ModelLoaderLearningOpenGL::initNormalMapMesh(GLuint _index, const a
 	CF.LOGFILE(LOG "--> Model " + modelName + " IBO = " + std::to_string(vectorOfMeshes[_index].IBO) + " created.");
 
 	vectorOfMeshes[_index].numIndices = indices.size(); // For each mesh! Important for rendering!
-
-	//Calculate size for each Mesh
-	GLfloat bitsInMB = 8388608; // 1048576 * 8
-								//                                   <------------ verts + textureCoords + normals ------------------------------ indices ---------------------------->
-	vectorOfMeshes[_index].meshSizeMB = (_paiMesh->mNumVertices*(3 * sizeof(GLuint) + 2 * sizeof(GLuint) + 3 * sizeof(GLuint)) + _paiMesh->mNumVertices*sizeof(GLuint)) / bitsInMB;
 }
 
 // GET
@@ -196,7 +189,7 @@ GLuint Loader::ModelLoaderLearningOpenGL::getModelVAO()
 	return VAO;
 }
 
-std::vector<Loader::Mesh> Loader::ModelLoaderLearningOpenGL::getVectorOfMeshes()
+std::vector<Loader::Mesh>& Loader::ModelLoaderLearningOpenGL::getVectorOfMeshes()
 {
 	return vectorOfMeshes;
 }

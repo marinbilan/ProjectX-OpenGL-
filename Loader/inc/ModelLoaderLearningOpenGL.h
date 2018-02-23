@@ -52,8 +52,8 @@ public:
 	void initMesh(GLuint _index, const aiMesh* _paiMesh);
 	void initNormalMapMesh(GLuint _index, const aiMesh* _paiMesh);
 	// GET
-	GLuint getModelVAO();
-	std::vector<Loader::Mesh> getVectorOfMeshes();
+	GLuint                     getModelVAO();
+	std::vector<Loader::Mesh>& getVectorOfMeshes();
 
 	// OPERATORs
 	friend std::ostream& operator<<(std::ostream& output, ModelLoaderLearningOpenGL& info)
@@ -66,9 +66,9 @@ private:
 	std::string       modelFolder;
 	std::string       modelName;
 
-	const aiScene*    pScene;
 	std::vector<Mesh> vectorOfMeshes;
 
+	const aiScene*    pScene;
 	CommonFunctions& CF;
 };
 }

@@ -37,7 +37,7 @@ void Models::ModelPTN0::initPTNModel()
 {
 	// CREATE MODEL and TEXTUREs
 	std::unique_ptr<Loader::ModelLoaderLearningOpenGL> modelPTNLoader(new Loader::ModelLoaderLearningOpenGL(*CF, const_cast<char *>((modelFolder).c_str())));
-	std::unique_ptr<Loader::TextureLoader> textureLoader(new Loader::TextureLoader(CF, const_cast<char *>(modelFolder.c_str()), modelPTNLoader->getVectorOfMeshes().size()));
+	std::unique_ptr<Loader::TextureLoader> textureLoader(new Loader::TextureLoader(*CF, const_cast<char *>(modelFolder.c_str()), modelPTNLoader->getVectorOfMeshes().size()));
 
 	// GET VAO
 	VAO = modelPTNLoader->getModelVAO();
@@ -54,8 +54,8 @@ void Models::ModelPTN0::initPTNModel()
 		vectorOfMeshes[i].VBO = modelPTNLoader->getVectorOfMeshes()[i].VBO;
 		vectorOfMeshes[i].IBO = modelPTNLoader->getVectorOfMeshes()[i].IBO;
 		vectorOfMeshes[i].numIndices = modelPTNLoader->getVectorOfMeshes()[i].numIndices;
-		vectorOfMeshes[i].meshSizeMB = modelPTNLoader->getVectorOfMeshes()[i].meshSizeMB;
-		modelMeshSizeMB += vectorOfMeshes[i].meshSizeMB;
+		//vectorOfMeshes[i].meshSizeMB = modelPTNLoader->getVectorOfMeshes()[i].meshSizeMB;
+		//modelMeshSizeMB += vectorOfMeshes[i].meshSizeMB;
 		// SHADER for each MESH from constructor param _vectorOfShaders
 		CF->getStringFromDB(modelFolder, "meshShader" + std::to_string(i), meshTempShaderName);
 		for (auto& it : vectorOfShaders)
@@ -68,10 +68,10 @@ void Models::ModelPTN0::initPTNModel()
 		}
 		// TEXTUREs from TextureLoader
 		vectorOfMeshes[i].texture0ID = textureLoader->getVectorOfMeshes()[i].texture0ID;
-		vectorOfMeshes[i].textureWidth = textureLoader->getVectorOfMeshes()[i].textureWidth;
-		vectorOfMeshes[i].textureHeight = textureLoader->getVectorOfMeshes()[i].textureHeight;
-		vectorOfMeshes[i].textureSizeMB = textureLoader->getVectorOfMeshes()[i].textureSizeMB;
-		modelTextureSizeMB += vectorOfMeshes[i].textureSizeMB;
+		//vectorOfMeshes[i].textureWidth = textureLoader->getVectorOfMeshes()[i].textureWidth;
+		//vectorOfMeshes[i].textureHeight = textureLoader->getVectorOfMeshes()[i].textureHeight;
+		//vectorOfMeshes[i].textureSizeMB = textureLoader->getVectorOfMeshes()[i].textureSizeMB;
+		//modelTextureSizeMB += vectorOfMeshes[i].textureSizeMB;
 
 		// SPECULAR MAP TEXTUREs LOADER
 		vectorOfMeshes[i].textureSpecularMap0ID = textureLoader->getVectorOfMeshes()[i].textureSpecularMap0ID;

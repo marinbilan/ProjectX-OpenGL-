@@ -1,9 +1,8 @@
 #pragma once
 #include "../../CommonFunctions/CommonFunctions.h"
-//
 //                          LoaderIf 
 //                          [struct Mesh] // Shared between ModelLoaderLearningOpenGL and TextureLoader
-//                          ----------
+//                          -------------
 //                             |
 //       +---------------------+--------------------------+
 //       |                     |                          |
@@ -17,24 +16,11 @@ struct Mesh
 {
 	GLuint VBO;
 	GLuint IBO;
-	GLuint numIndices; // = number of vertices
-	GLfloat meshSizeMB;
+	GLuint numIndices;  // = number of vertices
 
-	// Texture params
 	GLuint texture0ID;
-	GLuint  textureWidth;
-	GLuint  textureHeight;
-	GLfloat textureSizeMB;
-	// Texture Specular Map params
-	GLuint  textureSpecularMap0ID;
-	GLuint  textureSpecularlMapWidth;
-	GLuint  textureSpecularMapHeight;
-	GLfloat textureSpecularlMapSizeMB;
-	// Texture Normal Map params
-	GLuint  textureNormalMap0ID;
-	GLuint  textureNormalMapWidth;
-	GLuint  textureNormalMapHeight;
-	GLfloat textureNormalMapSizeMB;
+	GLuint textureSpecularMap0ID;
+	GLuint textureNormalMap0ID;
 };
 
 namespace LoaderIf
@@ -49,21 +35,22 @@ public:
 	}
 	// FUNCTIONs
 	// MODEL
-	virtual void loadModelPTN()                                  {};
-	virtual void initScene(const aiScene* _pScene)               {};
-	virtual void initMesh(GLuint _index, const aiMesh* _paiMesh) {};
+	// initialization
+	virtual void loadModelPTN()                                           {}
+	virtual void initScene(const aiScene* _pScene)                        {}
+	virtual void initMesh(GLuint _index, const aiMesh* _paiMesh)          {}
+	virtual void initNormalMapMesh(GLuint _index, const aiMesh* _paiMesh) {}
 	// GET
-	virtual GLuint getModelVAO()                                 { return 0; };
-	virtual std::vector<Loader::Mesh> getVectorOfMeshes()        { return std::vector<Loader::Mesh>(); };
+	virtual GLuint                     getModelVAO()              { return 0; }
+	virtual std::vector<Loader::Mesh>& getVectorOfMeshes()        { return std::vector<Loader::Mesh>(); }
 	// SET
+
 	// TEXTUREs
-	virtual void loadTModelPTNTextures() {};
-	virtual GLuint createSingleTexture(GLuint& _textureWidth, GLuint& _textureHeight, GLfloat& _textureSize, std::string& _textureName) { return 0; };
-	
-	virtual GLuint createSingleTexture(std::string& _textureName) { return 0; };
+	virtual void   loadTModelPTNTextures() {};	
+	virtual GLuint createSingleTexture(std::string& _textureName) { return 0; }
 	// GET
 	// SET
-	virtual void setTextureForEachMesh()                          {};
+	virtual void setTextureForEachMesh() {}
 private:
 };
 }

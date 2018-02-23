@@ -17,26 +17,25 @@ struct Mesh
 	std::shared_ptr<Shaders::ShadersIf::ShadersIf> meshShaderPtr;
 
 	// Loader::Mesh
-	GLuint VBO;
-	GLuint IBO;
-	GLuint numIndices;
-	GLfloat meshSizeMB;
+	GLuint  VBO;
+	GLuint  IBO;
+	GLuint  numIndices;
 
 	// Texture params
-	GLuint texture0ID;
-	GLuint  textureWidth;
-	GLuint  textureHeight;
-	GLfloat textureSizeMB;
+	GLuint  texture0ID;
+	//GLuint  textureWidth;
+	//GLuint  textureHeight;
+	//GLfloat textureSizeMB;
 	// Texture Specular Map params
 	GLuint  textureSpecularMap0ID;
-	GLuint  textureSpecularlMapWidth;
-	GLuint  textureSpecularMapHeight;
-	GLfloat textureSpecularlMapSizeMB;
+	//GLuint  textureSpecularlMapWidth;
+	//GLuint  textureSpecularMapHeight;
+	//GLfloat textureSpecularlMapSizeMB;
 	// Texture Normal Map params
-	GLuint textureNormalMap0ID;
-	GLuint  textureNormalMapWidth;
-	GLuint  textureNormalMapHeight;
-	GLfloat textureNormalMapSizeMB;
+	GLuint  textureNormalMap0ID;
+	//GLuint  textureNormalMapWidth;
+	//GLuint  textureNormalMapHeight;
+	//GLfloat textureNormalMapSizeMB;
 
 	// OPERATORs
 	friend std::ostream& operator<<(std::ostream& output, Mesh& info)
@@ -46,11 +45,11 @@ struct Mesh
 		output << "       Mesh IBO           = " << info.IBO << std::endl;
 		output << "       Shader             = " << info.meshShaderName << std::endl;
 		output << "       Num Vertices       = " << info.numIndices << std::endl;;
-		output << "       Mesh Size          = " << info.meshSizeMB << " [MB]" << std::endl;
+		//output << "       Mesh Size          = " << info.meshSizeMB << " [MB]" << std::endl;
 		output << "       [ TEXTURE INFO ]" << std::endl;
 		output << "         TextureID          = " << info.texture0ID << std::endl;
-		output << "         Texture Resolution = " << info.textureWidth << " x " << info.textureHeight  << std::endl;
-		output << "         Texture Size       = " << info.textureSizeMB << " [MB]";
+		//output << "         Texture Resolution = " << info.textureWidth << " x " << info.textureHeight  << std::endl;
+		//output << "         Texture Size       = " << info.textureSizeMB << " [MB]";
 		return output;
 	}
 };
