@@ -134,7 +134,7 @@ Shaders::ShadersIf::ShadersIf& Models::ModelSkyBox0::getShader()
 	return *shader;
 }
 
-glm::mat4 Models::ModelSkyBox0::getModelMatrix()
+glm::mat4& Models::ModelSkyBox0::getModelMatrix()
 {
 	return modelMatrix;
 }

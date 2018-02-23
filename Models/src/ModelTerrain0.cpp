@@ -153,7 +153,7 @@ Models::ModelTerrain0::~ModelTerrain0()
 }
 // FUNCTIONs
 // GET
-std::string Models::ModelTerrain0::getModelName()
+std::string& Models::ModelTerrain0::getModelName()
 {
 	return modelName;
 }
@@ -163,22 +163,22 @@ GLuint Models::ModelTerrain0::getModelVAO()
 	return VAO;
 }
 
-glm::mat4 Models::ModelTerrain0::getModelMatrix()
+glm::mat4& Models::ModelTerrain0::getModelMatrix()
 {
 	return modelMatrix;
 }
 
-glm::vec3 Models::ModelTerrain0::getModelPosition()
+glm::vec3& Models::ModelTerrain0::getModelPosition()
 {
 	return modelPosition;
 }
 
-glm::vec3 Models::ModelTerrain0::getModelScale()
+glm::vec3& Models::ModelTerrain0::getModelScale()
 {
 	return modelScale;
 }
 
-glm::vec3 Models::ModelTerrain0::getModelRotation()
+glm::vec3& Models::ModelTerrain0::getModelRotation()
 {
 	return modelRotateAround;
 }
@@ -188,7 +188,7 @@ GLfloat Models::ModelTerrain0::getModelAngle()
 	return angle;
 }
 
-std::vector<Models::Mesh>  Models::ModelTerrain0::getVectorOfMeshes()
+std::vector<Models::Mesh>&  Models::ModelTerrain0::getVectorOfMeshes()
 {
 	return vectorOfMeshes;
 }

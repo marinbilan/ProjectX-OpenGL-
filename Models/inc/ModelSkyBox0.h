@@ -16,7 +16,7 @@ public:
 	GLuint                         getModelVBO();
 
 	Shaders::ShadersIf::ShadersIf& getShader();
-	glm::mat4                      getModelMatrix();
+	glm::mat4&                     getModelMatrix();
 	GLuint                         getTextureID();
 	GLuint                         getNumVertices();
 

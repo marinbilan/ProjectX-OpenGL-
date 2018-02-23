@@ -21,21 +21,9 @@ struct Mesh
 	GLuint  IBO;
 	GLuint  numIndices;
 
-	// Texture params
 	GLuint  texture0ID;
-	//GLuint  textureWidth;
-	//GLuint  textureHeight;
-	//GLfloat textureSizeMB;
-	// Texture Specular Map params
 	GLuint  textureSpecularMap0ID;
-	//GLuint  textureSpecularlMapWidth;
-	//GLuint  textureSpecularMapHeight;
-	//GLfloat textureSpecularlMapSizeMB;
-	// Texture Normal Map params
 	GLuint  textureNormalMap0ID;
-	//GLuint  textureNormalMapWidth;
-	//GLuint  textureNormalMapHeight;
-	//GLfloat textureNormalMapSizeMB;
 
 	// OPERATORs
 	friend std::ostream& operator<<(std::ostream& output, Mesh& info)
@@ -45,11 +33,9 @@ struct Mesh
 		output << "       Mesh IBO           = " << info.IBO << std::endl;
 		output << "       Shader             = " << info.meshShaderName << std::endl;
 		output << "       Num Vertices       = " << info.numIndices << std::endl;;
-		//output << "       Mesh Size          = " << info.meshSizeMB << " [MB]" << std::endl;
 		output << "       [ TEXTURE INFO ]" << std::endl;
-		output << "         TextureID          = " << info.texture0ID << std::endl;
-		//output << "         Texture Resolution = " << info.textureWidth << " x " << info.textureHeight  << std::endl;
-		//output << "         Texture Size       = " << info.textureSizeMB << " [MB]";
+		output << "         TextureID        = " << info.texture0ID << std::endl;
+
 		return output;
 	}
 };
@@ -66,20 +52,20 @@ public:
 	}
 	// FUNCTIONs
 	// GET
-	virtual std::string getModelName() { return std::string(); };
-	virtual GLuint getModelVAO()       { return 0; };
-	virtual std::vector<Models::Mesh> getVectorOfMeshes() { return std::vector<Models::Mesh>(); };
+	virtual std::string&               getModelName()      { return std::string(); }
+	virtual GLuint                     getModelVAO()       { return 0; }
+	virtual std::vector<Models::Mesh>& getVectorOfMeshes() { return std::vector<Models::Mesh>(); }
 
-	virtual glm::mat4 getModelMatrix()   { return glm::mat4(1.0f); }
-	virtual glm::vec3 getModelPosition() { return glm::vec3(0.0, 0.0, 0.0); }
-	virtual glm::vec3 getModelScale()    { return glm::vec3(0.0, 0.0, 0.0); }
-	virtual glm::vec3 getModelRotation() { return glm::vec3(0.0, 0.0, 0.0); }
-	virtual GLfloat   getModelAngle()    { return 0; };
+	virtual glm::mat4& getModelMatrix()   { return glm::mat4(1.0f); }
+	virtual glm::vec3& getModelPosition() { return glm::vec3(0.0, 0.0, 0.0); }
+	virtual glm::vec3& getModelScale()    { return glm::vec3(0.0, 0.0, 0.0); }
+	virtual glm::vec3& getModelRotation() { return glm::vec3(0.0, 0.0, 0.0); }
+	virtual GLfloat    getModelAngle()    { return 0; };
 
 	// SET
-	virtual void setModelPosition(glm::vec3 _modelPosition)                     {}
-	virtual void setModelScale(glm::vec3 _modelScale)                           {}
-	virtual void setModelRotation(glm::vec3 _modelRotateAround, GLfloat _angle) {}
+	virtual void setModelPosition(glm::vec3& _modelPosition)                     {}
+	virtual void setModelScale(glm::vec3& _modelScale)                           {}
+	virtual void setModelRotation(glm::vec3& _modelRotateAround, GLfloat _angle) {}
 
 	// RENDER // REMOVE THIS FROM MODELIF
 	virtual void render() {};

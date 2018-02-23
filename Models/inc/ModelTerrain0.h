@@ -13,19 +13,19 @@ public:
 	~ModelTerrain0();
 	// FUNCTIONs
 	// GET
-	std::string getModelName();
-	virtual GLuint getModelVAO();
-	std::vector<Models::Mesh> getVectorOfMeshes();
+	std::string&               getModelName();
+	GLuint             getModelVAO();
+	std::vector<Models::Mesh>& getVectorOfMeshes();
 
-	virtual glm::mat4 getModelMatrix();
-	virtual glm::vec3 getModelPosition();
-	virtual glm::vec3 getModelScale();
-	virtual glm::vec3 getModelRotation();
-	virtual GLfloat   getModelAngle();
+	glm::mat4& getModelMatrix();
+	glm::vec3& getModelPosition();
+	glm::vec3& getModelScale();
+	glm::vec3& getModelRotation();
+	GLfloat    getModelAngle();
 	// SET
-	virtual void setModelPosition(glm::vec3 _modelPosition);
-	virtual void setModelScale(glm::vec3 _modelScale);
-	virtual void setModelRotation(glm::vec3 _modelRotateAround, GLfloat _angle);
+	void setModelPosition(glm::vec3 _modelPosition);
+	void setModelScale(glm::vec3 _modelScale);
+	void setModelRotation(glm::vec3 _modelRotateAround, GLfloat _angle);
 	GLuint Models::ModelTerrain0::loadTexturePNG(const char* filename);
 	// Add setModelAngle
 
@@ -58,7 +58,6 @@ public:
 	GLuint vboID3;
 	GLuint indexBufferID;
 	GLuint numInd;
-
 
 private:
 	// CONSTRUCTOR params

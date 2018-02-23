@@ -75,17 +75,17 @@ void Models::ModelLearnOpenGL0::setModelPosition(glm::vec3 _modelPosition)
 	glUseProgram(0);
 }
 // GET
-glm::vec3 Models::ModelLearnOpenGL0::getModelScale()
+glm::vec3& Models::ModelLearnOpenGL0::getModelScale()
 {
 	return modelScale;
 }
 
-glm::vec3 Models::ModelLearnOpenGL0::getModelRotation()
+glm::vec3& Models::ModelLearnOpenGL0::getModelRotation()
 {
 	return modelRotateAround;
 }
 
-glm::vec3 Models::ModelLearnOpenGL0::getModelPosition()
+glm::vec3& Models::ModelLearnOpenGL0::getModelPosition()
 {
 	return modelPosition;
 }

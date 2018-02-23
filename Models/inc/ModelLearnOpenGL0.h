@@ -21,14 +21,14 @@ public:
 	//
 	// FUNCTIONs
 	// 
-	// SET
+	// SET TODO
 	virtual void setModelScale(glm::vec3 _modelScale);
 	virtual void setModelRotation(GLfloat _angle, glm::vec3 _modelRotateAround);
 	virtual void setModelPosition(glm::vec3 _modelPosition);
 	// GET
-	virtual glm::vec3 getModelScale();
-	virtual glm::vec3 getModelRotation();
-	virtual glm::vec3 getModelPosition();
+	virtual glm::vec3& getModelScale();
+	virtual glm::vec3& getModelRotation();
+	virtual glm::vec3& getModelPosition();
 
 	virtual void render();
 	//
