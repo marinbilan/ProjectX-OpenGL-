@@ -1,13 +1,12 @@
 #include "../../Loader/inc/ModelLoaderLearningOpenGL.h"
 
 // CONSTRUCTORs / DESTRUCTORs
-Loader::ModelLoaderLearningOpenGL::ModelLoaderLearningOpenGL(CommonFunctions* _CF, 
-	                                                         char* _modelFolder) 
+Loader::ModelLoaderLearningOpenGL::ModelLoaderLearningOpenGL(CommonFunctions& _CF, char* _modelFolder) 
 	                                                         :
 	                                                         CF(_CF),
 	                                                         modelFolder(_modelFolder)
 {
-	CF->getStringFromDB(modelFolder, "modelName", modelName);
+	CF.getStringFromDB(modelFolder, "modelName", modelName);
 	modelName += ".3ds";
 
 	loadModelPTN();
@@ -24,7 +23,7 @@ void Loader::ModelLoaderLearningOpenGL::loadModelPTN()
 	Assimp::Importer Importer;
 	pScene = Importer.ReadFile((modelFolder + modelName), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 
-	CF->LOGFILE(LOG("---> START " + modelFolder + modelName + " MESHes LOADING. " + "Number of MESHEs = " + std::to_string(pScene->mNumMeshes)));
+	CF.LOGFILE(LOG("---> START " + modelFolder + modelName + " MESHes LOADING. " + "Number of MESHEs = " + std::to_string(pScene->mNumMeshes)));
 
 	if (pScene)
 	{
@@ -35,7 +34,7 @@ void Loader::ModelLoaderLearningOpenGL::loadModelPTN()
 		CommonFunctions::INFOCMD(LOG "ERROR parsing: " + modelFolder + modelName + ". " + Importer.GetErrorString());
 	}
 
-	CF->LOGFILE(LOG("<--- END " + modelFolder + modelName + " MESHes LOADING."));
+	CF.LOGFILE(LOG("<--- END " + modelFolder + modelName + " MESHes LOADING."));
 }
 
 void Loader::ModelLoaderLearningOpenGL::initScene(const aiScene* _pScene)
@@ -47,7 +46,7 @@ void Loader::ModelLoaderLearningOpenGL::initScene(const aiScene* _pScene)
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
-	CF->LOGFILE(LOG "--> Model " + modelName + " VAO = " + std::to_string(VAO) + " generated.");
+	CF.LOGFILE(LOG "--> Model " + modelName + " VAO = " + std::to_string(VAO) + " generated.");
 
 	// START CREATING MESHes
 	// Create VBO and IBO for each Mesh in Model
@@ -55,7 +54,7 @@ void Loader::ModelLoaderLearningOpenGL::initScene(const aiScene* _pScene)
 		const aiMesh* paiMesh = _pScene->mMeshes[i];
 		// Check if mesh (texture) has NormalMap - Fill struct Mesh
 		std::string isNormalMap;
-		CF->getStringFromDB(modelFolder, "meshTexture" + std::to_string(i), isNormalMap);
+		CF.getStringFromDB(modelFolder, "meshTexture" + std::to_string(i), isNormalMap);
 		
 		if (std::stoi(isNormalMap))
 		{
@@ -110,13 +109,13 @@ void Loader::ModelLoaderLearningOpenGL::initMesh(GLuint _index, const aiMesh* _p
 	glBindBuffer(GL_ARRAY_BUFFER, vectorOfMeshes[_index].VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vert) * vertices.size(), &vertices[0], GL_STATIC_DRAW); // sizeof(Vert) = 32
 
-	CF->LOGFILE(LOG "--> Model " + modelName + " VBO = " + std::to_string(vectorOfMeshes[_index].VBO) + " generated.");
+	CF.LOGFILE(LOG "--> Model " + modelName + " VBO = " + std::to_string(vectorOfMeshes[_index].VBO) + " generated.");
 
 	glGenBuffers(1, &vectorOfMeshes[_index].IBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vectorOfMeshes[_index].IBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
 
-	CF->LOGFILE(LOG "--> Model " + modelName + " IBO = " + std::to_string(vectorOfMeshes[_index].IBO) + " generated.");
+	CF.LOGFILE(LOG "--> Model " + modelName + " IBO = " + std::to_string(vectorOfMeshes[_index].IBO) + " generated.");
 
 	vectorOfMeshes[_index].numIndices = indices.size(); // For each mesh! Important for rendering!
 
@@ -175,13 +174,13 @@ void Loader::ModelLoaderLearningOpenGL::initNormalMapMesh(GLuint _index, const a
 	glBindBuffer(GL_ARRAY_BUFFER, vectorOfMeshes[_index].VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VertNormalMap) * vertices.size(), &vertices[0], GL_STATIC_DRAW); // sizeof(VertNormalMap) = 44
 
-	CF->LOGFILE(LOG "--> Model " + modelName + " VBO = " + std::to_string(vectorOfMeshes[_index].VBO) + " created.");
+	CF.LOGFILE(LOG "--> Model " + modelName + " VBO = " + std::to_string(vectorOfMeshes[_index].VBO) + " created.");
 
 	glGenBuffers(1, &vectorOfMeshes[_index].IBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vectorOfMeshes[_index].IBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
 
-	CF->LOGFILE(LOG "--> Model " + modelName + " IBO = " + std::to_string(vectorOfMeshes[_index].IBO) + " created.");
+	CF.LOGFILE(LOG "--> Model " + modelName + " IBO = " + std::to_string(vectorOfMeshes[_index].IBO) + " created.");
 
 	vectorOfMeshes[_index].numIndices = indices.size(); // For each mesh! Important for rendering!
 

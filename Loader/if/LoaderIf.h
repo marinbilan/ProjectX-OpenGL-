@@ -1,15 +1,15 @@
 #pragma once
-
 #include "../../CommonFunctions/CommonFunctions.h"
 //
 //                          LoaderIf 
 //                          [struct Mesh] // Shared between ModelLoaderLearningOpenGL and TextureLoader
 //                          ----------
 //                             |
-//       --------------------------------------------------
+//       +---------------------+--------------------------+
 //       |                     |                          |
 //  ModelLoader     [ ModelLoaderLearningOpenGL ]    [ TextureLoader ]
 //                  [ struct Vert ]
+//                  [ struct VertNormalMap ]
 
 namespace Loader
 {

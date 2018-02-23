@@ -36,7 +36,7 @@ Models::ModelPTN0::~ModelPTN0()
 void Models::ModelPTN0::initPTNModel()
 {
 	// CREATE MODEL and TEXTUREs
-	std::unique_ptr<Loader::ModelLoaderLearningOpenGL> modelPTNLoader(new Loader::ModelLoaderLearningOpenGL(CF, const_cast<char *>((modelFolder).c_str())));
+	std::unique_ptr<Loader::ModelLoaderLearningOpenGL> modelPTNLoader(new Loader::ModelLoaderLearningOpenGL(*CF, const_cast<char *>((modelFolder).c_str())));
 	std::unique_ptr<Loader::TextureLoader> textureLoader(new Loader::TextureLoader(CF, const_cast<char *>(modelFolder.c_str()), modelPTNLoader->getVectorOfMeshes().size()));
 
 	// GET VAO
