@@ -14,13 +14,12 @@ struct Mesh
 {
 	std::string meshName;       // TODO
 	std::string meshShaderName;
-	std::shared_ptr<Shaders::ShadersIf::ShadersIf> meshShaderPtr;
 
 	// Loader::Mesh
 	GLuint  VBO;
 	GLuint  IBO;
 	GLuint  numIndices;
-
+	Shaders::ShadersIf::ShadersIf* meshVectorShaderIf;
 	GLuint  texture0ID;
 	GLuint  textureSpecularMap0ID;
 	GLuint  textureNormalMap0ID;

@@ -259,13 +259,13 @@ int main(int argc, char** argv)
 	modelSkyBox00 = new Models::ModelSkyBox0(vectorShaders);
 
 	std::vector<Models::ModelsIf::ModelsIf*> vectorModels;
-	vectorModels.push_back(new Models::ModelPTN0(*CF, "_src/_models/_vanquish/", vectorOfSmartShaders));
-	vectorModels.push_back(new Models::ModelPTN0(*CF, "_src/_models/lightMarker/", vectorOfSmartShaders));
+	vectorModels.push_back(new Models::ModelPTN0(*CF, "_src/_models/_vanquish/", vectorShaders));
+	vectorModels.push_back(new Models::ModelPTN0(*CF, "_src/_models/lightMarker/", vectorShaders));
 
 	// TODO: remove smart_ptrs
 	std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> vectorOfSmartModelsPTN;
 	// for each model in db try to create model...
-	std::shared_ptr<Models::ModelPTN0> modelSmartPTN(new Models::ModelPTN0(*CF, "_src/_models/_vanquish/", vectorOfSmartShaders));
+	std::shared_ptr<Models::ModelPTN0> modelSmartPTN(new Models::ModelPTN0(*CF, "_src/_models/_vanquish/", vectorShaders));
 	// Check error
 	if (CF->checkError()) // Error
 	{
@@ -278,7 +278,7 @@ int main(int argc, char** argv)
 		vectorOfSmartModelsPTN.push_back(modelSmartPTN);
 	}
 	CF->clearError();
-	vectorOfSmartModelsPTN.push_back(std::shared_ptr<Models::ModelPTN0>(new Models::ModelPTN0(*CF, "_src/_models/lightMarker/", vectorOfSmartShaders)));
+	vectorOfSmartModelsPTN.push_back(std::shared_ptr<Models::ModelPTN0>(new Models::ModelPTN0(*CF, "_src/_models/lightMarker/", vectorShaders)));
 
 
 	// vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders));

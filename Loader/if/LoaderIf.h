@@ -14,10 +14,13 @@ namespace Loader
 {
 struct Mesh
 {
+	// Model Loader Part
 	GLuint VBO;
 	GLuint IBO;
-	GLuint numIndices;  // = number of vertices
-
+	// # of vertices = # of indices
+	GLuint numIndices;
+	// Shader
+	// Texture Loader Part
 	GLuint texture0ID;
 	GLuint textureSpecularMap0ID;
 	GLuint textureNormalMap0ID;

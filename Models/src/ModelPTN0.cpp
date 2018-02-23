@@ -3,11 +3,11 @@
 // CONSTRUCTOR / DESTRUCTOR
 Models::ModelPTN0::ModelPTN0(CommonFunctions& _CF, 
 	                         std::string _modelFolder, 
-	                         std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>> _vectorOfShaders)
+	                         std::vector<Shaders::ShadersIf::ShadersIf*>& vectorShaderIf)
 	                         :
 	                         CF(_CF),
 	                         modelFolder(_modelFolder), 
-	                         vectorOfShaders(_vectorOfShaders)
+	                         m_vectorShaderIf(vectorShaderIf)
 {
 	CF.getStringFromDB(modelFolder, "modelName", modelName);
 	modelFullName = _modelFolder + modelName;
@@ -36,47 +36,39 @@ Models::ModelPTN0::~ModelPTN0()
 void Models::ModelPTN0::initPTNModel()
 {
 	// CREATE MODEL and TEXTUREs
-	// std::unique_ptr<Loader::ModelLoaderLearningOpenGL> modelPTNLoader(new Loader::ModelLoaderLearningOpenGL(CF, const_cast<char *>((modelFolder).c_str())));
-	// std::unique_ptr<Loader::TextureLoader> textureLoader(new Loader::TextureLoader(CF, const_cast<char *>(modelFolder.c_str()), modelPTNLoader->getVectorOfMeshes().size()));
-
 	Loader::ModelLoaderLearningOpenGL modelPTNLoader(CF, const_cast<char *>((modelFolder).c_str()));
-	Loader::TextureLoader textureLoader(CF, const_cast<char *>(modelFolder.c_str()), modelPTNLoader.getVectorOfMeshes().size());
+	Loader::TextureLoader             textureLoader(CF, const_cast<char *>(modelFolder.c_str()), modelPTNLoader.getVectorOfMeshes().size());
 
 	// GET VAO
 	VAO = modelPTNLoader.getModelVAO();
-	// Vector of Model Meshes
 	vectorOfMeshes.resize(modelPTNLoader.getVectorOfMeshes().size());
 
-	//modelMeshSizeMB = 0;
-	//modelTextureSizeMB = 0;
 	std::string meshTempShaderName;
-	// FILL DATA for each MESH
 	for (int i = 0; i < modelPTNLoader.getVectorOfMeshes().size(); i++)
 	{
-		// MESH PARAMs from ModelLoaderLearningOpenGL
+		// VBO
 		vectorOfMeshes[i].VBO = modelPTNLoader.getVectorOfMeshes()[i].VBO;
+		// IBO
 		vectorOfMeshes[i].IBO = modelPTNLoader.getVectorOfMeshes()[i].IBO;
+		// numIndices
 		vectorOfMeshes[i].numIndices = modelPTNLoader.getVectorOfMeshes()[i].numIndices;
-		//vectorOfMeshes[i].meshSizeMB = modelPTNLoader->getVectorOfMeshes()[i].meshSizeMB;
-		//modelMeshSizeMB += vectorOfMeshes[i].meshSizeMB;
-		// SHADER for each MESH from constructor param _vectorOfShaders
+		// Find Shader From DB and shaderVector
 		CF.getStringFromDB(modelFolder, "meshShader" + std::to_string(i), meshTempShaderName);
-		for (auto& it : vectorOfShaders)
+		for (auto& it : m_vectorShaderIf)
 		{
 			if (!(it)->getShaderName().compare(meshTempShaderName))
 			{
-				vectorOfMeshes[i].meshShaderName = (it)->getShaderName();
-				vectorOfMeshes[i].meshShaderPtr = it;
+				m_vectorShaderIf[i]->getShaderName() = (it)->getShaderName();
+				vectorOfMeshes[i].meshVectorShaderIf = it;
 			}
 		}
-		// TEXTUREs from TEXTUREs LOADER
+		// texture0ID
 		vectorOfMeshes[i].texture0ID = textureLoader.getVectorOfMeshes()[i].texture0ID;
-		// SPECULAR MAP from TEXTUREs LOADER
+		// textureSpecularMap0ID
 		vectorOfMeshes[i].textureSpecularMap0ID = textureLoader.getVectorOfMeshes()[i].textureSpecularMap0ID;
-		// NORMAL MAP from TEXTUREs LOADER
+		// textureNormalMap0ID
 		vectorOfMeshes[i].textureNormalMap0ID = textureLoader.getVectorOfMeshes()[i].textureNormalMap0ID;
 	}
-	//modelTotalSizeMB = modelMeshSizeMB + modelTextureSizeMB;
 
 	// MODEL VARIABLES
 	modelMatrix = glm::mat4(1.0f);
@@ -84,7 +76,7 @@ void Models::ModelPTN0::initPTNModel()
 	modelMatrix = glm::rotate(modelMatrix, angle, modelRotateAround);
 	modelMatrix = glm::scale(modelMatrix, modelScale);
 
-	// std::cout << "ModelPTN " << modelFullName << " created!" << std::endl;
+	// some msg here ...
 }
 
 // GET

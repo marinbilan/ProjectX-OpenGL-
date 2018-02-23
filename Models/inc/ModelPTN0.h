@@ -9,7 +9,7 @@ public:
 	// CONSTRUCTORs / DESTRUCTORs
 	ModelPTN0(CommonFunctions& _CF, 
 		      std::string _modelFolder, 
-		      std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>> _vectorOfShaders);
+		      std::vector<Shaders::ShadersIf::ShadersIf*>& vectorShaderIf);
 	~ModelPTN0();
 
 	// FUNCTIONs
@@ -38,9 +38,7 @@ public:
 		output << " Model Name:  " << info.modelFullName << std::endl;
 		output << " Model VAO              = " << info.VAO << std::endl;
 		output << " Model Number of Meshes = " << info.vectorOfMeshes.size() << std::endl;
-
 		output << "   [ MESHEs ]" << std::endl;
-
 		std::vector<Models::Mesh>::iterator it;
 		for (it = info.vectorOfMeshes.begin(); it != info.vectorOfMeshes.end(); ++it)
 		{
@@ -53,6 +51,7 @@ private:
 	// CONSTRUCTOR params
 	GLuint                    VAO;
 	std::vector<Models::Mesh> vectorOfMeshes;
+	std::vector<Shaders::ShadersIf::ShadersIf*> m_vectorShaderIf;
 
 	glm::mat4                 modelMatrix;
 	glm::vec3                 modelPosition;
@@ -65,6 +64,5 @@ private:
 	std::string               modelFullName;
 	
 	CommonFunctions& CF;
-	std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>> vectorOfShaders;
 };
 }
