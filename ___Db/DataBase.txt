@@ -1,6 +1,4 @@
-// ----======================================================----
-// ----================= Model Vanquish =======================----
-// ----======================================================----
+// ==== Model Vanquish ====
 _src/_models/_vanquish/ modelName    vanquish
 
 _src/_models/_vanquish/	modelPosition           385 0 370
@@ -16,7 +14,7 @@ _src/_models/_vanquish/    meshShader4    ShaderPTN0
 _src/_models/_vanquish/    meshShader5    ShaderPTN0
 
 // MESH SPECULAR MAP INFO
-                                           // Mesh              // Specular Map Info
+                                           // Mesh                 // Specular Map Info
 _src/_models/_vanquish/    meshSpecular0    0
 _src/_models/_vanquish/    meshSpecular1    0
 _src/_models/_vanquish/    meshSpecular2    0
@@ -25,14 +23,15 @@ _src/_models/_vanquish/    meshSpecular4    0
 _src/_models/_vanquish/    meshSpecular5    0
 
 // MESH NORMAL MAP INFO
-                                           // Mesh              // Normal Map Info
+                                           // Mesh               // Normal Map Info
 _src/_models/_vanquish/    meshTexture0    0
 _src/_models/_vanquish/    meshTexture1    0
 _src/_models/_vanquish/    meshTexture2    0
 _src/_models/_vanquish/    meshTexture3    0
 _src/_models/_vanquish/    meshTexture4    0
 _src/_models/_vanquish/    meshTexture5    0
-// ----======================================================----
+// ========
+
 
 
 
