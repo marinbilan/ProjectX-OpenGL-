@@ -90,7 +90,7 @@ void Renderer::Renderer::renderTerrain(Shaders::ShadersIf::ShadersIf* _shader,
 	glUniformMatrix4fv(_shader->getViewMatrixInvID(), 1, GL_FALSE, &_camera->getInvViewMatrix()[0][0]);
 	glUniformMatrix4fv(_shader->getModelMatrixID(), 1, GL_FALSE, &(_staticModel->getModelMatrix()[0][0]));
 	
-	glm::vec3 lightPositionTerrain(380.0f, 10.0f, 380.0f);
+	glm::vec3 lightPositionTerrain(380.0f, 77.0f, 380.0f);
 	glUniform3f(_shader->getLightPositionID(), lightPositionTerrain[0], lightPositionTerrain[1], lightPositionTerrain[2]);
 	// FRAGMENT SHADER
 	// TEXTUREs
@@ -224,7 +224,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf& _staticMo
 			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshVectorShaderIf->getViewMatrixInvID(), 1, GL_FALSE, &m_camera.getInvViewMatrix()[0][0]);
 			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshVectorShaderIf->getModelMatrixID(), 1, GL_FALSE, &(_staticModel.getModelMatrix()[0][0]));
 			// TODO: Remove from here
-			glm::vec3 lightPositionModelPTN(385.0f, 7.0f, 385.0f);
+			glm::vec3 lightPositionModelPTN(385.0f, 77.0f, 385.0f);
 			glm::vec3 lightColorModelPTN(1.0f, 1.0f, 1.0f);
 			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshVectorShaderIf->getLightPositionID(), lightPositionModelPTN[0], lightPositionModelPTN[1], lightPositionModelPTN[2]);
 			glm::vec4 planeModelPTN(0.0f, -1.0f, 0.0f, 100000.0f);
@@ -330,7 +330,7 @@ void Renderer::Renderer::renderStaticModel(Models::ModelsIf::ModelsIf& _staticMo
 			// glUniformMatrix4fv(mesh.meshShaderPtr->getViewMatrixInvID(), 1, GL_FALSE, &m_camera.getInvViewMatrix()[0][0]);
 			glUniformMatrix4fv(_staticModel.getVectorOfMeshes()[i].meshVectorShaderIf->getModelMatrixID(), 1, GL_FALSE, &(_staticModel.getModelMatrix()[0][0]));
 			// TODO: Remove from here
-			glm::vec3 lightPositionEyeSpace(385.0f, 80.0f, 385.0f);
+			glm::vec3 lightPositionEyeSpace(395.0f, 7.0f, 385.0f);
 			glUniform3f(_staticModel.getVectorOfMeshes()[i].meshVectorShaderIf->getLightPositionEyeSpaceID(), lightPositionEyeSpace[0], lightPositionEyeSpace[1], lightPositionEyeSpace[2]);
 			//
 			// FRAGMENT SHADER UNIFORMs

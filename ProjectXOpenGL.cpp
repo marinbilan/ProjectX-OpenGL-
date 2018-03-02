@@ -233,15 +233,6 @@ int main(int argc, char** argv)
 	vectorShaders.push_back(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT));
 	vectorShaders.push_back(new Shaders::ShaderNormalMapPTNT0(WIDTH, HEIGHT));
 	vectorShaders.push_back(new Shaders::ShaderMarker0(WIDTH, HEIGHT));
-	// TODO: remove
-	std::vector<std::shared_ptr<Shaders::ShadersIf::ShadersIf>> vectorOfSmartShaders;
-	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderPTN0>(new Shaders::ShaderPTN0(WIDTH, HEIGHT)));
-	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderPTN1>(new Shaders::ShaderPTN1(WIDTH, HEIGHT)));
-	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderPTN2>(new Shaders::ShaderPTN2(WIDTH, HEIGHT)));
-	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderLearningOpenGL0>(new Shaders::ShaderLearningOpenGL0(WIDTH, HEIGHT)));
-	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderSkyBox0>(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT)));
-	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderNormalMapPTNT0>(new Shaders::ShaderNormalMapPTNT0(WIDTH, HEIGHT)));
-	vectorOfSmartShaders.push_back(std::shared_ptr<Shaders::ShaderMarker0>(new Shaders::ShaderMarker0(WIDTH, HEIGHT)));
 	//
 	// ----==== CAMERAs [ ViewMatrix ] ====----
 	//
@@ -254,53 +245,23 @@ int main(int argc, char** argv)
 	//
 	// ----==== MODELs [ ModelMatrix ] ====----	
 	//
-
-	// MODELs NEW
+	// 1] Render SkyBox
 	modelSkyBox00 = new Models::ModelSkyBox0(vectorShaders);
-
+	// 2] Render Terrain
+	shaderTerrain00 = new Shaders::ShaderTerrain0(WIDTH, HEIGHT); // TODO: remove shader
+	modelTerrain00 = new Models::ModelTerrain0(CF, "_src/_models/_vanquish/", vectorShaders);
+	// 3] Render Models
 	std::vector<Models::ModelsIf::ModelsIf*> vectorModels;
 	vectorModels.push_back(new Models::ModelPTN0(*CF, "_src/_models/_vanquish/", vectorShaders));
-	vectorModels.push_back(new Models::ModelPTN0(*CF, "_src/_models/lightMarker/", vectorShaders));
+	//vectorModels.push_back(new Models::ModelPTN0(*CF, "_src/_models/_city0/", vectorShaders));
+	//vectorModels.push_back(new Models::ModelPTN0(*CF, "_src/_models/lightMarker/", vectorShaders));
 
-	// TODO: remove smart_ptrs
-	std::vector<std::shared_ptr<Models::ModelsIf::ModelsIf>> vectorOfSmartModelsPTN;
-	// for each model in db try to create model...
-	std::shared_ptr<Models::ModelPTN0> modelSmartPTN(new Models::ModelPTN0(*CF, "_src/_models/_vanquish/", vectorShaders));
-	// Check error
-	if (CF->checkError()) // Error
-	{
-		std::cout << "ERROR: Can't instanciate object!" << std::endl;
-		CF->clearError();
-		// delete object
-	}
-	else
-	{
-		vectorOfSmartModelsPTN.push_back(modelSmartPTN);
-	}
-	CF->clearError();
-	vectorOfSmartModelsPTN.push_back(std::shared_ptr<Models::ModelPTN0>(new Models::ModelPTN0(*CF, "_src/_models/lightMarker/", vectorShaders)));
-
-
-	// vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_vanquish/", vectorOfShaders));
-	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/cubeNM/", vectorOfShaders));
-	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/barrelNM/", vectorOfShaders));
-	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/_dagger/", vectorOfShaders));
-	//vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/arrow/", vectorOfShaders));
-	// vectorOfModelsPTN.push_back(new Models::ModelPTN0(CF, "_src/_models/lightMarker/", vectorOfShaders));
-	// vectorOfModelsPTN[0]->printINFO();
-	// LEGACY TODO
-	std::vector<Shaders::ShadersIf::ShadersIf*> vectorOfShaders;
-	vectorOfShaders.push_back(new Shaders::ShaderSkyBox0(WIDTH, HEIGHT));
-
-
-
+	// TODO:
 	shaderWaterTile00 = new Shaders::ShaderWaterTile0(VS_Water_Tile, FS_Water_Tile);
 	modelWaterTile00 = new Models::ModelWaterTile0("_src/water/waterDUDV.png", shaderWaterTile00, camera, 8, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(14.0f));
 	shaderGUI00 = new Shaders::ShaderGUI0(VS2, FS2);
 	modelGUI00 = new Models::ModelGUI0("sword.png", shaderGUI00, 10, glm::vec3(-0.7f, 0.5f, 0.f), glm::vec3(0.5f));
 	modelGUI01 = new Models::ModelGUI0("socuwan.png", shaderGUI00, 9, glm::vec3(0.7f, 0.5f, 0.0f), glm::vec3(0.3));
-	shaderTerrain00 = new Shaders::ShaderTerrain0(WIDTH, HEIGHT); // TODO: remove shader
-	modelTerrain00 = new Models::ModelTerrain0(CF, "_src/_models/_vanquish/", vectorOfShaders);
 	//
 	// ----==== RENDERERs ====----	
 	//
@@ -308,7 +269,7 @@ int main(int argc, char** argv)
 	//
 	// ----==== CMD ====----
 	//
-	CommandPrompt::CommandPrompt* CP = new CommandPrompt::CommandPrompt(vectorOfSmartShaders, vectorOfSmartModelsPTN);
+	CommandPrompt::CommandPrompt* CP = new CommandPrompt::CommandPrompt(vectorShaders, vectorModels);
 	//
 	//
 	//

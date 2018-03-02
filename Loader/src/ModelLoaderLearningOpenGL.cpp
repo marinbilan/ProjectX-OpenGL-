@@ -7,6 +7,7 @@ Loader::ModelLoaderLearningOpenGL::ModelLoaderLearningOpenGL(CommonFunctions& _C
 {
 	CF.getStringFromDB(modelFolder, "modelName", modelName);
 	modelName += ".3ds";
+	//modelName += ".obj";
 
 	loadModelPTN();
 }
@@ -21,7 +22,6 @@ void Loader::ModelLoaderLearningOpenGL::loadModelPTN()
 	// CREATE MODEL
 	Assimp::Importer Importer;
 	pScene = Importer.ReadFile((modelFolder + modelName), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
-
 	CF.LOGFILE(LOG("---> START " + modelFolder + modelName + " MESHes LOADING. " + "Number of MESHEs = " + std::to_string(pScene->mNumMeshes)));
 
 	if (pScene)
